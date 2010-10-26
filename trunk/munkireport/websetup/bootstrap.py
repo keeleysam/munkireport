@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Setup the munkireport application"""
 
+import glob
+import pickle
+
 import logging
 from tg import config
 from munkireport import model
@@ -38,6 +41,12 @@ def bootstrap(command, conf, vars):
         admin_user.password = u'hejsan'
         model.DBSession.add(admin_user)
         
+        greg_user = model.User()
+        greg_user.user_name = u'greg'
+        greg_user.display_name = u'Greg Neagle'
+        greg_user.password = u'munkiguest'
+        model.DBSession.add(greg_user)
+        
         admins_group = model.Group()
         admins_group.group_name = u'admins'
         admins_group.display_name = u'Administrators'
@@ -60,3 +69,23 @@ def bootstrap(command, conf, vars):
         print 'Continuing with bootstrapping...'
     
     # <websetup.bootstrap.after.auth>
+    
+    for item in glob.iglob("munkireport/websetup/dump/*.pickle"):
+        with open(item, "rb") as f:
+            pickled_client = pickle.load(f)
+        print pickled_client.name
+        client = model.Client()
+        client.name         = pickled_client.name
+        client.mac          = pickled_client.mac
+        client.remote_ip    = pickled_client.remote_ip
+        client.timestamp    = pickled_client.timestamp
+        client.runtype      = pickled_client.runtype
+        client.runstate     = pickled_client.runstate
+        client.console_user = pickled_client.console_user
+        client.errors       = pickled_client.errors
+        client.warnings     = pickled_client.warnings
+        client.report_plist = pickled_client.report_plist
+        model.DBSession.add(client)
+        model.DBSession.flush()
+        transaction.commit()
+    
