@@ -1,0 +1,4 @@
+recursive-include munkireport/public *
+include munkireport/public/favicon.ico
+recursive-include munkireport/i18n *
+recursive-include munkireport/templates *
