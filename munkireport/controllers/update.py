@@ -36,6 +36,11 @@ class UpdateController(BaseController):
     
     # FIXME: validation
     @expose(content_type="text/plain")
+    @validate(validators={
+        "runtype":  validators.UnicodeString(max=64, notempty=True),
+        "mac":      validators.MACAddress(notempty=True),
+        "name":     validators.UnicodeString(max=64, notempty=True)
+    })
     def preflight(self, runtype=None, mac=None, name=None):
         """Log preflight."""
         
@@ -57,6 +62,12 @@ class UpdateController(BaseController):
     
     # FIXME: validation
     @expose(content_type="text/plain")
+    @validate(validators={
+        "runtype":          validators.UnicodeString(max=64, notempty=True),
+        "mac":              validators.MACAddress(notempty=True),
+        "name":             validators.UnicodeString(max=64, notempty=True),
+        "base64bz2report":  validators.UnicodeString(max=200000, notempty=True)
+    })
     def postflight(self, runtype=None, mac=None, name=None, base64bz2report=None):
         """Log postflight."""
         
