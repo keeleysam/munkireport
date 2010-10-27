@@ -21,8 +21,8 @@ class ViewController(BaseController):
     """Gather client updates."""
     
     # The predicate that must be met for all the actions in this controller:
-    allow_only = has_permission('admin',
-                                msg=l_('Only for people with the "admin" permission'))
+    allow_only = has_permission("view",
+        msg=l_("Reports are only available for users with 'view' permission."))
     
     @expose('munkireport.templates.view.index')
     def index(self):

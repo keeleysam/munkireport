@@ -28,13 +28,12 @@ class UpdateController(BaseController):
     """Gather client updates."""
     
     # The predicate that must be met for all the actions in this controller:
-    #allow_only = has_permission('report',
-    #                            msg=l_('Only for people with the "report" permission'))
+    #allow_only = has_permission("report",
+    #   msg=l_("Only users with the 'report' permission can submit report updates."))
     
-    @expose('munkireport.templates.index')
+    @expose()
     def index(self):
-        """Let the user know that's visiting a protected controller."""
-        return dict(page='index')
+        abort(403)
     
     
     @expose(content_type="text/plain")
