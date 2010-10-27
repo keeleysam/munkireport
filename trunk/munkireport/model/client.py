@@ -27,7 +27,7 @@ class Client(DeclarativeBase):
     console_user = Column(Unicode(64))
     errors = Column(Integer, default=0)
     warnings = Column(Integer, default=0)
-    report_plist = Column(PickleType())
+    report_plist = Column(PickleType(mutable=False))
     
     #}
     
