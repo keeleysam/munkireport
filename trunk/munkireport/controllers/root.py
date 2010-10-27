@@ -11,6 +11,7 @@ from munkireport.lib.base import BaseController
 from munkireport.model import DBSession, metadata
 from munkireport.controllers.error import ErrorController
 from munkireport import model
+from munkireport.controllers.admin import MunkiReportAdminController
 from munkireport.controllers.update import UpdateController
 from munkireport.controllers.view import ViewController
 
@@ -34,7 +35,7 @@ class RootController(BaseController):
     update = UpdateController()
     view = ViewController()
     
-    admin = AdminController(model, DBSession, config_type=TGAdminConfig)
+    admin = AdminController(model, DBSession, config_type=MunkiReportAdminController)
 
     error = ErrorController()
 
