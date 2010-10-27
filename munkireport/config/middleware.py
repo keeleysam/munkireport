@@ -1,8 +1,19 @@
 # -*- coding: utf-8 -*-
 """WSGI middleware initialization for the munkireport application."""
 
+from repoze.who.plugins.friendlyform import FriendlyFormPlugin
+from repoze.who.interfaces import IIdentifier
+from repoze.who.interfaces import IChallenger
+from repoze.who.plugins.auth_tkt import make_plugin as AuthTktPlugin
+
+from repoze.what.middleware import setup_auth
+from repoze.what.plugins.ini import INIGroupAdapter, INIPermissionsAdapter
+
 from munkireport.config.app_cfg import base_config
 from munkireport.config.environment import load_environment
+
+from munkireport.lib.macosxauth import MacOSXAuthenticator, MacOSXMetadataProvider, MacOSXGroupAdapter
+from munkireport.lib.fileauth import FileAuthenticator, FileMetadataProvider
 
 
 __all__ = ['make_app']
@@ -35,5 +46,64 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = make_base_app(global_conf, full_stack=True, **app_conf)
     
     # Wrap your base TurboGears 2 application with custom middleware here
+    
+    # Initialize repoze.what plugins.
+    groups = {
+        "ini_groups": INIGroupAdapter(app_conf.get("what.groups_file", "etc/groups.ini")),
+        "dscl_groups": MacOSXGroupAdapter()
+    }
+    permissions = {
+        "ini_permissions": INIPermissionsAdapter(app_conf.get("what.permissions_file", "etc/permissions.ini"))
+    }
+    
+    # Initialize repoze.who plugins.
+    friendlyform = FriendlyFormPlugin(
+        "/login",
+        "/login_handler",
+        None,
+        "/logout_handler",
+        None,
+        "auth_tkt",
+        login_counter_name=None
+    )
+    friendlyform.classifications = {
+        IIdentifier: ['browser'],
+        IChallenger: ['browser']
+    }
+    auth_tkt = AuthTktPlugin(secret=app_conf["beaker.session.secret"])
+    macosx_authenticator = MacOSXAuthenticator()
+    macosx_metadataprovider = MacOSXMetadataProvider()
+    file_authenticator = FileAuthenticator()
+    file_metadataprovider = FileMetadataProvider()
+    
+    # Configuration for repoze.who.
+    identifiers = [
+        ('friendlyform', friendlyform),
+        ('auth_tkt', auth_tkt)
+    ]
+    authenticators = [
+        ('macosx_authenticator', macosx_authenticator),
+        ('file_authenticator', file_authenticator)
+    ]
+    challengers = [
+        ('friendlyform', friendlyform)
+    ]
+    mdproviders = [
+        ('macosx_metadataprovider', macosx_metadataprovider),
+        ('file_metadataprovider', file_metadataprovider)
+    ]
+    
+    # Setup authentication and authorization through repoze.what.
+    app = setup_auth(
+        app,
+        groups,
+        permissions,
+        identifiers=identifiers,
+        authenticators=authenticators,
+        challengers=challengers,
+        mdproviders=mdproviders,
+        #log_stream=sys.stdout,
+        #log_level=logging.DEBUG
+    )
     
     return app
