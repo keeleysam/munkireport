@@ -1,0 +1,14 @@
+#!/bin/bash
+
+RUNTYPE="$1"
+MAC=`ifconfig en0 | awk '/ether/ {print $2}'`
+NAME="$(echo `systemsetup -getcomputername | cut -d: -f2-`)"
+SUBMITURL="http://localhost:8444/update"
+
+curl --max-time 5 --silent \
+    -d runtype="$RUNTYPE" \
+    -d mac="$MAC" \
+    -d name="$NAME" \
+    "$SUBMITURL/preflight"
+
+exit 0

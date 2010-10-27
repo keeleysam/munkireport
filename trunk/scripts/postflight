@@ -1,0 +1,22 @@
+#!/bin/bash
+
+RUNTYPE="$1"
+MAC=`ifconfig en0 | awk '/ether/ {print $2}'`
+NAME="$(echo `systemsetup -getcomputername | cut -d: -f2-`)"
+REPORTPATH="/Library/Managed Installs/ManagedInstallReport.plist"
+SUBMITURL="http://localhost:8444/update"
+
+TMP=`mktemp -t postflight`
+echo -n "base64bz2report=" > "$TMP"
+bzip2 --best < "$REPORTPATH" | openssl base64 >> "$TMP"
+
+curl --max-time 30 --silent \
+    -d runtype="$RUNTYPE" \
+    -d mac="$MAC" \
+    -d name="$NAME" \
+    -d "@$TMP" \
+    "$SUBMITURL/postflight"
+
+rm -f "$TMP"
+
+exit 0
