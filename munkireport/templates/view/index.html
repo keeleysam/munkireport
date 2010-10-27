@@ -12,51 +12,131 @@
 </head>
 
 <body>
-  <table class="clientlist">
-    <thead>
-      <tr>
-        <th>Client</th>
-        <th>User</th>
-        <th>IP</th>
-        <th>Latest Run</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr py:for="client in clients">
-        <?python
-            url = tg.url('/view/report/%s' % client.mac)
-        ?>
-        <td>
-          <py:choose test="client.report_plist == None">
-            <py:when test="False">
-              <a href="${url}">${client.name}</a>
-            </py:when>
-            <py:otherwise>${client.name}</py:otherwise>
-          </py:choose>
-        </td>
-        <td py:content="client.console_user">user</td>
-        <td py:content="client.remote_ip" class="ip">ip</td>
-        <td>
-          ${client.timestamp.strftime("%Y-%m-%d %H:%M")}
-          ${client.runtype}
-          ${client.runstate}
-          <py:if test="client.errors">
-            <span class="error">
-              <a href="${url}#errors">
-                ${client.errors} error${"s" if client.errors > 1 else ""}
-              </a>
-            </span>
-          </py:if>
-          <py:if test="client.warnings">
-            <span class="warning">
-              <a href="${url}#errors">
-                ${client.warnings} warning${"s" if client.warnings > 1 else ""}
-              </a>
-            </span>
-          </py:if>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+<h2>Errors</h2>
+
+<py:choose test="len(error_clients)">
+  <py:when test="0">
+    <p><i>No errors.</i></p>
+  </py:when>
+  <py:otherwise>
+    <table class="clientlist">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>User</th>
+          <th>IP</th>
+          <th>Latest Run</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr py:for="client in error_clients">
+          <?python
+              url = tg.url('/view/report/%s' % client.mac)
+          ?>
+          <td>
+            <py:choose test="client.report_plist == None">
+              <py:when test="False">
+                <a href="${url}">${client.name}</a>
+              </py:when>
+              <py:otherwise>${client.name}</py:otherwise>
+            </py:choose>
+          </td>
+          <td py:content="client.console_user">user</td>
+          <td py:content="client.remote_ip" class="ip">ip</td>
+          <td>
+            ${client.timestamp.strftime("%Y-%m-%d %H:%M")}
+            ${client.runtype}
+            ${client.runstate}
+            <py:if test="client.errors">
+              <span class="error">
+                <a href="${url}#errors">
+                  ${client.errors} error${"s" if client.errors > 1 else ""}
+                </a>
+              </span>
+            </py:if>
+            <py:if test="client.warnings">
+              <span class="warning">
+                <a href="${url}#errors">
+                  ${client.warnings} warning${"s" if client.warnings > 1 else ""}
+                </a>
+              </span>
+            </py:if>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </py:otherwise>
+</py:choose>
+
+
+<h2>Warnings</h2>
+
+<py:choose test="len(warning_clients)">
+  <py:when test="0">
+    <p><i>No warnings.</i></p>
+  </py:when>
+  <py:otherwise>
+    <table class="clientlist">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>User</th>
+          <th>IP</th>
+          <th>Latest Run</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr py:for="client in warning_clients">
+          <?python
+              url = tg.url('/view/report/%s' % client.mac)
+          ?>
+          <td>
+            <py:choose test="client.report_plist == None">
+              <py:when test="False">
+                <a href="${url}">${client.name}</a>
+              </py:when>
+              <py:otherwise>${client.name}</py:otherwise>
+            </py:choose>
+          </td>
+          <td py:content="client.console_user">user</td>
+          <td py:content="client.remote_ip" class="ip">ip</td>
+          <td>
+            ${client.timestamp.strftime("%Y-%m-%d %H:%M")}
+            ${client.runtype}
+            ${client.runstate}
+            <py:if test="client.errors">
+              <span class="error">
+                <a href="${url}#errors">
+                  ${client.errors} error${"s" if client.errors > 1 else ""}
+                </a>
+              </span>
+            </py:if>
+            <py:if test="client.warnings">
+              <span class="warning">
+                <a href="${url}#errors">
+                  ${client.warnings} warning${"s" if client.warnings > 1 else ""}
+                </a>
+              </span>
+            </py:if>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </py:otherwise>
+</py:choose>
+
+
+<h2>Activity</h2>
+
+<p><i>No activity.</i></p>
+
+
+<h2>Client List</h2>
+
+<ul>
+  <li><a href="${tg.url('/view/client_list')}">View all clients</a></li>
+</ul>
+
 </body>
 </html>

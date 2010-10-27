@@ -26,13 +26,26 @@ class ViewController(BaseController):
     
     @expose('munkireport.templates.view.index')
     def index(self):
-        """Let the user know that's visiting a protected controller."""
-        return dict(clients=Client.all())
+        """Report overview."""
+        return dict(
+            page="reports",
+            error_clients=DBSession.query(Client).filter(Client.errors > 0).all(),
+            warning_clients=DBSession.query(Client).filter(Client.errors == 0).filter(Client.warnings > 0).all()
+        )
     
     
     @expose()
     def error(self):
         abort(403)
+    
+    
+    @expose('munkireport.templates.view.client_list')
+    def client_list(self):
+        """List all clients."""
+        return dict(
+            page="reports",
+            clients=Client.all()
+        )
     
     
     @expose('munkireport.templates.view.report')
@@ -49,6 +62,7 @@ class ViewController(BaseController):
             abort(404)
         
         return dict(
+            page="reports",
             client=client,
             report=dict(client.report_plist)
         )
