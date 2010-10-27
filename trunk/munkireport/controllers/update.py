@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """Sample controller with all its actions protected."""
-from tg import expose, flash, request, abort
+from tg import expose, flash, request, abort, validate
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from repoze.what.predicates import has_permission
 #from dbsprockets.dbmechanic.frameworks.tg2 import DBMechanic
 #from dbsprockets.saprovider import SAProvider
+
+from formencode import validators
 
 from munkireport.lib.base import BaseController
 from munkireport.model import DBSession, Client
@@ -34,16 +36,16 @@ class UpdateController(BaseController):
         """Let the user know that's visiting a protected controller."""
         return dict(page='index')
     
-    # FIXME: validation
+    
     @expose(content_type="text/plain")
     @validate(validators={
         "runtype":  validators.UnicodeString(max=64, notempty=True),
-        "mac":      validators.MACAddress(notempty=True),
+        "mac":      validators.MACAddress(add_colons=True, notempty=True),
         "name":     validators.UnicodeString(max=64, notempty=True)
     })
     def preflight(self, runtype=None, mac=None, name=None):
         """Log preflight."""
-        
+
         client = Client.by_mac(mac)
         if not client:
             client = Client()
@@ -60,22 +62,33 @@ class UpdateController(BaseController):
         
         return "preflight logged for %s\n" % name
     
-    # FIXME: validation
+    
     @expose(content_type="text/plain")
     @validate(validators={
         "runtype":          validators.UnicodeString(max=64, notempty=True),
-        "mac":              validators.MACAddress(notempty=True),
+        "mac":              validators.MACAddress(add_colons=True, notempty=True),
         "name":             validators.UnicodeString(max=64, notempty=True),
         "base64bz2report":  validators.UnicodeString(max=200000, notempty=True)
     })
     def postflight(self, runtype=None, mac=None, name=None, base64bz2report=None):
         """Log postflight."""
         
-        base64bz2report = base64bz2report.replace(" ", "+")
-        bz2report = base64.b64decode(base64bz2report)
-        report = bz2.decompress(bz2report)
+        # Decode report
+        # FIXME: there has to be a better way to submit a binary blob
+        try:
+            base64bz2report = base64bz2report.replace(" ", "+")
+            bz2report = base64.b64decode(base64bz2report)
+            report = bz2.decompress(bz2report)
+        except BaseException as e:
+            print "Can't decode report from %s (%s): %s" % (request.environ['REMOTE_ADDR'], mac, str(e))
+            abort(403)
         
-        plist = plistlib.readPlistFromString(report)
+        # Parse plist with plistlib, as Objective-C objects can't be pickled.
+        try:
+            plist = plistlib.readPlistFromString(report)
+        except BaseException as e:
+            print "Received invalid plist from %s (%s): %s" % (request.environ['REMOTE_ADDR'], mac, str(e))
+            abort(403)
         #plist, format, error = \
         #    NSPropertyListSerialization.propertyListFromData_mutabilityOption_format_errorDescription_(
         #        buffer(report),
@@ -86,8 +99,6 @@ class UpdateController(BaseController):
         #if error:
         #    print "error:", error
         #    abort(401)
-        
-        #pprint.pprint(plist)
         
         client = Client.by_mac(mac)
         if not client:
@@ -110,7 +121,7 @@ class UpdateController(BaseController):
             client.warnings = len(plist["Warnings"])
         if "ConsoleUser" in plist:
             if plist["ConsoleUser"] != "<None>":
-                client.console_user = plist["ConsoleUser"]
+                client.console_user = unicode(plist["ConsoleUser"])
         
         DBSession.flush()
         

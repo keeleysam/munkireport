@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """Sample controller with all its actions protected."""
-from tg import expose, flash
+from tg import expose, flash, validate, abort
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from repoze.what.predicates import has_permission
 #from dbsprockets.dbmechanic.frameworks.tg2 import DBMechanic
 #from dbsprockets.saprovider import SAProvider
+
+from formencode import validators
 
 from munkireport.lib.base import BaseController
 from munkireport.model import DBSession, Client
@@ -27,14 +29,24 @@ class ViewController(BaseController):
         """Let the user know that's visiting a protected controller."""
         return dict(clients=Client.all())
     
-    # FIXME: validation
+    
+    @expose()
+    def error(self):
+        abort(403)
+    
+    
     @expose('munkireport.templates.view.report')
+    @validate(
+        validators={
+            "mac":      validators.MACAddress(add_colons=True, notempty=True)
+        },
+        error_handler=error
+    )
     def report(self, mac=None):
         """View a munki report."""
-        try:
-            client=Client.by_mac(mac)
-        except:
-            raise
+        client=Client.by_mac(mac)
+        if not client:
+            abort(404)
         
         return dict(
             client=client,
