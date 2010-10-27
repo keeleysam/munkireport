@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+
+  <xi:include href="master.html" />
+
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+  <title>MunkiReport</title>
+</head>
+
+<body>
+  <h1>Munki Clients</h1>
+  
+  <table class="clientlist">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>User</th>
+        <th>IP</th>
+        <th>Latest Run</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr py:for="client in clients">
+        <?python
+            url = tg.url('/view/report/%s' % client.mac)
+        ?>
+        <td>
+          <py:choose test="client.report_plist == None">
+            <py:when test="False">
+              <a href="${url}">${client.name}</a>
+            </py:when>
+            <py:otherwise>${client.name}</py:otherwise>
+          </py:choose>
+        </td>
+        <td py:content="client.console_user">user</td>
+        <td py:content="client.remote_ip" class="ip">ip</td>
+        <td>
+          ${client.timestamp.strftime("%Y-%m-%d %H:%M")}
+          ${client.runtype}
+          ${client.runstate}
+          <py:if test="client.errors">
+            <span class="error">
+              <a href="${url}#errors">
+                ${client.errors} error${"s" if client.errors > 1 else ""}
+              </a>
+            </span>
+          </py:if>
+          <py:if test="client.warnings">
+            <span class="warning">
+              <a href="${url}#errors">
+                ${client.warnings} warning${"s" if client.warnings > 1 else ""}
+              </a>
+            </span>
+          </py:if>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
