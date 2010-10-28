@@ -42,6 +42,35 @@ class UpdateController(BaseController):
         "mac":      validators.MACAddress(add_colons=True, notempty=True),
         "name":     validators.UnicodeString(max=64, notempty=True)
     })
+    def report_broken_client(self, runtype=None, mac=None, name=None):
+        """Log report_broken_client."""
+
+        client = Client.by_mac(mac)
+        if not client:
+            client = Client()
+            client.mac = mac
+            DBSession.add(client)
+        
+        client.runtype = runtype
+        client.name = name
+        client.runstate = u"broken client"
+        client.timestamp = datetime.now()
+        client.remote_ip = unicode(request.environ['REMOTE_ADDR'])
+        client.report_plist = None
+        client.errors = 1
+        client.warnings = 0
+        
+        DBSession.flush()
+        
+        return "report_broken_client logged for %s\n" % name
+    
+    
+    @expose(content_type="text/plain")
+    @validate(validators={
+        "runtype":  validators.UnicodeString(max=64, notempty=True),
+        "mac":      validators.MACAddress(add_colons=True, notempty=True),
+        "name":     validators.UnicodeString(max=64, notempty=True)
+    })
     def preflight(self, runtype=None, mac=None, name=None):
         """Log preflight."""
 
