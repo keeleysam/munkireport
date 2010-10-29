@@ -41,7 +41,3 @@ class Client(DeclarativeBase):
     def by_mac(c, mac):
         return DBSession.query(c).filter_by(mac=mac).first()
     
-    @classmethod
-    def all(c):
-        return reversed(DBSession.query(c).order_by(c.timestamp).all())
-    
