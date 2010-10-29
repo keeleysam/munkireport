@@ -3,10 +3,12 @@
 
 import glob
 import pickle
+import types
 
 import logging
 from tg import config
-from munkireport import model
+from munkireport.model import DBSession, Client
+import sqlalchemy
 
 import transaction
 
@@ -15,21 +17,24 @@ def bootstrap(command, conf, vars):
     """Place any commands to setup munkireport here"""
     
     for item in glob.iglob("munkireport/websetup/dump/*.pickle"):
+        print "Importing %s" % item
         with open(item, "rb") as f:
             pickled_client = pickle.load(f)
-        print pickled_client.name
-        client = model.Client()
-        client.name         = pickled_client.name
-        client.mac          = pickled_client.mac
-        client.remote_ip    = pickled_client.remote_ip
-        client.timestamp    = pickled_client.timestamp
-        client.runtype      = pickled_client.runtype
-        client.runstate     = pickled_client.runstate
-        client.console_user = pickled_client.console_user
-        client.errors       = pickled_client.errors
-        client.warnings     = pickled_client.warnings
-        client.report_plist = pickled_client.report_plist
-        model.DBSession.add(client)
-        model.DBSession.flush()
+        client = Client()
+        for prop in dir(Client):
+            attr = getattr(Client, prop)
+            if isinstance(attr, sqlalchemy.orm.attributes.InstrumentedAttribute):
+                try:
+                    value = pickled_client[prop]
+                except KeyError:
+                    print "Warning: no pickled '%s' attribute" % prop
+                else:
+                    v = repr(value)
+                    if len(v) > (70 - len(prop)):
+                        v = v[:67] + "..."
+                    #print "client.%s = %s" % (prop, v)
+                    setattr(client, prop, value)
+        #print client
+        DBSession.add(client)
+        DBSession.flush()
         transaction.commit()
-    

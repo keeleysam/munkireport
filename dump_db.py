@@ -6,7 +6,7 @@ import sys
 import pickle
 
 from munkireport.model import DBSession, Client
-from sqlalchemy import create_engine
+import sqlalchemy
 
 
 def usage():
@@ -21,7 +21,7 @@ def main(argv):
         return 1
     
     try:
-        engine = create_engine('sqlite:///%s' % dbpath)
+        engine = sqlalchemy.create_engine('sqlite:///%s' % dbpath)
         DBSession.configure(bind=engine)
     except BaseException as e:
         print >>sys.stderr, "Couldn't open sqlite database %s: %s" % (dbpath, e)
@@ -35,8 +35,13 @@ def main(argv):
     
     for client in DBSession.query(Client).all():
         print "%s %s" % (client.name, client.mac)
+        c = dict()
+        for prop in dir(Client):
+            attr = getattr(Client, prop)
+            if isinstance(attr, sqlalchemy.orm.attributes.InstrumentedAttribute):
+                c[prop] = getattr(client, prop)
         with open("munkireport/websetup/dump/%s.pickle" % client.mac, "wb") as f:
-            pickle.dump(client, f, pickle.HIGHEST_PROTOCOL)
+            pickle.dump(c, f, pickle.HIGHEST_PROTOCOL)
     
     return 0
     
