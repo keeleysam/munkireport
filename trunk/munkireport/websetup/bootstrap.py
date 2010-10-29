@@ -34,6 +34,7 @@ def bootstrap(command, conf, vars):
                         v = v[:67] + "..."
                     #print "client.%s = %s" % (prop, v)
                     setattr(client, prop, value)
+        client.update_report(pickled_client["report_plist"])
         #print client
         DBSession.add(client)
         DBSession.flush()

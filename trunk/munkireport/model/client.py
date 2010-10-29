@@ -37,6 +37,47 @@ class Client(DeclarativeBase):
             (self.name, self.mac, self.remote_ip, self.timestamp,
              self.runtype, self.runstate, self.console_user)])
     
+    def update_report(self, plist):
+        # Save plist.
+        self.report_plist = plist
+        
+        if plist is None:
+            self.activity = None
+            self.errors = 0
+            self.warnings = 0
+            self.console_user = None
+            return
+        
+        # Check activity.
+        activity = dict()
+        for section in ("ItemsToInstall",
+                        "InstallResults",
+                        "ItemsToRemove",
+                        "RemovalResults"):
+            if (section in plist) and len(plist[section]):
+                activity[section] = plist[section]
+        if activity:
+            self.activity = activity
+        else:
+            self.activity = None
+        
+        # Check errors and warnings.
+        if "Errors" in plist:
+            self.errors = len(plist["Errors"])
+        else:
+            self.errors = 0
+        
+        if "Warnings" in plist:
+            self.warnings = len(plist["Warnings"])
+        else:
+            self.warnings = 0
+        
+        # Check console user.
+        self.console_user = None
+        if "ConsoleUser" in plist:
+            if plist["ConsoleUser"] != "<None>":
+                self.console_user = unicode(plist["ConsoleUser"])
+    
     @classmethod
     def by_mac(c, mac):
         return DBSession.query(c).filter_by(mac=mac).first()

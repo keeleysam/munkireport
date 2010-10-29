@@ -85,6 +85,7 @@ class UpdateController(BaseController):
         client.runstate = u"in progress"
         client.timestamp = datetime.now()
         client.remote_ip = unicode(request.environ['REMOTE_ADDR'])
+        client.activity = {"Updating": "preflight"}
         
         DBSession.flush()
         
@@ -128,6 +129,7 @@ class UpdateController(BaseController):
         #    print "error:", error
         #    abort(401)
         
+        # Create client if needed.
         client = Client.by_mac(mac)
         if not client:
             print "postflight running without preflight for mac %s" % mac
@@ -135,22 +137,15 @@ class UpdateController(BaseController):
             client.mac = mac
             DBSession.add(client)
         
+        # Update client attributes.
         client.runtype = runtype
         client.name = name
         client.runstate = u"done"
         client.timestamp = datetime.now()
         client.remote_ip = unicode(request.environ['REMOTE_ADDR'])
-        client.report_plist = plist
-        client.errors = 0
-        client.warnings = 0
-        if "Errors" in plist:
-            client.errors = len(plist["Errors"])
-        if "Warnings" in plist:
-            client.warnings = len(plist["Warnings"])
-        if "ConsoleUser" in plist:
-            if plist["ConsoleUser"] != "<None>":
-                client.console_user = unicode(plist["ConsoleUser"])
-        
+        # Save report, updating activity, errors, warnings, and console_user.
+        client.update_report(plist)
+                
         DBSession.flush()
         
         return "postflight logged for %s\n" % name

@@ -129,7 +129,69 @@
 
 <h2>Activity</h2>
 
-<p><i>No activity.</i></p>
+<py:choose test="len(activity_clients)">
+  <py:when test="0">
+    <p><i>No active clients.</i></p>
+  </py:when>
+  <py:otherwise>
+    <table class="clientlist">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>User</th>
+          <th>IP</th>
+          <th>Activity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr py:for="client in activity_clients">
+          <?python
+              url = tg.url('/view/report/%s' % client.mac)
+          ?>
+          <td>
+            <py:choose test="client.report_plist == None">
+              <py:when test="False">
+                <a href="${url}">${client.name}</a>
+              </py:when>
+              <py:otherwise>${client.name}</py:otherwise>
+            </py:choose>
+          </td>
+          <td py:content="client.console_user">user</td>
+          <td py:content="client.remote_ip" class="ip">ip</td>
+          <?python
+              install_items   = len(client.activity['ItemsToInstall']) if 'ItemsToInstall' in client.activity else 0
+              removal_items   = len(client.activity['ItemsToRemove'])  if 'ItemsToRemove'  in client.activity else 0
+              install_results = len(client.activity['InstallResults']) if 'InstallResults' in client.activity else 0
+              removal_results = len(client.activity['RemovalResults']) if 'RemovalResults' in client.activity else 0
+              pending_installs = install_items - install_results
+              pending_removals = removal_items - removal_results
+          ?>
+          <td>
+            ${client.timestamp.strftime("%Y-%m-%d %H:%M")}
+            &nbsp;
+            <py:if test="'Updating' in client.activity">
+              ${client.runtype} run in progress
+            </py:if>
+            <py:if test="pending_installs">
+              ${pending_installs} pending install${"s" if pending_installs > 1 else ""}
+            </py:if>
+            <py:if test="install_results">
+              ${install_results} package${"s" if install_results > 1 else ""} installed
+            </py:if>
+            <py:if test="pending_removals">
+              ${pending_removals} pending removal${"s" if pending_removals > 1 else ""}
+            </py:if>
+            <py:if test="removal_results">
+              ${removal_results} package${"s" if removal_results > 1 else ""} removed
+            </py:if>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </py:otherwise>
+</py:choose>
+
+<p><i>No active packages.</i></p>
 
 
 <h2>Client List</h2>
