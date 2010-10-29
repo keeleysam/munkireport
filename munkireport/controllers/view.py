@@ -30,7 +30,8 @@ class ViewController(BaseController):
         return dict(
             page="reports",
             error_clients=DBSession.query(Client).filter(Client.errors > 0).all(),
-            warning_clients=DBSession.query(Client).filter(Client.errors == 0).filter(Client.warnings > 0).all()
+            warning_clients=DBSession.query(Client).filter(Client.errors == 0).filter(Client.warnings > 0).all(),
+            activity_clients=DBSession.query(Client).filter(Client.activity != None).all()
         )
     
     
