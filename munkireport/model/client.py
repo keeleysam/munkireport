@@ -27,15 +27,15 @@ class Client(DeclarativeBase):
     console_user = Column(Unicode(64))
     errors = Column(Integer, default=0)
     warnings = Column(Integer, default=0)
+    activity = Column(PickleType(mutable=False))
     report_plist = Column(PickleType(mutable=False))
     
     #}
     
     def __repr__(self):
-        return "<Client('%s', '%s', '%s', '%s', '%s', '%s', '%d' chars report)>" % \
-            (self.name, self.mac, self.remote_ip, self.timestamp, \
-            self.runtype, self.runstate, \
-            len(self.report_plist) if self.report_plist else 0)
+        return "<Client(%s)>" % ", ".join([repr(a) for a in
+            (self.name, self.mac, self.remote_ip, self.timestamp,
+             self.runtype, self.runstate, self.console_user)])
     
     @classmethod
     def by_mac(c, mac):
