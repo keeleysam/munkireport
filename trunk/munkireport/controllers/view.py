@@ -44,7 +44,7 @@ class ViewController(BaseController):
         """List all clients."""
         return dict(
             page="reports",
-            clients=Client.all()
+            clients=reversed(DBSession.query(Client).order_by(Client.timestamp).all())
         )
     
     
