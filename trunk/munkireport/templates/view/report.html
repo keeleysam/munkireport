@@ -95,6 +95,94 @@
 </py:if>
 
 
+<py:if test="'ItemsToInstall' in report">
+  <h2>Active Installs</h2>
+
+  <py:choose test="len(report.ItemsToInstall)">
+    <py:when test="0">
+      <p><i>No active installs.</i></p>
+    </py:when>
+    <py:otherwise>
+      <table class="client_info">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr py:for="item in report.ItemsToInstall">
+            <td>
+              ${item.display_name if "display_name" in item and item.display_name else item.name}
+              ${item.version_to_install if "version_to_install" in item else ""}
+            </td>
+            <td style="text-align: right;">${item.installed_size / 1000} MB</td>
+            <td>${item.install_result}</td>
+          </tr>
+        </tbody>
+      </table>
+    </py:otherwise>
+  </py:choose>
+</py:if>
+
+
+<py:if test="'ItemsToRemove' in report">
+  <h2>Active Removals</h2>
+
+  <py:choose test="len(report.ItemsToRemove)">
+    <py:when test="0">
+      <p><i>No active removals.</i></p>
+    </py:when>
+    <py:otherwise>
+      <table class="client_info">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr py:for="item in report.ItemsToRemove">
+            <td>
+              ${item.display_name if "display_name" in item and item.display_name else item.name}
+              ${item.installed_version if "installed_version" in item else ""}
+            </td>
+            <td>${item.removal_result}</td>
+          </tr>
+        </tbody>
+      </table>
+    </py:otherwise>
+  </py:choose>
+</py:if>
+
+
+<py:if test="'ProblemInstalls' in report">
+  <py:if test="report.ProblemInstalls">
+    <h2>Problem Installs</h2>
+
+    <table class="client_info">
+      <thead>
+        <tr>
+          <th>Problem Install</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr py:for="item in report.ProblemInstalls">
+          <td>
+            ${item}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </py:if>
+</py:if>
+
+
+<table class="twocol">
+  <tbody>
+    <td>
+
 <py:if test="'ManagedInstalls' in report">
   <h2>Managed Installs</h2>
 
@@ -119,49 +207,37 @@
   </table>
 </py:if>
 
-
-<py:if test="'ItemsToInstall' in report">
-  <h2>Pending Installs</h2>
+    </td>
+    <td>
+    
+<py:if test="'RemovedItems' in report">
+  <h2>Managed Uninstalls</h2>
 
   <table class="client_info">
     <thead>
       <tr>
         <th>Name</th>
-        <th>Size</th>
-        <th>Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr py:for="item in report.ItemsToInstall">
+      <tr py:for="item in report.RemovedItems">
         <td>
-          ${item.display_name if "display_name" in item and item.display_name else item.name}
-          ${item.version_to_install if "version_to_install" in item else ""}
+          ${item}
         </td>
-        <td style="text-align: right;">${item.installed_size / 1000} MB</td>
-        <td>${"installed" if item.installed else "not installed"}</td>
       </tr>
     </tbody>
   </table>
 </py:if>
 
-
-<py:if test="'InstallResults' in report and report.InstallResults">
-  <h2>Install Results</h2>
-
-  <table class="client_info">
-    <tr py:for="item in report.InstallResults">
-      <td>${item}</td>
-    </tr>
-  </table>
-</py:if>
-
+    </td>
+  </tbody>
+</table>
 
 <!--! test code below -->
 
-<h2>Debug</h2>
 <?python
     import pprint
-    if False:
+    if True:
         for k in ("MachineInfo",
                   "ConsoleUser",
                   "AvailableDiskSpace",
@@ -174,15 +250,23 @@
                   "Warnings",
                   "InstallResults",
                   "ItemsToInstall",
-                  "ManagedInstalls"):
+                  "ItemsToRemove",
+                  "RemovalResults",
+                  "ManagedInstalls",
+                  "RemovedItems",
+                  "ProblemInstalls"):
             try:
                 del report[k]
             except:
                 pass
     pretty_report = pprint.pformat(report)
 ?>
-<pre py:content="pretty_report">
-  report
-</pre>
+<py:if test="report">
+  <h2>Debug</h2>
+  <pre py:content="pretty_report">
+    report
+  </pre>
+</py:if>
+
 </body>
 </html>
