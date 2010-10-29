@@ -11,10 +11,14 @@ from formencode import validators
 from munkireport.lib.base import BaseController
 from munkireport.model import DBSession, Client
 
+import re
 import plistlib
 
 
 __all__ = ['ViewController']
+
+
+re_result = re.compile(r'^(Removal|Install) of (?P<dname>.+?)(-(?P<version>[^:]+))?: (?P<result>.*)$')
 
 
 class ViewController(BaseController):
@@ -62,9 +66,49 @@ class ViewController(BaseController):
         if not client:
             abort(404)
         
+        # Work with a copy of the client report so we can modify it without
+        # causing a database update.
+        report = dict(client.report_plist)
+        
+        # Move install results over to their install items.
+        install_results = dict()
+        if "InstallResults" in report:
+            for result in report["InstallResults"]:
+                m = re_result.search(result)
+                if m:
+                    install_results["%s-%s" % (m.group("dname"), m.group("version"))] = {
+                        "result": "Installed" if m.group("result") == "SUCCESSFUL" else m.group("result")
+                    }
+        if "ItemsToInstall" in report:
+            for item in report["ItemsToInstall"]:
+                item["install_result"] = "Pending"
+                dversion = "%s-%s" % (item["display_name"], item["version_to_install"])
+                if dversion in install_results:
+                    res = install_results[dversion]
+                    item["install_result"] = res["result"]
+        
+        # Move install results over to their install items.
+        removal_results = dict()
+        if "RemovalResults" in report:
+            for result in report["RemovalResults"]:
+                m = re_result.search(result)
+                if m:
+                    removal_results[m.group("dname")] = {
+                        "result": "Removed" if m.group("result") == "SUCCESSFUL" else m.group("result")
+                    }
+        if "ItemsToRemove" in report:
+            for item in report["ItemsToRemove"]:
+                item["removal_result"] = "Pending"
+                dversion = item["display_name"]
+                if dversion in removal_results:
+                    res = removal_results[dversion]
+                    item["removal_result"] = res["result"]
+        
         return dict(
             page="reports",
             client=client,
-            report=dict(client.report_plist)
+            report=report,
+            install_results=install_results,
+            removal_results=removal_results
         )
     
