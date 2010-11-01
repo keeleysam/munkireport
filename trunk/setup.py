@@ -15,13 +15,14 @@ setup(
     #url='',
     install_requires=[
         "TurboGears2 >= 2.1a1",
-        "Babel >=0.9.4",
+        "Babel >= 0.9.4",
         "zope.sqlalchemy >= 0.4 ",
         "repoze.tm2 >= 1.0a4",
-        
         "repoze.what-quickstart >= 1.0",
-        "tgext.admin>=0.3.3",
-                ],
+        "tgext.admin >= 0.3.3",
+        "repoze.what.plugins.ini >= 0.2.2",
+        "pexpect >= 2.4",
+    ],
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
     packages=find_packages(exclude=['ez_setup']),
