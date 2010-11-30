@@ -14,6 +14,7 @@ from munkireport import model
 from munkireport.controllers.admin import MunkiReportAdminController
 from munkireport.controllers.update import UpdateController
 from munkireport.controllers.view import ViewController
+from munkireport.controllers.lookup import LookupController
 
 __all__ = ['RootController']
 
@@ -34,9 +35,10 @@ class RootController(BaseController):
     """
     update = UpdateController()
     view = ViewController()
+    lookup = LookupController()
     
     admin = AdminController(model, DBSession, config_type=MunkiReportAdminController)
-
+    
     error = ErrorController()
 
     @expose('munkireport.templates.index')
