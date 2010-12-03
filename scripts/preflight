@@ -3,7 +3,28 @@
 RUNTYPE="$1"
 MAC=`ifconfig en0 | awk '/ether/ {print $2}'`
 NAME="$(echo `systemsetup -getcomputername | cut -d: -f2-`)"
-SUBMITURL="http://localhost:8444/update"
+BASEURL="http://localhost:8444"
+SUBMITURL="${BASEURL}/update"
+LOOKUPURL="${BASEURL}/lookup/ip"
+ALLOWED_PREFIX="192.168"
+
+if [ "$RUNTYPE" == "custom" -o "$RUNTYPE" == "auto" ]; then
+    echo "Checking external IP"
+    
+    external_ip=`curl --max-time 5 --silent --fail "${LOOKUPURL}"`
+    if [ $? -ne 0 ]; then
+        echo "External IP lookup failed, aborting munki run"
+        exit 1
+    fi
+    
+    ip_prefix=`echo $external_ip | cut -d. -f1-2`
+    if [ "$ip_prefix" != "$ALLOWED_PREFIX" ]; then
+        echo "Outside network, aborting munki run"
+        exit 1
+    else
+        echo "External IP check OK, proceeding with munki run"
+    fi
+fi
 
 curl --max-time 5 --silent \
     -d runtype="$RUNTYPE" \
