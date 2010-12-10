@@ -47,7 +47,7 @@ class LookupController(BaseController):
         return "%s\n" % remote_ip
     
     
-    @expose("json")
+    @expose('munkireport.templates.lookup.client_info')
     @validate(
         validators={
             "mac":      validators.MACAddress(add_colons=True, notempty=True)
@@ -61,19 +61,10 @@ class LookupController(BaseController):
         
         client = Client.by_mac(mac)
         if not client:
-            return abort(404)
+            return dict(client=None)
         
-        client_info["machine_info"] = dict(client.report_plist["MachineInfo"])
-        client_info["munki_info"] = dict()
-        for key in ("AvailableDiskSpace",
-                    "ConsoleUser",
-                    "EndTime",
-                    "ManagedInstallVersion",
-                    "ManifestName",
-                    "RunType",
-                    "StartTime"):
-            if key in client.report_plist:
-                client_info["munki_info"][key] = client.report_plist[key]
-        
-        return client_info
+        return dict(
+            client=client,
+            report=dict(client.report_plist),
+        )
     
