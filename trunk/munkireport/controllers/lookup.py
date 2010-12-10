@@ -13,8 +13,6 @@ from munkireport.model import DBSession, Client
 
 from datetime import datetime
 import sys
-sys.path.append("/System/Library/Frameworks/Python.framework/Versions/2.6/Extras/lib/python/PyObjC")
-#from Foundation import NSData, NSPropertyListSerialization, NSPropertyListMutableContainers
 import plistlib
 import base64
 import bz2
@@ -36,10 +34,46 @@ class LookupController(BaseController):
         abort(403)
     
     
+    @expose()
+    def error(self):
+        abort(401)
+    
+    
     @expose(content_type="text/plain")
     def ip(self):
         """Lookup external IP."""
         
         remote_ip = unicode(request.environ['REMOTE_ADDR'])
         return "%s\n" % remote_ip
+    
+    
+    @expose("json")
+    @validate(
+        validators={
+            "mac":      validators.MACAddress(add_colons=True, notempty=True)
+        },
+        error_handler=error
+    )
+    def client_info(self, mac):
+        """Look up client information summary."""
+        
+        client_info = dict()
+        
+        client = Client.by_mac(mac)
+        if not client:
+            return abort(404)
+        
+        client_info["machine_info"] = dict(client.report_plist["MachineInfo"])
+        client_info["munki_info"] = dict()
+        for key in ("AvailableDiskSpace",
+                    "ConsoleUser",
+                    "EndTime",
+                    "ManagedInstallVersion",
+                    "ManifestName",
+                    "RunType",
+                    "StartTime"):
+            if key in client.report_plist:
+                client_info["munki_info"][key] = client.report_plist[key]
+        
+        return client_info
     
