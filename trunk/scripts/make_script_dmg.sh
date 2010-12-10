@@ -1,13 +1,14 @@
 #!/bin/bash
 
 fname="MunkiScripts"
-dmg_fname="$fname.dmg"
 version="$1"
 
 if [ -z "$version" ]; then
     echo "Usage: $0 version"
     exit 1
 fi
+
+dmg_fname="$fname-$version.dmg"
 
 tmpdir=`mktemp -d -t munkiscripts`
 tmproot="$tmpdir/munkiscripts"
@@ -40,10 +41,12 @@ cat > "$fname-$version" <<EOF
 	<array>
 		<string>common</string>
 	</array>
+	<key>forced_install</key>
+	<true/>
 	<key>installer_item_hash</key>
 	<string>${sha256_dmg}</string>
 	<key>installer_item_location</key>
-	<string>MunkiScripts.dmg</string>
+	<string>$dmg_fname</string>
 	<key>installer_item_size</key>
 	<integer>15</integer>
 	<key>installer_type</key>
