@@ -34,11 +34,11 @@
           <py:if test="'MachineInfo' in report">
             <tr>
               <th>Hostname:</th>
-              <td>${report.MachineInfo.hostname}</td>
+              <td>${report.MachineInfo.get("hostname", "?")}</td>
             </tr>
             <tr>
               <th>OS:</th>
-              <td>${report.MachineInfo.os_vers} (${report.MachineInfo.arch})</td>
+              <td>${report.MachineInfo.get("os_vers", "?")} (${report.MachineInfo.get("arch", "?")})</td>
             </tr>
           </py:if>
           <tr>
@@ -117,7 +117,7 @@
               ${item.display_name if "display_name" in item and item.display_name else item.name}
               ${item.version_to_install if "version_to_install" in item else ""}
             </td>
-            <td style="text-align: right;">${item.installed_size / 1000} MB</td>
+            <td style="text-align: right;">${item.installed_size / 1000 if "installed_size" in item else "?"} MB</td>
             <td>${item.install_result}</td>
           </tr>
         </tbody>
@@ -200,7 +200,7 @@
           ${item.display_name if "display_name" in item else item.name}
           ${item.version if "version" in item else ""}
         </td>
-        <td style="text-align: right;">${item.installed_size / 1000} MB</td>
+        <td style="text-align: right;">${item.installed_size / 1000 if "installed_size" in item else "?"} MB</td>
         <td>${"installed" if item.installed else "not installed"}</td>
       </tr>
     </tbody>
