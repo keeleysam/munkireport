@@ -6,15 +6,20 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
+import munkireport
+
+
 setup(
-    name='munkireport',
-    version='0.1',
-    description='',
-    author='',
-    author_email='',
-    #url='',
+    name='MunkiReport',
+    version=munkireport.__version__,
+    description='Report viewer for Munki',
+    author='Per Olofsson',
+    author_email='per.olofsson@gu.se',
+    url='http://code.google.com/p/munkireport/',
+    license='Apache License 2.0',
+    long_description="MunkiReport gathers Munki reports from your clients, showing you errors and current activity, as well as details for individual clients.",
     install_requires=[
-        "TurboGears2 >= 2.1a1",
+        "TurboGears2 >= 2.1",
         "Babel >= 0.9.4",
         "zope.sqlalchemy >= 0.4 ",
         "repoze.tm2 >= 1.0a4",
@@ -30,8 +35,9 @@ setup(
     test_suite='nose.collector',
     tests_require=['WebTest', 'BeautifulSoup'],
     package_data={'munkireport': ['i18n/*/LC_MESSAGES/*.mo',
-                                 'templates/*/*',
-                                 'public/*/*']},
+                                 'templates/*/*.*',
+                                 'public/*/*.*']},
+    exclude_package_data = {'munkireport': ['.DS_Store']},
     message_extractors={'munkireport': [
             ('**.py', 'python', None),
             ('templates/**.mako', 'mako', None),
