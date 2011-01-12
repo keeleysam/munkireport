@@ -21,8 +21,7 @@ Activate the virtualenv:
 Install MunkiReport:
 > (tg2env)$ easy_install MunkiReport-x.y.z_rXXX-py2.6.egg
 
-Now edit production.ini, providing a secret string where indicated (two
-places, same string, uuidgen is a quick and easy way to generate one). For
+Now edit production.ini, providing a secret string where indicated. For
 clients to be able to connect to the server you'll also need to enter the
 public IP address of your server (but 127.0.0.1 is fine for development and
 local testing).
@@ -33,10 +32,10 @@ Add your user to group.ini to get the proper permissions (viewers can view
 reports, admins can edit the db).
 
 Then you can set up the sqlite db:
-> (tg2env)$ paster setup-app production.ini
+> (tg2env)$ paster setup-app etc/production.ini
 
 Start the server with:
-> (tg2env)$ paster serve --reload development.ini
+> (tg2env)$ paster serve --reload etc/production.ini
 
 Under scripts/ you'll find preflight and postflight scripts. Edit the URL and
 distribute it to your clients running munki. Run ./make_script_dmg.sh to
