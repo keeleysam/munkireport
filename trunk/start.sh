@@ -2,6 +2,9 @@
 
 echo "start.sh launching MunkiReport"
 
+# Change to application directory
+cd `dirname $0`
+
 # Check configuration
 for ETCFILE in groups.ini permissions.ini users; do
     if [ ! -f "etc/$ETCFILE" ]; then
@@ -11,8 +14,7 @@ for ETCFILE in groups.ini permissions.ini users; do
 done
 
 # Activate virtualenv
-source $HOME/Library/Python/tg21env/bin/activate
-# Change to application directory
-cd `dirname $0`
+source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
+
 # Start web server
 exec paster serve etc/production.ini
