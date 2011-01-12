@@ -40,5 +40,11 @@
     <!-- End of main_content -->
     ${footer()}
   </div>
+  <div style="text-align: right; margin: 10px; color: #bbb; font-size: 80%;">
+    <?python
+      import munkireport
+    ?>
+    <i>MunkiReport version ${munkireport.__version__}</i>
+  </div>
 </body>
 </html>
