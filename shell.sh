@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
+
 echo
 echo "*************************************************************************"
 echo "******************* LIVE APPLICATION DATABASE ACCESS ********************"
