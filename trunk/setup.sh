@@ -57,13 +57,39 @@ source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
 
 
 # Install egg
-echo "* Installing egg into virtual environment"
+echo "* Installing MunkiReport into virtual environment"
+cat <<EOF
+
+ *****************************************************************************
+ **                                                                         **
+ **        Downloading requires modules from http://pypi.python.org/        **
+ **        This may take a while, please ignore any warnings.               **
+ **                                                                         **
+ *****************************************************************************
+
+EOF
 EGG=`ls *.egg | tail -1`
 easy_install --quiet "$EGG"
+if [ $? -ne 0 ]; then
+    echo
+    echo "Install failed."
+    exit 1
+fi
+cat <<EOF
+
+ *****************************************************************************
+ **                                                                         **
+ **                            Modules installed.                           **
+ **                                                                         **
+ *****************************************************************************
+
+EOF
 
 
 # Create production.ini
 echo "* Creating production.ini"
+MYIP=`perl -MIO::Socket::INET -e 'print IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp")->sockhost;'`
+echo "Setting server to listen on $MYIP"
 perl -e '
     use IO::Socket::INET;
     $sock = IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp");
@@ -89,6 +115,7 @@ USERNAME=`cut -d: -f1 etc/users | head -1`
 
 # Create groups.ini
 echo "* Creating groups.ini"
+echo "Adding $USERNAME to admins and viewers"
 cat > etc/groups.ini <<EOF
 [admins]
 $USERNAME
