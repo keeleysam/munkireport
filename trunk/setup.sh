@@ -2,7 +2,7 @@
 
 
 # Don't perform setup if there's already a production database.
-if [ -e production.db ]; then
+if [ -e var/db/production.db ]; then
     echo "A production database already exists. Please refer to the documentation if you"
     echo "are upgrading to a new version."
     exit 1
