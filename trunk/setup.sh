@@ -62,8 +62,8 @@ cat <<EOF
 
  *****************************************************************************
  **                                                                         **
- **        Downloading required modules from http://pypi.python.org/        **
- **        This may take a while, please ignore any warnings.               **
+ **         Installing required modules from http://pypi.python.org/        **
+ **         This may take a while, please ignore any warnings.              **
  **                                                                         **
  *****************************************************************************
 
@@ -87,7 +87,7 @@ EOF
 
 
 # Create production.ini
-echo "* Creating production.ini"
+echo "* Creating etc/production.ini"
 MYIP=`perl -MIO::Socket::INET -e 'print IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp")->sockhost;'`
 echo "Setting server to listen on $MYIP"
 perl -e '
@@ -114,7 +114,7 @@ USERNAME=`cut -d: -f1 etc/users | head -1`
 
 
 # Create groups.ini
-echo "* Creating groups.ini"
+echo "* Creating etc/groups.ini"
 echo "Adding $USERNAME to admins and viewers"
 cat > etc/groups.ini <<EOF
 [admins]
