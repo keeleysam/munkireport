@@ -1,6 +1,7 @@
 LICENSE.txt
 MANIFEST.in
 README.txt
+com.googlecode.munkireport.plist
 development.ini
 make_dist.sh
 setup.cfg
@@ -14,7 +15,7 @@ bin/dump_db.py
 bin/mkuser.py
 etc/groups.ini
 etc/permissions.ini
-etc/production.ini
+etc/production.ini.template
 etc/users
 ez_setup/README.txt
 ez_setup/__init__.py
