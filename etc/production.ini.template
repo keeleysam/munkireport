@@ -48,7 +48,7 @@ beaker.session.key = munkireport
 # If you have sqlite, here's a simple default to get you started
 # in development
 
-sqlalchemy.url = sqlite:///%(here)s/munkireport.db
+sqlalchemy.url = sqlite:///%(here)s/var/db/munkireport.db
 #echo shouldn't be used together with the logging module.
 sqlalchemy.echo = false
 sqlalchemy.echo_pool = false
