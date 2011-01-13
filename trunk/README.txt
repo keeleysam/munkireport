@@ -12,6 +12,14 @@ modules. Install it with easy_install if needed:
 
     $ easy_install virtualenv
 
+Of course you also have to be running Munki:
+
+    http://code.google.com/p/munki/
+
+The major.minor version number of MunkiReport matches that of the Munki
+version it was developed against. E.g. if you're running Munki 0.7.0.980, a
+MunkiReport version starting with 0.7 should work.
+
 
 Installation
 ------------
@@ -23,33 +31,6 @@ user (with permission to admin and view reports), and create an empty database.
     $ tar jxf MunkiReport-x.y.z.XXX.tar.bz2
     $ cd MunkiReport-x.y.z.XXX/
     $ ./setup.sh
-
-    Checking requirements...
-    * Checking virtualenv OK
-    * Checking PyPI access OK
-
-    Setting up...
-    * Creating virtual environment
-    Running virtualenv with interpreter /usr/bin/python2.6
-    New python executable in MunkiReportEnv/bin/python2.6
-    Also creating executable in MunkiReportEnv/bin/python
-    Installing setuptools............done.
-    * Activating virtual environment
-    * Installing egg into virtual environment
-    * Creating production.ini
-    * Creating munkireport admin user
-    Username: munkiadmin
-    Realname: MunkiReport Admin
-    Password: 
-    Creating munkiadmin
-    * Creating groups.ini
-
-    Creating database...
-    ./setup.sh: line 104: paster: command not found
-
-    Setup done. The server can be started with ./start.sh.
-    
-    $ 
 
 
 Testing the server
@@ -65,7 +46,7 @@ and their reports should start showing up.
 Adding clients
 --------------
 
-Under scripts/ you'll find preflight, postflight and report_broken_client
+Under `scripts` you'll find preflight, postflight and report_broken_client
 scripts. Edit the URL to point to your MunkiReport server. To wrap them in a
 dmg for distribution, run:
 
@@ -115,3 +96,21 @@ permission:
     APPLE\IT-staff
 
 TODO: verify that group names with backslash and space works.
+
+
+LICENSE
+-------
+
+Copyright 2011 Per Olofsson, University of Gothenburg
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
