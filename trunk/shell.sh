@@ -7,7 +7,7 @@ echo "*************************************************************************"
 echo "******************* LIVE APPLICATION DATABASE ACCESS ********************"
 echo "*************************************************************************"
 echo
-echo "from litsadmin.model import DBSession, Asset, AssetType, Department, NetworkConfig, NetworkDevice, NetworkSegment, Platform"
+echo "from litsadmin.model import DBSession, Client"
 echo "import transaction"
 echo
 
