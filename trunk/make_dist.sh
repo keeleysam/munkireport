@@ -32,9 +32,11 @@ rsync -rlptC scripts "$DISTDIR/"
 mkdir "$DISTDIR/etc"
 mkdir "$DISTDIR/var"
 mkdir "$DISTDIR/var/db"
+mkdir "$DISTDIR/var/log"
 cp etc/production.ini.template etc/permissions.ini "$DISTDIR/etc/"
 cp setup.sh shell.sh start.sh "$DISTDIR/"
 cp README.txt LICENSE.txt "$DISTDIR/"
+cp com.googlecode.munkireport.plist "$DISTDIR/"
 
 
 # Clean up
