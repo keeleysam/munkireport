@@ -1,6 +1,10 @@
 MunkiReport
 ===========
 
+MunkiReport gathers Munki reports from your clients, quickly showing you
+errors and current activity on its front page, and lets you view details of
+individual clients.
+
 
 Requirements
 ------------
@@ -48,9 +52,9 @@ Adding clients
 
 Under `scripts` you'll find preflight, postflight and report_broken_client
 scripts. Edit the URL to point to your MunkiReport server. To wrap them in a
-dmg for distribution, run:
+dmg for distribution, as MunkiScripts-1.0, run:
 
-    $ ./make_script_dmg.sh
+    $ ./make_script_dmg.sh 1.0
 
 The resulting dmg and package info can be added to your Munki repository, and
 your clients will automatically install the scripts and start submitting their
