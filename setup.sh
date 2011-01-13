@@ -62,7 +62,7 @@ cat <<EOF
 
  *****************************************************************************
  **                                                                         **
- **        Downloading requires modules from http://pypi.python.org/        **
+ **        Downloading required modules from http://pypi.python.org/        **
  **        This may take a while, please ignore any warnings.               **
  **                                                                         **
  *****************************************************************************
