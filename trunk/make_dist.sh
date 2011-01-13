@@ -10,7 +10,7 @@ fi
 
 # Version
 VERSION=`python -c 'import munkireport; print munkireport.__version__'`
-SVNREV=`svnversion . | tr -cd '0-9'`
+SVNREV=`svnversion . | cut -d: -f2 | tr -cd '[:digit:]'`
 
 
 # Build distribution egg
