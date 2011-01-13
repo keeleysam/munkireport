@@ -107,3 +107,4 @@ paster setup-app etc/production.ini
 # Done
 echo
 echo "Setup done. The server can be started with ./start.sh."
+echo
