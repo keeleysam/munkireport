@@ -52,4 +52,5 @@ setup(
     [paste.app_install]
     main = pylons.util:PylonsInstaller
     """,
+    zip_safe=False,
 )
