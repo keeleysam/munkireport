@@ -23,20 +23,32 @@ user (with permission to admin and view reports), and create an empty database.
     $ tar jxf MunkiReport-x.y.z.XXX.tar.bz2
     $ cd MunkiReport-x.y.z.XXX/
     $ ./setup.sh
-    Checking virtualenv...
-    Checking for PyPI access...
-    Checking virtual environment...
-    Creating virtual environment...
-    Activating virtual environment
-    Installing egg into virtual environment...
-    Creating production.ini...
-    Creating munkireport admin user...
-    Username:  <- enter username (e.g. "munkireport")
-    Real name: <- enter human readable name (e.g. "MunkiReport Admin")
-    Password:  <- enter password
-    Creating groups.ini...
+
+    Checking requirements...
+    * Checking virtualenv OK
+    * Checking PyPI access OK
+
+    Setting up...
+    * Creating virtual environment
+    Running virtualenv with interpreter /usr/bin/python2.6
+    New python executable in MunkiReportEnv/bin/python2.6
+    Also creating executable in MunkiReportEnv/bin/python
+    Installing setuptools............done.
+    * Activating virtual environment
+    * Installing egg into virtual environment
+    * Creating production.ini
+    * Creating munkireport admin user
+    Username: munkiadmin
+    Realname: MunkiReport Admin
+    Password: 
+    Creating munkiadmin
+    * Creating groups.ini
+
     Creating database...
+    ./setup.sh: line 104: paster: command not found
+
     Setup done. The server can be started with ./start.sh.
+    
     $ 
 
 
