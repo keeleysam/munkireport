@@ -25,6 +25,7 @@ setup(
         "repoze.tm2 >= 1.0a4",
         "repoze.what-quickstart >= 1.0",
         "tgext.admin >= 0.3.3",
+        "genshi >= 0.6",
         "repoze.what.plugins.ini >= 0.2.2",
         "pexpect >= 2.4",
     ],
