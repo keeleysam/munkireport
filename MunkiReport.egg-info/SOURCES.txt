@@ -14,6 +14,7 @@ MunkiReport.egg-info/PKG-INFO
 MunkiReport.egg-info/SOURCES.txt
 MunkiReport.egg-info/dependency_links.txt
 MunkiReport.egg-info/entry_points.txt
+MunkiReport.egg-info/not-zip-safe
 MunkiReport.egg-info/paster_plugins.txt
 MunkiReport.egg-info/requires.txt
 MunkiReport.egg-info/top_level.txt
