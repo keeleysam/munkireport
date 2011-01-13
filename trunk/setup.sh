@@ -29,7 +29,7 @@ fi
 # Check PyPI
 echo -n "* Checking PyPI access"
 PYPIURL="http://pypi.python.org/"
-curl -s -f "$PYPIURL"
+curl -s -f "$PYPIURL" > /dev/null
 if [ $? -ne 0 ]; then
     echo " FAILED"
     echo "Can't reach $PYPIURL"
@@ -79,7 +79,7 @@ perl -e '
 
 # Create users
 echo "* Creating munkireport admin user"
-bin/mkusers.py
+bin/mkuser.py
 if [ $? -ne 0 ]; then
     echo "User creation failed"
     exit 1
