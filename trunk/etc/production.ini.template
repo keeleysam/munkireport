@@ -27,7 +27,7 @@ port = 8444
 use = egg:munkireport
 full_stack = false
 #lang = ru
-cache_dir = %(here)s/data
+cache_dir = %(here)s/../var/run
 beaker.session.key = munkireport
 # Uncomment and set the secret session key here (same as cookie_secret)
 #beaker.session.secret = SET SECRET STRING HERE
@@ -48,7 +48,7 @@ beaker.session.key = munkireport
 # If you have sqlite, here's a simple default to get you started
 # in development
 
-sqlalchemy.url = sqlite:///%(here)s/var/db/munkireport.db
+sqlalchemy.url = sqlite:///%(here)s/../var/db/munkireport.db
 #echo shouldn't be used together with the logging module.
 sqlalchemy.echo = false
 sqlalchemy.echo_pool = false
