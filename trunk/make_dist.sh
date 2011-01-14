@@ -1,4 +1,6 @@
 #!/bin/bash
+#
+# TODO: make this create a .pkg instead
 
 
 # Check for virtualenv
