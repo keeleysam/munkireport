@@ -28,7 +28,7 @@ setup(
         "genshi >= 0.6",
         "repoze.what.plugins.ini >= 0.2.2",
         "pexpect >= 2.4",
-        "tgext.crud >= 3.9",
+        "tgext.crud >= 0.3.9",
     ],
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
