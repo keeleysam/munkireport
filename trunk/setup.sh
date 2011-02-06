@@ -39,6 +39,20 @@ else
 fi
 
 
+# Check Python version
+echo -n "* Checking Python version"
+PYVER=`python -V 2>&1 | awk '{print $2}'`
+PYMAJOR=`echo $PYVER | cut -d. -f1`
+PYMINOR=`echo $PYVER | cut -d. -f2`
+if [ $PYMAJOR -eq 2 -a $PYMINOR -gt 5 ]; then
+    echo " OK"
+else
+    echo " FAILED"
+    echo "Only Python 2.x version 2.6 or higher is supported"
+    exit 1
+fi
+
+
 echo
 echo "Setting up..."
 
@@ -50,10 +64,12 @@ if [ ! -d "$HOME/Library/Python/MunkiReportEnv" ]; then
     (
         cd "$HOME/Library/Python"
         virtualenv --no-site-packages -p python2.6 MunkiReportEnv
+        if [ $? -ne 0 ]; then; echo "virtual environment creation failed"; exit 1; fi
     )
 fi
 echo "* Activating virtual environment"
 source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
+if [ $? -ne 0 ]; then; echo "virtual environment activation failed"; exit 1; fi
 
 
 # Install egg
@@ -89,6 +105,7 @@ EOF
 # Create production.ini
 echo "* Creating etc/production.ini"
 MYIP=`perl -MIO::Socket::INET -e 'print IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp")->sockhost;'`
+if [ $? -ne 0 ]; then; echo "*** ABORTING ***"; exit 1; fi
 echo "Setting server to listen on $MYIP"
 perl -e '
     use IO::Socket::INET;
