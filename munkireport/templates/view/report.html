@@ -198,7 +198,7 @@
       <tr py:for="item in report.ManagedInstalls">
         <td>
           ${item.display_name if "display_name" in item else item.name}
-          ${item.version if "version" in item else ""}
+          ${item.installed_version if "installed_version" in item else ""}
         </td>
         <td style="text-align: right;">${item.installed_size / 1000 if "installed_size" in item else "?"} MB</td>
         <td>${"installed" if item.installed else "not installed"}</td>
