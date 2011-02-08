@@ -53,6 +53,24 @@ class ViewController(BaseController):
         )
     
     
+    @expose(content_type="application/xml")
+    @validate(
+        validators={
+            "mac":      validators.MACAddress(add_colons=True, notempty=True)
+        },
+        error_handler=error
+    )
+    def report_plist(self, mac=None):
+        """View a munki report."""
+        client=Client.by_mac(mac)
+        if not client:
+            abort(404)
+        
+        # Work with a copy of the client report so we can modify it without
+        # causing a database update.
+        report = dict(client.report_plist)
+        return plistlib.writePlistToString(report)
+    
     @expose('munkireport.templates.view.report')
     @validate(
         validators={
