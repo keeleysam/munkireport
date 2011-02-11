@@ -90,4 +90,3 @@ admins
 viewers
 APPLE\IT-staff
 }}}
-*TODO: verify that group names with backslash and space works.*
