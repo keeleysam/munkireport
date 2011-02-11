@@ -104,17 +104,11 @@ EOF
 
 # Create production.ini
 echo "* Creating etc/production.ini"
-MYIP=`perl -MIO::Socket::INET -e 'print IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp")->sockhost;'`
-if [ $? -ne 0 ]; then; echo "*** ABORTING ***"; exit 1; fi
-echo "Setting server to listen on $MYIP"
 perl -e '
     use IO::Socket::INET;
-    $sock = IO::Socket::INET->new(PeerAddr => "pypi.python.org", PeerPort => 80, Proto => "tcp");
-    $localip = $sock->sockhost;
     $uuid = `uuidgen`;
     foreach $line (<>) {
         $line =~ s/^#(.+)SET SECRET STRING HERE/$1$uuid/;
-        $line =~ s/\b127\.0\.0\.1\b/$localip/;
         print $line
     }
 ' < etc/production.ini.template > etc/production.ini && rm etc/production.ini.template
