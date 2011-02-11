@@ -64,12 +64,12 @@ if [ ! -d "$HOME/Library/Python/MunkiReportEnv" ]; then
     (
         cd "$HOME/Library/Python"
         virtualenv --no-site-packages -p python2.6 MunkiReportEnv
-        if [ $? -ne 0 ]; then; echo "virtual environment creation failed"; exit 1; fi
+        if [ $? -ne 0 ]; then echo "virtual environment creation failed"; exit 1; fi
     )
 fi
 echo "* Activating virtual environment"
 source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
-if [ $? -ne 0 ]; then; echo "virtual environment activation failed"; exit 1; fi
+if [ $? -ne 0 ]; then echo "virtual environment activation failed"; exit 1; fi
 
 
 # Install egg
