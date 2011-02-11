@@ -37,9 +37,9 @@ mkdir "$DISTDIR/var/db"
 mkdir "$DISTDIR/var/log"
 mkdir "$DISTDIR/var/run"
 cp etc/production.ini.template etc/permissions.ini "$DISTDIR/etc/"
-cp setup.sh shell.sh start.sh "$DISTDIR/"
+cp Setup/setup.sh Setup/shell.sh "$DISTDIR/"
 cp README.txt LICENSE.txt "$DISTDIR/"
-cp com.googlecode.munkireport.plist "$DISTDIR/"
+cp Setup/com.googlecode.munkireport.plist "$DISTDIR/"
 
 
 # Clean up
