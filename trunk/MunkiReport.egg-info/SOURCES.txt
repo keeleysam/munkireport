@@ -100,7 +100,7 @@ munkireport/tests/models/test_auth.py
 munkireport/websetup/__init__.py
 munkireport/websetup/bootstrap.py
 munkireport/websetup/schema.py
-scripts/make_script_dmg.sh
-scripts/postflight
-scripts/preflight
-scripts/report_broken_client
+Scripts/make_script_dmg.sh
+Scripts/postflight
+Scripts/preflight
+Scripts/report_broken_client

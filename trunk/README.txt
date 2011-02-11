@@ -50,7 +50,7 @@ and their reports should start showing up.
 Adding clients
 --------------
 
-Under `scripts` you'll find preflight, postflight and report_broken_client
+Under `Scripts` you'll find preflight, postflight and report_broken_client
 scripts. Edit the URL to point to your MunkiReport server. To wrap them in a
 dmg for distribution, as MunkiScripts-1.0, run:
 
