@@ -3,9 +3,15 @@
 # TODO: make this create a .pkg instead
 
 
+SCRIPTDIR=`dirname "$0"`
+SRCDIR=`cd "$SCRIPTDIR/.."; pwd`
+
+cd "$SRCDIr"
+
+
 # Check for virtualenv
-if [ -z "$VIRTUAL_ENV" ]; then
-    echo "Activate the virtualenv before running this script."
+if [ ! -z "$VIRTUAL_ENV" ]; then
+    echo "Deactivate virtualenv before running this script."
     exit 1
 fi
 
@@ -25,22 +31,20 @@ fi
 rm -rf build
 
 
+# Create pkg
+sudo Setup/make_pkg.sh dist/*.egg
+uid=`id -u`
+gid=`id -g`
+sudo chown ${uid}:${gid} dist/*.pkg
+
+
 # Create distribution template
 DISTDIR="dist/MunkiReport-$VERSION.$SVNREV"
 mkdir "$DISTDIR"
-mv dist/*.egg "$DISTDIR/"
-rsync -rlptC bin "$DISTDIR/"
+mv dist/*.pkg "$DISTDIR/"
 rsync -rlptC Scripts "$DISTDIR/"
-mkdir "$DISTDIR/etc"
-mkdir "$DISTDIR/var"
-mkdir "$DISTDIR/var/db"
-mkdir "$DISTDIR/var/log"
-mkdir "$DISTDIR/var/run"
-cp etc/production.ini.template etc/permissions.ini "$DISTDIR/etc/"
-cp Setup/setup.sh Setup/shell.sh "$DISTDIR/"
 cp README.txt LICENSE.txt "$DISTDIR/"
-cp Setup/com.googlecode.munkireport.plist "$DISTDIR/"
-
+cp "$SCRIPTDIR/uninstall.sh" "$DISTDIR/"
 
 # Clean up
 find dist -name '.DS_Store' -exec rm {} \;
@@ -51,7 +55,8 @@ xattr -d -r com.macromates.caret dist
 # Create archive
 (
     cd dist
-    tar jcf "MunkiReport-$VERSION.$SVNREV.tar.bz2" "MunkiReport-$VERSION.$SVNREV"
+    hdiutil create -srcfolder "MunkiReport-$VERSION.$SVNREV" -ov "MunkiReport-$VERSION.$SVNREV.dmg"
+    #tar jcf "MunkiReport-$VERSION.$SVNREV.tar.bz2" "MunkiReport-$VERSION.$SVNREV"
 )
 
 
