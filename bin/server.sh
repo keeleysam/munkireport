@@ -2,7 +2,8 @@
 
 echo "server.sh launching MunkiReport"
 
-MRDIR=$( dirname `dirname $0` )
+SCRIPTDIR=`dirname "$0"`
+MRDIR=`cd "$SCRIPTDIR/.."; pwd`
 SUPPORTDIR="/Library/Application Support/MunkiReport"
 
 # Change to application directory

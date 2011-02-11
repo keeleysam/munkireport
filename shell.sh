@@ -1,6 +1,14 @@
 #!/bin/bash
 
-source "$HOME/Library/Python/MunkiReportEnv/bin/activate"
+SCRIPTDIR=`dirname "$0"`
+MRDIR=`cd "$SCRIPTDIR/.."; pwd`
+SUPPORTDIR="/Library/Application Support/MunkiReport"
+
+# Change to application directory
+cd "$MRDIR"
+
+# Activate virtualenv
+source "$MRDIR/Python/bin/activate"
 
 echo
 echo "*************************************************************************"
@@ -11,4 +19,4 @@ echo "from litsadmin.model import DBSession, Client"
 echo "import transaction"
 echo
 
-paster --plugin=Pylons shell etc/production.ini
+paster --plugin=Pylons shell "$SUPPORTDIR/MunkiReport.ini"
