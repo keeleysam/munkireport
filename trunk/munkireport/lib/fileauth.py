@@ -12,6 +12,7 @@ before the password string. The 56 remaining characters is the digested result
 of salt + password string.
 """
 
+import tg
 import logging
 import hashlib
 import codecs
@@ -25,8 +26,8 @@ __all__ = ['FileAuthenticator', 'FileMetadataProvider']
 # Get a logger.
 log = logging.getLogger(__name__.split(".")[0])
 
-# path to where the users are stored
-USERS_PATH = os.path.join("etc", "users")
+# FIXME: create a real cache instead, you have to restart the application to add new users
+users = None
 
 
 class FileUser(object):
@@ -41,25 +42,35 @@ class FileUser(object):
     
 
 def read_etc_users():
-    """Read and parse etc/users file"""
+    """Read and parse users file"""
+    
+    # path to where the users are stored
+    appsupport_dir = tg.config.get("appsupport_dir")
+    users_path = os.path.join(appsupport_dir, "users")
     
     users = dict()
     
     try:
-        with codecs.open(USERS_PATH, "r", "utf-8") as f:
+        with codecs.open(users_path, "r", "utf-8") as f:
             for line in f:
                 fields = line.strip().split(":")
                 username, realname, password = [f.strip() for f in fields]
                 users[username] = FileUser(username, realname, password)
     except IOError as e:
-        log.warn("Couldn't read users from %s: %s" % (USERS_PATH, str(e)))
+        log.warn("Couldn't read users from %s: %s" % (users_path, str(e)))
     
     return users
     
 
-# FIXME: create a real cache instead, you have to restart the application to add new users
-users = read_etc_users()
-
+def get_users():
+    """Return users, read from disk if necessary."""
+    
+    global users
+    if users is None:
+        users = read_etc_users()
+    
+    return users
+    
 
 class FileAuthenticator(object):
     """Authenticate users in a passwd style file."""
@@ -73,8 +84,9 @@ class FileAuthenticator(object):
         except KeyError:
             return None
         
-        if login in users:
-            user = users[login]
+        u = get_users()
+        if login in u:
+            user = u[login]
             sha = hashlib.sha224()
             sha.update(user.salt)
             sha.update(password)
@@ -95,8 +107,9 @@ class FileMetadataProvider(object):
         # Read userid.
         userid = identity.get("repoze.who.userid")
         
-        if userid in users:
-            identity.update({"display_name": users[userid].realname})
+        u = get_users()
+        if userid in u:
+            identity.update({"display_name": u[userid].realname})
             return
     
 

@@ -7,16 +7,16 @@
 	<key>RunAtLoad</key>
 	<true/>
 	<key>UserName</key>
-	<string>MUNKIREPORT_USER_HERE</string>
+	<string>munkireport</string>
 	<key>KeepAlive</key>
 	<true/>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Users/MUNKIREPORT_USER_HERE/MunkiReport/start.sh</string>
+		<string>/Library/MunkiReport/bin/server.sh</string>
 	</array>
 	<key>StandardErrorPath</key>
-	<string>/Users/MUNKIREPORT_USER_HERE/MunkiReport/var/log/error.log</string>
+	<string>/Library/Application Support/MunkiReport/Logs/error.log</string>
 	<key>StandardOutPath</key>
-	<string>/Users/MUNKIREPORT_USER_HERE/MunkiReport/var/log/error.log</string>
+	<string>/Library/Application Support/MunkiReport/Logs/error.log</string>
 </dict>
 </plist>

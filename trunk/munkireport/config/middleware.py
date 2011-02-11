@@ -16,6 +16,9 @@ from munkireport.lib.macosxauth import MacOSXAuthenticator, MacOSXMetadataProvid
 from munkireport.lib.fileauth import FileAuthenticator, FileMetadataProvider
 
 
+import os.path
+
+
 __all__ = ['make_app']
 
 # Use base_config to setup the necessary PasteDeploy application factory. 
@@ -48,12 +51,14 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # Wrap your base TurboGears 2 application with custom middleware here
     
     # Initialize repoze.what plugins.
+    groups_path = os.path.join(global_conf.get("appsupport_dir"), "groups.ini")
     groups = {
-        "ini_groups": INIGroupAdapter(app_conf.get("what.groups_file", "etc/groups.ini")),
+        "ini_groups": INIGroupAdapter(app_conf.get("what.groups_file", groups_path)),
         "dscl_groups": MacOSXGroupAdapter()
     }
+    permissions_path = os.path.join(global_conf.get("appsupport_dir"), "permissions.ini")
     permissions = {
-        "ini_permissions": INIPermissionsAdapter(app_conf.get("what.permissions_file", "etc/permissions.ini"))
+        "ini_permissions": INIPermissionsAdapter(app_conf.get("what.permissions_file", permissions_path))
     }
     
     # Initialize repoze.who plugins.
