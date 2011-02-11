@@ -57,7 +57,7 @@ def read_etc_users():
     return users
     
 
-# FIXME: skapa en riktig cache istället, nu måste man starta om applikationen för att läsa in nya användare
+# FIXME: create a real cache instead, you have to restart the application to add new users
 users = read_etc_users()
 
 
