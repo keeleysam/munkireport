@@ -6,23 +6,43 @@ NAME="$(echo `systemsetup -getcomputername | cut -d: -f2-`)"
 BASEURL="http://localhost:8444"
 SUBMITURL="${BASEURL}/update"
 LOOKUPURL="${BASEURL}/lookup/ip"
-ALLOWED_PREFIX="192.168"
+# Enter a list of networks where Munki runs are allowed.
+ALLOWED_PREFIXES=( 10 192.168 )
+# To skip the network check, set ALLOWED_PREFIXES to an empty list:
+#ALLOWED_PREFIXES=( )
 
 if [ "$RUNTYPE" == "custom" -o "$RUNTYPE" == "auto" ]; then
-    echo "Checking external IP"
-    
-    external_ip=`curl --max-time 5 --silent --fail "${LOOKUPURL}"`
-    if [ $? -ne 0 ]; then
-        echo "External IP lookup failed, aborting munki run"
-        exit 1
-    fi
-    
-    ip_prefix=`echo $external_ip | cut -d. -f1-2`
-    if [ "$ip_prefix" != "$ALLOWED_PREFIX" ]; then
-        echo "Outside network, aborting munki run"
-        exit 1
-    else
-        echo "External IP check OK, proceeding with munki run"
+    if [ ! -z "$ALLOWED_PREFIXES" ]; then
+        echo "Checking network"
+        
+        external_ip=`curl --max-time 5 --silent --fail "${LOOKUPURL}"`
+        if [ $? -ne 0 ]; then
+            echo "External IP lookup failed, aborting munki run"
+            exit 1
+        fi
+        
+        prefix_ok="no"
+        for prefix in ${ALLOWED_PREFIXES[@]}; do
+            echo -n "Checking $prefix for IP address $external_ip"
+            prefix_len=$( echo `echo "$prefix" | tr . '\012' | wc -l` )
+            for (( i=$prefix_len ; i<4 ; i++ )); do
+                echo -n '.x'
+            done
+            my_ip_prefix=`echo $external_ip | cut -d. -f1-$prefix_len`
+            if [ "$my_ip_prefix" == "$prefix" ]; then
+                echo ": Inside"
+                prefix_ok="yes"
+                break
+            else
+                echo ": Outside"
+            fi
+        done
+        if [ "$prefix_ok" == "yes" ]; then
+            echo "Network check OK, proceeding with munki run"
+        else
+            echo "Network check failed, aborting munki run"
+            exit 1
+        fi
     fi
 fi
 
