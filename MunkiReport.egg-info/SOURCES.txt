@@ -18,6 +18,10 @@ MunkiReport.egg-info/not-zip-safe
 MunkiReport.egg-info/paster_plugins.txt
 MunkiReport.egg-info/requires.txt
 MunkiReport.egg-info/top_level.txt
+Scripts/make_script_dmg.sh
+Scripts/postflight
+Scripts/preflight
+Scripts/report_broken_client
 bin/dump_db.py
 bin/mkuser.py
 etc/groups.ini
@@ -100,7 +104,3 @@ munkireport/tests/models/test_auth.py
 munkireport/websetup/__init__.py
 munkireport/websetup/bootstrap.py
 munkireport/websetup/schema.py
-Scripts/make_script_dmg.sh
-Scripts/postflight
-Scripts/preflight
-Scripts/report_broken_client

@@ -13,6 +13,7 @@ debug = false
 #email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
+appsupport_dir = /Library/Application Support/MunkiReport
 
 [server:main]
 use = egg:Paste#http
@@ -27,7 +28,7 @@ port = 8444
 use = egg:munkireport
 full_stack = false
 #lang = ru
-cache_dir = %(here)s/../var/run
+cache_dir = /Library/Application Support/MunkiReport/Cache
 beaker.session.key = munkireport
 # Uncomment and set the secret session key here (same as cookie_secret)
 #beaker.session.secret = SET SECRET STRING HERE
@@ -48,7 +49,7 @@ beaker.session.key = munkireport
 # If you have sqlite, here's a simple default to get you started
 # in development
 
-sqlalchemy.url = sqlite:///%(here)s/../var/db/munkireport.db
+sqlalchemy.url = sqlite:////Library/Application Support/MunkiReport/MunkiReport.db
 #echo shouldn't be used together with the logging module.
 sqlalchemy.echo = false
 sqlalchemy.echo_pool = false
@@ -64,7 +65,7 @@ sqlalchemy.pool_recycle = 3600
 # be no disk and real files to compare time with.
 # On the contrary if your application defines zip-safe=False and is
 # deployed in an unzipped manner, then you can leave this option to true
-templating.mako.reloadfromdisk = true
+templating.mako.reloadfromdisk = false
 
 # the compiled template dir is a directory that must be readable by your
 # webserver. It will be used to store the resulting templates once compiled
