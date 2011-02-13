@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Main Controller"""
 
-from tg import expose, flash, require, url, request, redirect
+from tg import expose, flash, require, url, request, redirect, abort
 from pylons.i18n import ugettext as _, lazy_ugettext as l_
 from tgext.admin.tgadminconfig import TGAdminConfig
 from tgext.admin.controller import AdminController
@@ -15,6 +15,8 @@ from munkireport.controllers.admin import MunkiReportAdminController
 from munkireport.controllers.update import UpdateController
 from munkireport.controllers.view import ViewController
 from munkireport.controllers.lookup import LookupController
+from munkireport.lib.fileauth import get_users, create_file_users
+
 
 __all__ = ['RootController']
 
@@ -44,8 +46,36 @@ class RootController(BaseController):
     @expose('munkireport.templates.index')
     def index(self):
         """Handle the front-page."""
-        return dict(page='index')
-
+        
+        users = get_users()
+        if users is None:
+            num_users = 0
+        else:
+            num_users = len(users)
+        
+        return dict(
+            page='index',
+            num_users=num_users
+        )
+    
+    @expose('munkireport.templates.index')
+    def reset_munkiadminadmin_password(self, password=None, password_verify=None):
+        """Reset munkiadmin password."""
+        
+        if get_users() is not None:
+            abort(403)
+        
+        if password != password_verify:
+            abort(404)
+        
+        create_file_users("munkiadmin", "MunkiAdmin", password)
+        flash(_("Created munkiadmin user"), "ok")
+        
+        return dict(
+            page='index',
+            num_users=len(get_users())
+        )
+    
     @expose('munkireport.templates.login')
     def login(self, came_from=url('/')):
         """Start the user login."""

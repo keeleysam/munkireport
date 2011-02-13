@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
 """Setup the munkireport application"""
 
+import os.path
 import glob
 import pickle
 import types
-
 import logging
-from tg import config
+
+import tg
+
 from munkireport.model import DBSession, Client
 import sqlalchemy
-
 import transaction
 
 
 def bootstrap(command, conf, vars):
-    """Place any commands to setup munkireport here"""
+    """Import pickled database dump."""
     
-    for item in glob.iglob("munkireport/websetup/dump/*.pickle"):
+    appsupport_dir = tg.config.get("appsupport_dir")
+    dump_path = os.path.join(appsupport_dir, "Dump")
+    for item in glob.iglob("%s/*.pickle" % (dump_path)):
         print "Importing %s" % item
         with open(item, "rb") as f:
             pickled_client = pickle.load(f)

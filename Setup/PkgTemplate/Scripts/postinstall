@@ -79,11 +79,6 @@ munkiadmin
 munkiadmin
 EOF
     
-    # FIXME: Handle account creation in web UI.
-    cat > "$SUPPORTDIR/users" <<EOF
-munkiadmin:MunkiReport Administrator:7451df44cffe637e9e899881a9c2197bee3b8d63994d7ddbd7f9d631d0e3278b
-EOF
-    
     
     # Create MunkiReport.ini
     echo "* Creating $SUPPORTDIR/MunkiReport.ini"
