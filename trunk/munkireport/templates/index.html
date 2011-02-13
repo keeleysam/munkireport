@@ -9,11 +9,71 @@
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
   <title>MunkiReport</title>
+  <script type="text/javascript" charset="utf-8">
+
+function verify_password() {
+  return true;
+  alert("aloha");
+  return false;
+}
+
+  </script>
+  <style type="text/css">
+
+.pwdform {
+  margin-top: 0.5em;
+}
+
+.pwdform label {
+  width: 10em;
+  display: inline-block;
+}
+
+.pwdform input {
+  height: 12px;
+}
+
+  </style>
 </head>
 
 <body>
-  <ul>
-    <li><a href="${tg.url('/view')}">View Reports</a> (requires login)</li>
-  </ul>
+  <py:choose test="num_users">
+    <py:when test="0">
+      
+      <h1>Welcome to MunkiReport</h1>
+      To get started, please enter a password for the munkiadmin user:
+      
+      <form action="reset_munkiadminadmin_password"
+            method="post"
+            accept-charset="utf-8"
+            onsubmit="return verify_password();">
+        
+        <div class="pwdform">
+          <label for="password">Password:</label>
+          <input type="password" id="password"        name="password"        size="20" maxlength="32" />
+        </div>
+        
+        <div class="pwdform">
+          <label for="password_verify">Verify password:</label>
+          <input type="password" id="password_verify" name="password_verify" size="20" maxlength="32" />
+        </div>
+        
+        <div class="pwdform">
+          <button type="submit">
+            Set password
+          </button>
+        </div>
+        
+      </form>
+      
+    </py:when>
+    <py:otherwise>
+      
+      <ul>
+        <li><a href="${tg.url('/view')}">View Reports</a> (requires login)</li>
+      </ul>
+      
+    </py:otherwise>
+  </py:choose>
 </body>
 </html>

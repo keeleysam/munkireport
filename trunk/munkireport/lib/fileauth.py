@@ -16,11 +16,11 @@ import tg
 import logging
 import hashlib
 import codecs
-import os.path
+import os
 from repoze.what.adapters import BaseSourceAdapter, SourceError
 
 
-__all__ = ['FileAuthenticator', 'FileMetadataProvider']
+__all__ = ['FileAuthenticator', 'FileMetadataProvider', 'get_users']
 
 
 # Get a logger.
@@ -41,25 +41,62 @@ class FileUser(object):
         self.hexdigest = password[8:64]
     
 
-def read_etc_users():
-    """Read and parse users file"""
+def read_file_users():
+    """Read and parse users file."""
     
     # path to where the users are stored
     appsupport_dir = tg.config.get("appsupport_dir")
     users_path = os.path.join(appsupport_dir, "users")
     
-    users = dict()
+    file_users = dict()
     
     try:
         with codecs.open(users_path, "r", "utf-8") as f:
             for line in f:
                 fields = line.strip().split(":")
                 username, realname, password = [f.strip() for f in fields]
-                users[username] = FileUser(username, realname, password)
+                file_users[username] = FileUser(username, realname, password)
     except IOError as e:
         log.warn("Couldn't read users from %s: %s" % (users_path, str(e)))
+        return None
     
-    return users
+    return file_users
+    
+
+def create_file_users(username, realname, password):
+    """Create a users file with a single user if one doesn't exit."""
+    
+    if ":" in username:
+        raise ValueError
+    if ":" in realname:
+        raise ValueError
+    
+    # path to where the users are stored
+    appsupport_dir = tg.config.get("appsupport_dir")
+    users_path = os.path.join(appsupport_dir, "users")
+    
+    salt = os.urandom(4)
+    
+    sha = hashlib.sha224()
+    sha.update(salt)
+    sha.update(password)
+    hexpassword = salt.encode("hex") + sha.hexdigest()
+    
+    try:
+        log.info("Creating %s" % users_path)
+        with codecs.open(users_path, "w", "utf-8") as f:
+            log.info("Creating %s user (%s)" % (username, realname))
+            f.write(u"%s:%s:%s\n" % (
+                username,
+                realname,
+                hexpassword
+            ))
+    except IOError as e:
+        log.error("Couldn't write users to %s: %s" % (users_path, str(e)))
+        raise SourceError
+    
+    global users
+    users = read_file_users()
     
 
 def get_users():
@@ -67,7 +104,7 @@ def get_users():
     
     global users
     if users is None:
-        users = read_etc_users()
+        users = read_file_users()
     
     return users
     
