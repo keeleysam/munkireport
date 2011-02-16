@@ -14,7 +14,7 @@
 - (void) mainViewDidLoad
 {
 	// Load status images.
-	statusImageError = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-error"]];
+	statusImageError =   [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-error"]];
 	statusImageRunning = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-running"]];
 	statusImageStopped = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-stopped"]];
 	statusImageUnknown = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-unknown"]];
@@ -41,12 +41,12 @@
 {
 	// load or unload LaunchDaemon.
 	
-	NSMutableArray *args = [NSMutableArray array];
-    [args addObject:subcommand];
-    [args addObject:@"-w"];
-    [args addObject:@"/Library/LaunchDaemons/com.googlecode.munkireport.plist"];
+	NSArray *args = [NSArray arrayWithObjects:subcommand,
+							 @"-w",
+							 @"/Library/LaunchDaemons/com.googlecode.munkireport.plist",
+							 nil];
 	
-    // Convert array into void-* array.
+    // Convert NSArray into char-* array.
     const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
     int argvIndex = 0;
     for (NSString *string in args) {
@@ -55,8 +55,11 @@
     }
     argv[argvIndex] = nil;
 	
-    OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef], [@"/bin/launchctl" UTF8String],
-                                                            kAuthorizationFlagDefaults, (char *const *)argv, nil);
+    OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
+															[@"/bin/launchctl" UTF8String],
+                                                            kAuthorizationFlagDefaults,
+															(char *const *)argv,
+															nil);
     free(argv);
 	
     if (processError != errAuthorizationSuccess) {
