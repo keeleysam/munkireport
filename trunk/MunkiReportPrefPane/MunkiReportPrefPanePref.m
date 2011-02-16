@@ -9,6 +9,9 @@
 #import "MunkiReportPrefPanePref.h"
 
 
+static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munkireport.plist";
+
+
 @implementation MunkiReportPrefPanePref
 
 - (void) mainViewDidLoad
@@ -30,9 +33,20 @@
 	[self updateButtonAuthorization];
 	[theOnButton setState:NSOffState];
 	[theOffButton setState:NSOnState];
-	[theServerURLText setStringValue:@"Determining..."];
-	[theStatusText setStringValue:@"Determining..."];
+	[theStatusText setStringValue:@"Checking status..."];
 	[theMunkiReportVersionText setStringValue:@"MunkiReport v0.7.0.unknown"];
+	
+	// Setup timer to periodically update server status.
+	NSInvocation *updateServerStatusInvocation;
+	updateServerStatusInvocation = [NSInvocation invocationWithMethodSignature:
+									[self
+									 methodSignatureForSelector:@selector(updateServerStatus)]];
+	[updateServerStatusInvocation setTarget:self];
+	[updateServerStatusInvocation setSelector:@selector(updateServerStatus)];
+	
+	[NSTimer scheduledTimerWithTimeInterval:2
+		     invocation:updateServerStatusInvocation
+			 repeats:true];
 }
 
 // LaunchDaemon control
@@ -43,7 +57,7 @@
 	
 	NSArray *args = [NSArray arrayWithObjects:subcommand,
 							 @"-w",
-							 @"/Library/LaunchDaemons/com.googlecode.munkireport.plist",
+							 launchDaemonPath,
 							 nil];
 	
     // Convert NSArray into char-* array.
@@ -76,8 +90,7 @@
     
 	[self launchctl:@"load"];
 	
-	[theStatusText setStringValue:@"Running"];
-	[theServerURLText setStringValue:@"http://howdy!/"];
+	[theStatusText setStringValue:@"Running at http://0.0.0.0:8444/"];
 	[theStatusIndicator setImage:statusImageRunning];
 	//NSLog(@"theOnButton = %d, theOffButton = %d", [theOnButton state], [theOffButton state]);
 }
@@ -91,7 +104,6 @@
 	[self launchctl:@"unload"];
 	
 	[theStatusText setStringValue:@"Stopped"];
-	[theServerURLText setStringValue:@""];
 	[theStatusIndicator setImage:statusImageStopped];
 	//NSLog(@"theOnButton = %d, theOffButton = %d", [theOnButton state], [theOffButton state]);
 }
@@ -118,6 +130,17 @@
 - (void) authorizationViewDidDeauthorize:(SFAuthorizationView *)view
 {
 	[self updateButtonAuthorization];
+}
+
+// Status pane.
+
+- (void) updateServerStatus
+{
+	if ( ! [[NSFileManager defaultManager] fileExistsAtPath:launchDaemonPath]) {
+		[theStatusIndicator setImage:statusImageError];
+		[theStatusText setStringValue:@"LaunchDaemon is missing!"];
+		return;
+	}
 }
 
 // Users pane.

@@ -21,7 +21,6 @@
 	
 	// Status pane.
 	IBOutlet NSImageView *theStatusIndicator;
-	IBOutlet NSTextField *theServerURLText;
 	IBOutlet NSTextField *theStatusText;
 	IBOutlet NSTextField *theMunkiReportVersionText;
 	
@@ -47,6 +46,7 @@
 - (void) updateButtonAuthorization;
 
 // Status pane.
+- (void) updateServerStatus;
 
 // Users pane.
 - (IBAction) addUserButtonClicked:(id)sender;
