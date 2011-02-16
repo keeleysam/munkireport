@@ -12,18 +12,44 @@
 
 @interface MunkiReportPrefPanePref : NSPreferencePane 
 {
+	// Main server control.
 	IBOutlet NSButton *theOnButton;
 	IBOutlet NSButton *theOffButton;
+
+	// Authorization.
+    IBOutlet SFAuthorizationView *authView;
+	
+	// Status pane.
+	IBOutlet NSImageView *theStatusIndicator;
 	IBOutlet NSTextField *theServerURLText;
 	IBOutlet NSTextField *theStatusText;
 	IBOutlet NSTextField *theMunkiReportVersionText;
-    IBOutlet SFAuthorizationView *authView;
+	
+	NSImage *statusImageError;
+	NSImage *statusImageRunning;
+	NSImage *statusImageStopped;
+	NSImage *statusImageUnknown;
+	
+	// Users pane.
+	IBOutlet NSButton *theAddUserButton;
+	IBOutlet NSButton *theRemoveUserButton;
 }
 
 - (void) mainViewDidLoad;
+
+// Main server control.
+- (void) launchctl:(NSString *)subcommand;
 - (IBAction) onButtonClicked:(id)sender;
 - (IBAction) offButtonClicked:(id)sender;
+
+// Authorization.
 - (BOOL) isUnlocked;
 - (void) updateButtonAuthorization;
+
+// Status pane.
+
+// Users pane.
+- (IBAction) addUserButtonClicked:(id)sender;
+- (IBAction) removeUserButtonClicked:(id)sender;
 
 @end
