@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		66867739130B1C2400D345DA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867737130B1C2400D345DA /* Security.framework */; };
 		6686773A130B1C2400D345DA /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867738130B1C2400D345DA /* SecurityInterface.framework */; };
+		66F012B4130C0363000B0DB3 /* status-error.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B0130C0363000B0DB3 /* status-error.tiff */; };
+		66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B1130C0363000B0DB3 /* status-running.tiff */; };
+		66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B2130C0363000B0DB3 /* status-stopped.tiff */; };
+		66F012B7130C0363000B0DB3 /* status-unknown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B3130C0363000B0DB3 /* status-unknown.tiff */; };
 		8D202CEA0486D31800D8A456 /* MunkiReportPrefPane_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */; };
 		8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */ = {isa = PBXBuildFile; fileRef = F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */; };
 		8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
@@ -27,6 +31,10 @@
 		32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPrefPane_Prefix.pch; sourceTree = "<group>"; };
 		66867737130B1C2400D345DA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		66867738130B1C2400D345DA /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		66F012B0130C0363000B0DB3 /* status-error.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-error.tiff"; sourceTree = "<group>"; };
+		66F012B1130C0363000B0DB3 /* status-running.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-running.tiff"; sourceTree = "<group>"; };
+		66F012B2130C0363000B0DB3 /* status-stopped.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-stopped.tiff"; sourceTree = "<group>"; };
+		66F012B3130C0363000B0DB3 /* status-unknown.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-unknown.tiff"; sourceTree = "<group>"; };
 		8D202CF70486D31800D8A456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D202CF80486D31800D8A456 /* MunkiReportPrefPane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunkiReportPrefPane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		F506C035013D953901CA16C8 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
@@ -75,6 +83,10 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				66F012B0130C0363000B0DB3 /* status-error.tiff */,
+				66F012B1130C0363000B0DB3 /* status-running.tiff */,
+				66F012B2130C0363000B0DB3 /* status-stopped.tiff */,
+				66F012B3130C0363000B0DB3 /* status-unknown.tiff */,
 				8D202CF70486D31800D8A456 /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 				F506C040013D9D8001CA16C8 /* MunkiReportPrefPanePref.tiff */,
@@ -198,6 +210,10 @@
 				8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */,
 				8D202CEE0486D31800D8A456 /* MunkiReportPrefPanePref.tiff in Resources */,
 				8D202CEF0486D31800D8A456 /* MunkiReportPrefPanePref.xib in Resources */,
+				66F012B4130C0363000B0DB3 /* status-error.tiff in Resources */,
+				66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */,
+				66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */,
+				66F012B7130C0363000B0DB3 /* status-unknown.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
