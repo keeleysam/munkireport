@@ -47,6 +47,11 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 	[NSTimer scheduledTimerWithTimeInterval:2
 		     invocation:updateServerStatusInvocation
 			 repeats:true];
+	
+	// Load users plist.
+	usersDataSource = [[UsersDataSource alloc] init];
+	[usersDataSource loadUsersFile:@"/Library/Application Support/MunkiReport/users.plist"];
+	NSLog(@"Users: %@", usersDataSource);
 }
 
 // LaunchDaemon control
