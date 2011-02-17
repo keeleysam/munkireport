@@ -30,4 +30,28 @@
 	return [users count];
 }
 
+- (id)tableView:(NSTableView *)aTableView
+	objectValueForTableColumn:(NSTableColumn *)aTableColumn
+	row:(NSInteger)rowIndex
+{
+	NSDictionary *theUser;
+	id theValue;
+	
+	if ([[aTableColumn identifier] isEqualToString:@"hasAdmin"]) {
+		return [NSNumber numberWithBool:YES];
+	}
+	if ([[aTableColumn identifier] isEqualToString:@"hasView"]) {
+		return [NSNumber numberWithBool:YES];
+	}
+	NSParameterAssert(rowIndex >= 0 && rowIndex < [users count]);
+	theUser = [users objectAtIndex:rowIndex];
+	theValue = [theUser objectForKey:[aTableColumn identifier]];
+	return theValue;
+}
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
+{
+	return [users count];
+}
+
 @end
