@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		66867739130B1C2400D345DA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867737130B1C2400D345DA /* Security.framework */; };
 		6686773A130B1C2400D345DA /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867738130B1C2400D345DA /* SecurityInterface.framework */; };
+		66B77367130DA32A0082C670 /* UsersDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 66B77365130DA32A0082C670 /* UsersDataSource.h */; };
+		66B77368130DA32A0082C670 /* UsersDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 66B77366130DA32A0082C670 /* UsersDataSource.m */; };
 		66F012B4130C0363000B0DB3 /* status-error.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B0130C0363000B0DB3 /* status-error.tiff */; };
 		66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B1130C0363000B0DB3 /* status-running.tiff */; };
 		66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B2130C0363000B0DB3 /* status-stopped.tiff */; };
@@ -31,6 +33,8 @@
 		32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPrefPane_Prefix.pch; sourceTree = "<group>"; };
 		66867737130B1C2400D345DA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		66867738130B1C2400D345DA /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		66B77365130DA32A0082C670 /* UsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDataSource.h; sourceTree = "<group>"; };
+		66B77366130DA32A0082C670 /* UsersDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsersDataSource.m; sourceTree = "<group>"; };
 		66F012B0130C0363000B0DB3 /* status-error.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-error.tiff"; sourceTree = "<group>"; };
 		66F012B1130C0363000B0DB3 /* status-running.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-running.tiff"; sourceTree = "<group>"; };
 		66F012B2130C0363000B0DB3 /* status-stopped.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-stopped.tiff"; sourceTree = "<group>"; };
@@ -100,6 +104,8 @@
 			children = (
 				F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */,
 				F506C03D013D9D7901CA16C8 /* MunkiReportPrefPanePref.m */,
+				66B77365130DA32A0082C670 /* UsersDataSource.h */,
+				66B77366130DA32A0082C670 /* UsersDataSource.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -149,6 +155,7 @@
 			files = (
 				8D202CEA0486D31800D8A456 /* MunkiReportPrefPane_Prefix.pch in Headers */,
 				8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */,
+				66B77367130DA32A0082C670 /* UsersDataSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D202CF10486D31800D8A456 /* MunkiReportPrefPanePref.m in Sources */,
+				66B77368130DA32A0082C670 /* UsersDataSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

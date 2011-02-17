@@ -9,6 +9,8 @@
 #import <PreferencePanes/PreferencePanes.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 
+#import "UsersDataSource.h"
+
 
 @interface MunkiReportPrefPanePref : NSPreferencePane 
 {
@@ -32,6 +34,8 @@
 	// Users pane.
 	IBOutlet NSButton *theAddUserButton;
 	IBOutlet NSButton *theRemoveUserButton;
+	
+	UsersDataSource *usersDataSource;
 }
 
 - (void) mainViewDidLoad;
