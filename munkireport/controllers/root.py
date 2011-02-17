@@ -48,10 +48,7 @@ class RootController(BaseController):
         """Handle the front-page."""
         
         users = get_users()
-        if users is None:
-            num_users = 0
-        else:
-            num_users = len(users)
+        num_users = len(users)
         
         return dict(
             page='index',
@@ -62,7 +59,7 @@ class RootController(BaseController):
     def reset_munkiadminadmin_password(self, password=None, password_verify=None):
         """Reset munkiadmin password."""
         
-        if get_users() is not None:
+        if get_users():
             abort(403)
         
         if password != password_verify:
