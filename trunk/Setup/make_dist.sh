@@ -29,6 +29,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 rm -rf build
+rm -rf Paste*.egg
 
 
 # Create pkg
@@ -38,10 +39,26 @@ gid=`id -g`
 sudo chown ${uid}:${gid} dist/*.pkg
 
 
+# Build PreferencePane
+pushd "MunkiReportPrefPane" > /dev/null
+/usr/bin/xcodebuild -project "MunkiReportPrefPane.xcodeproj" -alltargets clean > /dev/null
+/usr/bin/xcodebuild -project "MunkiReportPrefPane.xcodeproj" -alltargets build > /dev/null
+XCODEBUILD_RESULT="$?"
+popd > /dev/null
+if [ "$XCODEBUILD_RESULT" -ne 0 ]; then
+    echo "Error building MunkiReportPrefPane.xcodeproj: $XCODEBUILD_RESULT"
+    exit 2
+fi
+if [ ! -e "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane" ]; then
+    echo "Need a release build of MunkiReportPrefPane.prefPane!"
+    exit 2
+fi
+
 # Create distribution template
 DISTDIR="dist/MunkiReport-$VERSION.$SVNREV"
 mkdir "$DISTDIR"
 mv dist/*.pkg "$DISTDIR/"
+ditto "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane" "$DISTDIR/MunkiReportPrefPane.prefPane"
 rsync -rlptC Scripts "$DISTDIR/"
 cp README.txt LICENSE.txt "$DISTDIR/"
 cp "$SCRIPTDIR/uninstall.sh" "$DISTDIR/"
