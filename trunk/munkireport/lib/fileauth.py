@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Authentication of users in a passwd-style file
+"""Authentication of users stored in a plist
 
-Users should be stored in an utf-8 encoded text file called users in the etc
-directory of the project. Each line should have colon separated entries with:
-
-username:Real Name:password
+Users are stored in an XML plist where the root object is an array, and each
+entry is a dictionary with username, realname, and password keys.
 
 The password is a salted sha224 hash stored as a hex string. The first eight
 characters (four bytes) is the salt, which is fed to the digest algorithm
@@ -17,6 +15,7 @@ import logging
 import hashlib
 import codecs
 import os
+import plistlib
 from repoze.what.adapters import BaseSourceAdapter, SourceError
 
 
@@ -28,7 +27,7 @@ log = logging.getLogger(__name__.split(".")[0])
 
 # FIXME: create a real cache instead, you have to restart the application to add new users
 users = None
-
+users_filename = "users.plist"
 
 class FileUser(object):
     """Container for users."""
@@ -46,19 +45,20 @@ def read_file_users():
     
     # path to where the users are stored
     appsupport_dir = tg.config.get("appsupport_dir")
-    users_path = os.path.join(appsupport_dir, "users")
+    users_path = os.path.join(appsupport_dir, users_filename)
     
     file_users = dict()
     
     try:
-        with codecs.open(users_path, "r", "utf-8") as f:
-            for line in f:
-                fields = line.strip().split(":")
-                username, realname, password = [f.strip() for f in fields]
-                file_users[username] = FileUser(username, realname, password)
-    except IOError as e:
+        users = plistlib.readPlist(users_path)
+    except BaseException as e:
         log.warn("Couldn't read users from %s: %s" % (users_path, str(e)))
-        return None
+        return file_users
+    
+    for user in users:
+        file_users[user.username] = FileUser(user.username,
+                                             user.realname,
+                                             user.password)
     
     return file_users
     
@@ -66,14 +66,9 @@ def read_file_users():
 def create_file_users(username, realname, password):
     """Create a users file with a single user if one doesn't exit."""
     
-    if ":" in username:
-        raise ValueError
-    if ":" in realname:
-        raise ValueError
-    
     # path to where the users are stored
     appsupport_dir = tg.config.get("appsupport_dir")
-    users_path = os.path.join(appsupport_dir, "users")
+    users_path = os.path.join(appsupport_dir, users_filename)
     
     salt = os.urandom(4)
     
@@ -84,14 +79,13 @@ def create_file_users(username, realname, password):
     
     try:
         log.info("Creating %s" % users_path)
-        with codecs.open(users_path, "w", "utf-8") as f:
-            log.info("Creating %s user (%s)" % (username, realname))
-            f.write(u"%s:%s:%s\n" % (
-                username,
-                realname,
-                hexpassword
-            ))
-    except IOError as e:
+        log.info("Creating %s user (%s)" % (username, realname))
+        plistlib.writePlist([{
+            "username": username,
+            "realname": realname,
+            "password": hexpassword
+        }], users_path)
+    except BaseException as e:
         log.error("Couldn't write users to %s: %s" % (users_path, str(e)))
         raise SourceError
     

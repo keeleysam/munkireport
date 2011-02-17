@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
 
+################ TO BE REMOVED ################
+### Users are now stored in a plist instead ###
+################ TO BE REMOVED ################
+
+
 import hashlib
 import os
 import sys
@@ -8,7 +13,7 @@ import getpass
 import codecs
 
 
-USERS_PATH = os.path.join("etc", "users")
+USERS_PATH = "/Library/Application Support/MunkiReport/users"
 
 
 class FileUser(object):

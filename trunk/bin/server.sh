@@ -15,7 +15,7 @@ fi
 cd "$MRDIR"
 
 # Check configuration
-for INIFILE in groups.ini permissions.ini MunkiReport.ini users; do
+for INIFILE in groups.ini permissions.ini MunkiReport.ini users.plist; do
     if [ ! -f "$SUPPORTDIR/$INIFILE" ]; then
         echo "$SUPPORTDIR/$INIFILE does not exist"
         sleep 10
