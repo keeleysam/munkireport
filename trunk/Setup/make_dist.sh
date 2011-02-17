@@ -6,7 +6,7 @@
 SCRIPTDIR=`dirname "$0"`
 SRCDIR=`cd "$SCRIPTDIR/.."; pwd`
 
-cd "$SRCDIr"
+cd "$SRCDIR"
 
 
 # Check for virtualenv
