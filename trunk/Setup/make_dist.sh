@@ -32,13 +32,6 @@ rm -rf build
 rm -rf Paste*.egg
 
 
-# Create pkg
-sudo Setup/make_pkg.sh dist/*.egg
-uid=`id -u`
-gid=`id -g`
-sudo chown ${uid}:${gid} dist/*.pkg
-
-
 # Build PreferencePane
 pushd "MunkiReportPrefPane" > /dev/null
 /usr/bin/xcodebuild -project "MunkiReportPrefPane.xcodeproj" -alltargets clean > /dev/null
@@ -54,11 +47,21 @@ if [ ! -e "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane" ]; th
     exit 2
 fi
 
+
+# Create pkg
+sudo Setup/make_pkg.sh dist/*.egg "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane"
+if [ $? -ne 0 ]; then
+    echo "Package creation failed"
+    exit 1
+fi
+gid=`id -g`
+sudo chown ${UID}:${gid} dist/*.pkg
+
+
 # Create distribution template
 DISTDIR="dist/MunkiReport-$VERSION.$SVNREV"
 mkdir "$DISTDIR"
 mv dist/*.pkg "$DISTDIR/"
-ditto "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane" "$DISTDIR/MunkiReportPrefPane.prefPane"
 rsync -rlptC Scripts "$DISTDIR/"
 cp README.txt LICENSE.txt "$DISTDIR/"
 cp "$SCRIPTDIR/uninstall.sh" "$DISTDIR/"
