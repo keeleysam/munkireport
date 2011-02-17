@@ -17,7 +17,7 @@
 	IBOutlet NSButton *theOffButton;
 
 	// Authorization.
-    IBOutlet SFAuthorizationView *authView;
+	IBOutlet SFAuthorizationView *authView;
 	
 	// Status pane.
 	IBOutlet NSImageView *theStatusIndicator;

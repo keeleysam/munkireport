@@ -22,12 +22,12 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 	statusImageStopped = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-stopped"]];
 	statusImageUnknown = [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-unknown"]];
 	
-    // Setup security.
-    AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
-    AuthorizationRights rights = {1, &items};
-    [authView setAuthorizationRights:&rights];
-    authView.delegate = self;
-    [authView updateStatus:nil];
+	// Setup security.
+	AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
+	AuthorizationRights rights = {1, &items};
+	[authView setAuthorizationRights:&rights];
+	authView.delegate = self;
+	[authView updateStatus:nil];
 	
 	// Initialize GUI.
 	[self updateButtonAuthorization];
@@ -60,24 +60,24 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 							 launchDaemonPath,
 							 nil];
 	
-    // Convert NSArray into char-* array.
-    const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
-    int argvIndex = 0;
-    for (NSString *string in args) {
-        argv[argvIndex] = [string UTF8String];
-        argvIndex++;
-    }
-    argv[argvIndex] = nil;
+	// Convert NSArray into char-* array.
+	const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
+	int argvIndex = 0;
+	for (NSString *string in args) {
+		argv[argvIndex] = [string UTF8String];
+		argvIndex++;
+	}
+	argv[argvIndex] = nil;
 	
-    OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
+	OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
 															[@"/bin/launchctl" UTF8String],
-                                                            kAuthorizationFlagDefaults,
+															kAuthorizationFlagDefaults,
 															(char *const *)argv,
 															nil);
-    free(argv);
+	free(argv);
 	
-    if (processError != errAuthorizationSuccess) {
-        NSLog(@"MunkiReport server start failed: %d", processError);
+	if (processError != errAuthorizationSuccess) {
+		NSLog(@"MunkiReport server start failed: %d", processError);
 	}
 	
 }
@@ -87,7 +87,7 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 	//NSLog(@"onButtonClicked");
 	[theOnButton setState:NSOnState];
 	[theOffButton setState:NSOffState];
-    
+	
 	[self launchctl:@"load"];
 	
 	[theStatusText setStringValue:@"Running at http://0.0.0.0:8444/"];
@@ -112,12 +112,12 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 
 - (BOOL) isUnlocked
 {
-    return [authView authorizationState] == SFAuthorizationViewUnlockedState;
+	return [authView authorizationState] == SFAuthorizationViewUnlockedState;
 }
 
 - (void) updateButtonAuthorization {
-    [theOnButton setEnabled:[self isUnlocked]];
-    [theOffButton setEnabled:[self isUnlocked]];
+	[theOnButton setEnabled:[self isUnlocked]];
+	[theOffButton setEnabled:[self isUnlocked]];
 }
 
 // SFAuthorization delegates
@@ -154,5 +154,12 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 {
 	NSLog(@"removeUserButtonClicked");
 }
+
+// NSTableView delegates.
+
+//selectionShouldChangeInTableView:
+//tableView:shouldEditTableColumn:row:
+//tableViewSelectionDidChange:		NSTableViewSelectionDidChangeNotification
+//tableViewSelectionIsChanging:		NSTableViewSelectionIsChangingNotification
 
 @end
