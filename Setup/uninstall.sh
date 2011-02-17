@@ -12,6 +12,7 @@ if [ -f /Library/LaunchDaemons/com.googlecode.munkireport.plist ]; then
 fi
 rm -f /Library/LaunchDaemons/com.googlecode.munkireport.plist
 rm -rf /Library/MunkiReport
+rm -rf /Library/PreferencePanes/MunkiReport.prefPane
 dscl -f /var/db/dslocal/nodes/Default localonly -delete /Local/Target/Users/munkireport
 pkgutil --forget com.googlecode.pkg.MunkiReport
 #rm -rf "/Library/Application Support/MunkiReport"

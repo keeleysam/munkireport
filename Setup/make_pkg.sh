@@ -25,6 +25,13 @@ else
     EGG="$1"
 fi
 
+if [ -z "$2" ]; then
+    echo "Please provide .prefpane as argument"
+    exit 1
+else
+    PREFPANE="$2"
+fi
+
 if [ -e "$MRDIR" ]; then
     echo "$MRDIR already exists"
     exit 1
@@ -104,7 +111,9 @@ PKGROOT="$PKGTMP/munkireport"
 mkdir -m 1775 "$PKGROOT"
 mkdir -m 1775 "$PKGROOT/Library"
 mkdir -m 0755 "$PKGROOT/Library/LaunchDaemons"
+mkdir -m 0755 "$PKGROOT/Library/PreferencePanes"
 cp "$SCRIPTDIR/com.googlecode.munkireport.plist" "$PKGROOT/Library/LaunchDaemons"
+ditto "$PREFPANE" "$PKGROOT/Library/PreferencePanes/MunkiReport.prefpane"
 
 # Move MunkiReport into package root.
 mv /Library/MunkiReport "$PKGROOT/Library"
