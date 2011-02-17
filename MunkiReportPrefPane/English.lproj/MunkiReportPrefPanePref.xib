@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="6"/>
+			<integer value="163"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -291,6 +291,7 @@
 																</object>
 																<array class="NSMutableArray" key="NSTableColumns">
 																	<object class="NSTableColumn" id="1047954209">
+																		<string key="NSIdentifier">username</string>
 																		<double key="NSWidth">96</double>
 																		<double key="NSMinWidth">40</double>
 																		<double key="NSMaxWidth">1000</double>
@@ -330,6 +331,7 @@
 																		<reference key="NSTableView" ref="97160639"/>
 																	</object>
 																	<object class="NSTableColumn" id="979265033">
+																		<string key="NSIdentifier">realname</string>
 																		<double key="NSWidth">142</double>
 																		<double key="NSMinWidth">40</double>
 																		<double key="NSMaxWidth">1000</double>
@@ -356,6 +358,7 @@
 																		<reference key="NSTableView" ref="97160639"/>
 																	</object>
 																	<object class="NSTableColumn" id="261695445">
+																		<string key="NSIdentifier">password</string>
 																		<double key="NSWidth">80</double>
 																		<double key="NSMinWidth">10</double>
 																		<double key="NSMaxWidth">3.4028234663852886e+38</double>
@@ -390,6 +393,7 @@
 																		<reference key="NSTableView" ref="97160639"/>
 																	</object>
 																	<object class="NSTableColumn" id="470691642">
+																		<string key="NSIdentifier">hasAdmin</string>
 																		<double key="NSWidth">50</double>
 																		<double key="NSMinWidth">10</double>
 																		<double key="NSMaxWidth">3.4028234663852886e+38</double>
@@ -427,6 +431,7 @@
 																		<reference key="NSTableView" ref="97160639"/>
 																	</object>
 																	<object class="NSTableColumn" id="286702466">
+																		<string key="NSIdentifier">hasView</string>
 																		<double key="NSWidth">47</double>
 																		<double key="NSMinWidth">10</double>
 																		<double key="NSMaxWidth">3.4028234663852886e+38</double>
@@ -714,6 +719,14 @@
 						<reference key="destination" ref="1010223921"/>
 					</object>
 					<int key="connectionID">192</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">theUsersTableView</string>
+						<reference key="source" ref="294453543"/>
+						<reference key="destination" ref="97160639"/>
+					</object>
+					<int key="connectionID">194</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1136,7 +1149,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">193</int>
+			<int key="maxID">194</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1184,6 +1197,7 @@
 						<string key="theRemoveUserButton">NSButton</string>
 						<string key="theStatusIndicator">NSImageView</string>
 						<string key="theStatusText">NSTextField</string>
+						<string key="theUsersTableView">NSTableView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="authView">
@@ -1217,6 +1231,10 @@
 						<object class="IBToOneOutletInfo" key="theStatusText">
 							<string key="name">theStatusText</string>
 							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="theUsersTableView">
+							<string key="name">theUsersTableView</string>
+							<string key="candidateClassName">NSTableView</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

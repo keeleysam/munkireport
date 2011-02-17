@@ -9,10 +9,14 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface UsersDataSource : NSObject {
+@interface UsersDataSource : NSObject <NSTableViewDelegate, NSTableViewDataSource> {
 	NSMutableArray *users;
 }
 
 - (int)loadUsersFile:(NSString *)usersPath;
+- (id)tableView:(NSTableView *)aTableView
+	objectValueForTableColumn:(NSTableColumn *)aTableColumn
+	row:(NSInteger)rowIndex;
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
 
 @end

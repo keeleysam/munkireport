@@ -34,7 +34,7 @@
 	// Users pane.
 	IBOutlet NSButton *theAddUserButton;
 	IBOutlet NSButton *theRemoveUserButton;
-	
+	IBOutlet NSTableView *theUsersTableView;
 	UsersDataSource *usersDataSource;
 }
 
