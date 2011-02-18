@@ -10,13 +10,22 @@
 
 
 @interface UsersDataSource : NSObject <NSTableViewDelegate, NSTableViewDataSource> {
-	NSMutableArray *users;
+    NSMutableArray *users;
+    NSMutableDictionary *groups;
 }
 
-- (int)loadUsersFile:(NSString *)usersPath;
+- (id)init;
+
+- (BOOL)loadUsersPlist:(NSString *)usersPath;
+- (BOOL)loadGroupsIni:(NSString *)groupsPath;
+- (void)updateUsersWithGroups;
+
+// NSTableViewDelegate
 - (id)tableView:(NSTableView *)aTableView
-	objectValueForTableColumn:(NSTableColumn *)aTableColumn
-	row:(NSInteger)rowIndex;
+    objectValueForTableColumn:(NSTableColumn *)aTableColumn
+    row:(NSInteger)rowIndex;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
+
+// NSTableViewDataSource
 
 @end
