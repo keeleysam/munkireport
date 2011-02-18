@@ -10,6 +10,7 @@
 
 
 static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munkireport.plist";
+static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 
 @implementation MunkiReportPrefPanePref
@@ -31,10 +32,10 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
     
     // Load users plist.
     usersDataSource = [[UsersDataSource alloc] init];
-    if ([usersDataSource loadUsersPlist:@"/Library/Application Support/MunkiReport/users.plist"] == NO) {
+    if ([usersDataSource loadUsersPlist:[appSupportPath stringByAppendingPathComponent:@"users.plist"]] == NO) {
         NSLog(@"Failed to load users file");
     }
-    if ([usersDataSource loadGroupsIni:@"/Library/Application Support/MunkiReport/groups.ini"] == NO) {
+    if ([usersDataSource loadGroupsIni:[appSupportPath stringByAppendingPathComponent:@"groups.ini"]] == NO) {
         NSLog(@"Failed to load groups file");
     }
     [usersDataSource updateUsersWithGroups];
