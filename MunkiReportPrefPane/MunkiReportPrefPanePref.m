@@ -97,7 +97,6 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 - (IBAction) onButtonClicked:(id)sender
 {
-    //NSLog(@"onButtonClicked");
     [theOnButton setState:NSOnState];
     [theOffButton setState:NSOffState];
     
@@ -105,12 +104,10 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     
     [theStatusText setStringValue:@"Running at http://0.0.0.0:8444/"];
     [theStatusIndicator setImage:statusImageRunning];
-    //NSLog(@"theOnButton = %d, theOffButton = %d", [theOnButton state], [theOffButton state]);
 }
 
 - (IBAction) offButtonClicked:(id)sender
 {
-    //NSLog(@"offButtonClicked");
     [theOnButton setState:NSOffState];
     [theOffButton setState:NSOnState];
     
@@ -118,7 +115,6 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     
     [theStatusText setStringValue:@"Stopped"];
     [theStatusIndicator setImage:statusImageStopped];
-    //NSLog(@"theOnButton = %d, theOffButton = %d", [theOnButton state], [theOffButton state]);
 }
 
 // Authorization
@@ -160,19 +156,14 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 - (IBAction) addUserButtonClicked:(id)sender
 {
-    NSLog(@"addUserButtonClicked");
+    [usersDataSource addUser];
+    [theUsersTableView reloadData];
 }
 
 - (IBAction) removeUserButtonClicked:(id)sender
 {
-    NSLog(@"removeUserButtonClicked");
+    [usersDataSource removeUserAtIndex:[theUsersTableView selectedRow]];
+    [theUsersTableView reloadData];
 }
-
-// NSTableView delegates.
-
-//selectionShouldChangeInTableView:
-//tableView:shouldEditTableColumn:row:
-//tableViewSelectionDidChange:        NSTableViewSelectionDidChangeNotification
-//tableViewSelectionIsChanging:        NSTableViewSelectionIsChangingNotification
 
 @end

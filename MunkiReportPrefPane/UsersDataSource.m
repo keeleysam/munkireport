@@ -125,8 +125,29 @@
     return [NSData dataWithBytes:digest length:sizeof(digest)];
 }
 
+// Add a user at the end.
+- (void)addUser
+{
+    [users addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                      @"username", @"",
+                      @"realname", @"",
+                      @"password", @"",
+                      @"hasAdmin", [NSNumber numberWithBool:NO],
+                      @"hasView", [NSNumber numberWithBool:NO],
+                      nil]];
+}
 
-// NSTableViewDataSource
+// Remove a user.
+- (void)removeUserAtIndex:(NSInteger)index
+{
+    NSParameterAssert(index >= 0 && index < [users count]);
+    [users removeObjectAtIndex:index];
+}
+
+
+/*
+ NSTableViewDataSource
+ */
 
 - (id)tableView:(NSTableView *)aTableView
     objectValueForTableColumn:(NSTableColumn *)aTableColumn
@@ -135,14 +156,6 @@
     NSDictionary *theUser;
     id theValue;
     
-    /*
-    if ([[aTableColumn identifier] isEqualToString:@"hasAdmin"]) {
-        return [NSNumber numberWithBool:YES];
-    }
-    if ([[aTableColumn identifier] isEqualToString:@"hasView"]) {
-        return [NSNumber numberWithBool:YES];
-    }
-    */
     NSParameterAssert(rowIndex >= 0 && rowIndex < [users count]);
     theUser = [users objectAtIndex:rowIndex];
     theValue = [theUser objectForKey:[aTableColumn identifier]];
@@ -153,5 +166,22 @@
 {
     return [users count];
 }
+
+
+/*
+ NSTableViewDelegate
+ */
+
+//selectionShouldChangeInTableView:
+//tableView:shouldEditTableColumn:row:
+//tableViewSelectionDidChange:        NSTableViewSelectionDidChangeNotification
+//tableViewSelectionIsChanging:        NSTableViewSelectionIsChangingNotification
+
+/*
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+{
+    return YES;
+}
+*/
 
 @end

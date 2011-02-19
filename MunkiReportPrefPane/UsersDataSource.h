@@ -32,13 +32,15 @@
 - (BOOL)loadGroupsIni:(NSString *)groupsPath;
 - (void)updateUsersWithGroups;
 - (NSData *)hashPassword:(NSString *)password;
+- (void)addUser;
+- (void)removeUserAtIndex:(NSInteger)index;
 
-// NSTableViewDelegate
+// NSTableViewDataSource
 - (id)tableView:(NSTableView *)aTableView
     objectValueForTableColumn:(NSTableColumn *)aTableColumn
     row:(NSInteger)rowIndex;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
 
-// NSTableViewDataSource
+// NSTableViewDelegate
 
 @end
