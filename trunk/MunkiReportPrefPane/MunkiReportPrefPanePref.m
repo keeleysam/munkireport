@@ -41,6 +41,8 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [usersDataSource updateUsersWithGroups];
     [theUsersTableView setDelegate:usersDataSource];
     [theUsersTableView setDataSource:usersDataSource];
+    NSTableColumn *usernameColumn = [theUsersTableView tableColumnWithIdentifier:@"username"];
+    [[usernameColumn dataCell] setFormatter:[[UsernameFormatter alloc] init]];
     
     // Initialize GUI.
     [self updateButtonAuthorization];
@@ -158,12 +160,21 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 {
     [usersDataSource addUser];
     [theUsersTableView reloadData];
+    NSInteger newUserRow = [theUsersTableView numberOfRows] - 1;
+    [theUsersTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:newUserRow]
+                   byExtendingSelection:NO];
+    [theUsersTableView editColumn:0
+                              row:newUserRow
+                        withEvent:nil
+                           select:YES];
 }
 
 - (IBAction) removeUserButtonClicked:(id)sender
 {
-    [usersDataSource removeUserAtIndex:[theUsersTableView selectedRow]];
-    [theUsersTableView reloadData];
+    if ([theUsersTableView selectedRow] != -1) {
+        [usersDataSource removeUserAtIndex:[theUsersTableView selectedRow]];
+        [theUsersTableView reloadData];
+    }
 }
 
 @end
