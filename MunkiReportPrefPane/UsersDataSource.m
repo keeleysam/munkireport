@@ -7,6 +7,7 @@
 //
 
 #import "UsersDataSource.h"
+#import <CommonCrypto/CommonDigest.h>
 
 
 // FIXME: these should use NSError.
@@ -103,6 +104,25 @@
             [user setObject:[NSNumber numberWithBool:NO] forKey:@"hasView"];
         }
     }
+}
+
+// Salt and hash password.
+- (NSData *)hashPassword:(NSString *)password
+{
+    CC_SHA256_CTX context; // There is no CC_SHA224_CTX, documentation is wrong.
+    unsigned char digest[32];
+    u_int32_t *salt = (u_int32_t *)digest;
+    
+    CC_SHA224_Init(&context);
+    
+    *salt = arc4random();
+    CC_SHA224_Update(&context, digest, 4);
+    
+    NSData *passwordData = [password dataUsingEncoding:NSUTF8StringEncoding];
+    CC_SHA224_Update(&context, [passwordData bytes], [passwordData length]);
+    CC_SHA224_Final(&digest[4], &context);
+    
+    return [NSData dataWithBytes:digest length:sizeof(digest)];
 }
 
 

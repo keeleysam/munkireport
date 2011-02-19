@@ -10,7 +10,19 @@
 
 
 @interface UsersDataSource : NSObject <NSTableViewDelegate, NSTableViewDataSource> {
+    /*
+     users contains a NSMutabaleArray of NSMutableDictionary, where each entry has
+     the keys username, realname, and password. After updateUsersWithGroups, all
+     users in the viewers group will have hasView set to YES, and all users in the
+     admin group will have hasAdmin set to YES. The password is a 64-character hex
+     string, where the first 8 characters (4 bytes) is a random salt, and the rest
+     is a salted sha224 hash of the user's password.
+     */
     NSMutableArray *users;
+    /*
+     groups contains a NSMutableDictionary where each key is a group name, and each
+     value is a (possibly empty) NSMutableArray of NSString usernames.
+     */
     NSMutableDictionary *groups;
 }
 
@@ -19,6 +31,7 @@
 - (BOOL)loadUsersPlist:(NSString *)usersPath;
 - (BOOL)loadGroupsIni:(NSString *)groupsPath;
 - (void)updateUsersWithGroups;
+- (NSData *)hashPassword:(NSString *)password;
 
 // NSTableViewDelegate
 - (id)tableView:(NSTableView *)aTableView
