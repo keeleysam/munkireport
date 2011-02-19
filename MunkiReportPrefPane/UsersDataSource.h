@@ -9,6 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 
+@interface UsernameFormatter : NSFormatter
+
+@end
+
+
 @interface UsersDataSource : NSObject <NSTableViewDelegate, NSTableViewDataSource> {
     /*
      users contains a NSMutabaleArray of NSMutableDictionary, where each entry has
@@ -32,13 +37,13 @@
 - (BOOL)loadGroupsIni:(NSString *)groupsPath;
 - (void)updateUsersWithGroups;
 - (NSData *)hashPassword:(NSString *)password;
-- (void)addUser;
+- (NSMutableDictionary *)addUser;
 - (void)removeUserAtIndex:(NSInteger)index;
 
 // NSTableViewDataSource
 - (id)tableView:(NSTableView *)aTableView
-    objectValueForTableColumn:(NSTableColumn *)aTableColumn
-    row:(NSInteger)rowIndex;
+objectValueForTableColumn:(NSTableColumn *)aTableColumn
+            row:(NSInteger)rowIndex;
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView;
 
 // NSTableViewDelegate

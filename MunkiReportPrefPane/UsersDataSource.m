@@ -6,8 +6,9 @@
 //  Copyright 2011 University of Gothenburg. All rights reserved.
 //
 
-#import "UsersDataSource.h"
 #import <CommonCrypto/CommonDigest.h>
+#import "RegexKitLite.h"
+#import "UsersDataSource.h"
 
 
 /*
@@ -19,13 +20,62 @@
 
 @implementation NSData (NSData_HexAdditions)
 - (NSString *)getBytesAsHexString {
-	NSMutableString *hexString = [NSMutableString stringWithCapacity:([self length] * 2)];
-	const unsigned char *data = [self bytes];
-	for (int i = 0; i < [self length]; ++i) {
-		[hexString appendFormat:@"%02x", data[i]];
-	}
-	return hexString;
+    NSMutableString *hexString = [NSMutableString stringWithCapacity:([self length] * 2)];
+    const unsigned char *data = [self bytes];
+    for (int i = 0; i < [self length]; ++i) {
+        [hexString appendFormat:@"%02x", data[i]];
+    }
+    return hexString;
 }
+@end
+
+
+/*
+ * Validate usernames.
+ */
+@implementation UsernameFormatter
+
+- (NSString *)stringForObjectValue:(id)anObject
+{
+    if (anObject == nil) {
+        return [NSString stringWithString:@""];
+    } else {
+        return [NSString stringWithString:anObject];
+    }
+}
+
+- (BOOL)getObjectValue:(id *)anObject
+             forString:(NSString *)string
+      errorDescription:(NSString **)error
+{
+    //*error = @"You suck";
+    *anObject = [NSString stringWithString:string];
+    return YES;
+}
+
+/*
+- (NSAttributedString *)attributedStringForObjectValue:(id)anObject
+                                 withDefaultAttributes:(NSDictionary *)attributes
+{
+    return nil;
+    //NSLog(@"attributedStringForObjectValue:%@", anObject);
+    //return [[NSAttributedString alloc] initWithString:@"ATTR"
+    //                                       attributes:attributes];
+}
+*/
+
+- (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString **)newString errorDescription:(NSString **)error
+{
+    NSLog(@"isPartialStringValid:%@", partialString);
+    if ([partialString length] <= 32) {
+        if ([partialString isMatchedByRegex:@"^[a-zA-Z0-9]*$"]) {
+            return YES;
+        }
+    }
+    NSLog(@"Invalid string: '%@'", partialString);
+    return NO;
+}
+
 @end
 
 
@@ -145,21 +195,30 @@
 }
 
 // Add a user at the end.
-- (void)addUser
+- (NSMutableDictionary *)addUser
 {
-    [users addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
-                      @"username", @"",
-                      @"realname", @"",
-                      @"password", @"",
-                      @"hasAdmin", [NSNumber numberWithBool:NO],
-                      @"hasView", [NSNumber numberWithBool:NO],
-                      nil]];
+    NSMutableDictionary *newUser = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                    @"username", @"",
+                                    @"realname", @"",
+                                    @"password", @"",
+                                    @"hasAdmin", [NSNumber numberWithBool:NO],
+                                    @"hasView", [NSNumber numberWithBool:NO],
+                                    nil];
+    [users addObject:newUser];
+    return newUser;
 }
 
 // Remove a user.
 - (void)removeUserAtIndex:(NSInteger)index
 {
     NSParameterAssert(index >= 0 && index < [users count]);
+    NSMutableDictionary *theUser = [users objectAtIndex:index];
+    if ([[theUser objectForKey:@"hasAdmin"] boolValue]) {
+        [[groups objectForKey:@"admins"] removeObject:[theUser objectForKey:@"username"]];
+    }
+    if ([[theUser objectForKey:@"hasView"] boolValue]) {
+        [[groups objectForKey:@"viewers"] removeObject:[theUser objectForKey:@"username"]];
+    }
     [users removeObjectAtIndex:index];
 }
 
@@ -207,19 +266,55 @@
         [theUser setValue:hexHashedPassword forKey:[aTableColumn identifier]];
     } else {
         [theUser setValue:anObject forKey:[aTableColumn identifier]];
+        if ([[aTableColumn identifier] isEqualToString:@"hasAdmin"]) {
+            NSMutableArray *adminGroup = [groups objectForKey:@"admins"];
+            if ([anObject boolValue] == YES) {
+                [adminGroup addObject:[theUser objectForKey:@"username"]];
+            } else {
+                [adminGroup removeObject:[theUser objectForKey:@"username"]];
+            }
+        } else if ([[aTableColumn identifier] isEqualToString:@"hasView"]) {
+            NSMutableArray *viewerGroup = [groups objectForKey:@"viewers"];
+            if ([anObject boolValue] == YES) {
+                [viewerGroup addObject:[theUser objectForKey:@"username"]];
+            } else {
+                [viewerGroup removeObject:[theUser objectForKey:@"username"]];
+            }
+        }
     }
 }
 
-//selectionShouldChangeInTableView:
-//tableView:shouldEditTableColumn:row:
-//tableViewSelectionDidChange:        NSTableViewSelectionDidChangeNotification
-//tableViewSelectionIsChanging:        NSTableViewSelectionIsChangingNotification
 
-/*
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex
+- (BOOL)tableView:(NSTableView *)aTableView
+shouldEditTableColumn:(NSTableColumn *)aTableColumn
+              row:(NSInteger)rowIndex
 {
+    if ([[aTableColumn identifier] isEqualToString:@"username"]) {
+        return NO;
+    }
     return YES;
 }
-*/
+
+// Validate edited text cell when focus changes.
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor
+{
+    NSTableView *aTableView = (NSTableView *)control;
+    NSString *columnIdentifier = [[[aTableView tableColumns]
+                                   objectAtIndex:[aTableView editedColumn]]
+                                   identifier];
+    
+    if ([columnIdentifier isEqualToString:@"username"]) {
+        // Verify that username is unique.
+        for (NSMutableDictionary *user in users) {
+            if ([[fieldEditor string] isEqualToString:[user objectForKey:@"username"]]) {
+                return NO;
+            }
+        }
+    }
+    if ([[fieldEditor string] length] < 1) {
+        return NO;
+    }
+    return YES;
+}
 
 @end

@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="166"/>
+			<integer value="171"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -327,7 +327,6 @@
 																		</object>
 																		<int key="NSResizingMask">3</int>
 																		<bool key="NSIsResizeable">YES</bool>
-																		<bool key="NSIsEditable">YES</bool>
 																		<reference key="NSTableView" ref="97160639"/>
 																	</object>
 																	<object class="NSTableColumn" id="979265033">
@@ -1090,9 +1089,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABBYAAAwUAAAA</bytes>
 				</object>
 				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBEditorWindowLastContentRect">{{466, 253}, {668, 368}}</string>
+				<string key="12.IBEditorWindowLastContentRect">{{485, 254}, {668, 368}}</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBWindowTemplateEditedContentRect">{{466, 253}, {668, 368}}</string>
+				<string key="12.IBWindowTemplateEditedContentRect">{{485, 254}, {668, 368}}</string>
 				<integer value="1" key="12.ImportedFromIB2"/>
 				<integer value="1" key="12.windowTemplate.hasMinSize"/>
 				<string key="12.windowTemplate.minSize">{224.664, 10}</string>
