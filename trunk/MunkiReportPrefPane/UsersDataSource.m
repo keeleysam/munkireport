@@ -10,6 +10,25 @@
 #import <CommonCrypto/CommonDigest.h>
 
 
+/*
+ Convert NSData to hex string.
+ */
+@interface NSData (NSData_HexAdditions)
+- (NSString *)getBytesAsHexString;
+@end
+
+@implementation NSData (NSData_HexAdditions)
+- (NSString *)getBytesAsHexString {
+	NSMutableString *hexString = [NSMutableString stringWithCapacity:([self length] * 2)];
+	const unsigned char *data = [self bytes];
+	for (int i = 0; i < [self length]; ++i) {
+		[hexString appendFormat:@"%02x", data[i]];
+	}
+	return hexString;
+}
+@end
+
+
 // FIXME: these should use NSError.
 
 
@@ -159,7 +178,11 @@
     NSParameterAssert(rowIndex >= 0 && rowIndex < [users count]);
     theUser = [users objectAtIndex:rowIndex];
     theValue = [theUser objectForKey:[aTableColumn identifier]];
-    return theValue;
+    if ([[aTableColumn identifier] isEqualToString:@"password"]) {
+        return @"••••••••";
+    } else {
+        return theValue;
+    }
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView
@@ -171,6 +194,21 @@
 /*
  NSTableViewDelegate
  */
+
+- (void)tableView:(NSTableView *)aTableView
+   setObjectValue:(id)anObject
+   forTableColumn:(NSTableColumn *)aTableColumn
+              row:(NSInteger)rowIndex
+{
+    NSDictionary *theUser = [users objectAtIndex:rowIndex];
+    if ([[aTableColumn identifier] isEqualToString:@"password"]) {
+        NSData *hashedPassword = [self hashPassword:anObject];
+        NSString *hexHashedPassword = [hashedPassword getBytesAsHexString];
+        [theUser setValue:hexHashedPassword forKey:[aTableColumn identifier]];
+    } else {
+        [theUser setValue:anObject forKey:[aTableColumn identifier]];
+    }
+}
 
 //selectionShouldChangeInTableView:
 //tableView:shouldEditTableColumn:row:
