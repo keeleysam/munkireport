@@ -13,6 +13,29 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 
+@implementation MyTableView
+
+- (void)cancelOperation:(id)sender
+{
+    if ([self currentEditor] != nil) {
+        [self abortEditing];
+        [[self window] makeFirstResponder:self];
+    }
+}
+
+/*
+- (void)textDidEndEditing:(NSNotification *)aNotification
+{
+    NSLog(@"textDidEndEditing:");
+    NSLog(@"        name:%@", [aNotification name]);
+    NSLog(@"      object:%@", [aNotification object]);
+    NSLog(@"    userInfo:%@", [aNotification userInfo]);
+}
+*/
+
+@end
+
+
 @implementation MunkiReportPref
 
 - (void) mainViewDidLoad
