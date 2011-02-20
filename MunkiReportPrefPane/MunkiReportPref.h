@@ -12,6 +12,9 @@
 #import "UsersDataSource.h"
 
 
+@interface MyTableView : NSTableView @end
+
+
 @interface MunkiReportPref : NSPreferencePane 
 {
     // Main server control.
@@ -34,7 +37,7 @@
     // Users pane.
     IBOutlet NSButton *theAddUserButton;
     IBOutlet NSButton *theRemoveUserButton;
-    IBOutlet NSTableView *theUsersTableView;
+    IBOutlet MyTableView *theUsersTableView;
     UsersDataSource *usersDataSource;
 }
 
