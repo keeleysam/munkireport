@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="171"/>
+			<integer value="12"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -65,7 +65,7 @@
 								<int key="NSCellFlags2">33554432</int>
 								<object class="NSCustomResource" key="NSContents">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">MunkiReportPrefPanePref</string>
+									<string key="NSResourceName">MunkiReportPref</string>
 								</object>
 								<int key="NSAlign">0</int>
 								<int key="NSScale">0</int>
@@ -1089,9 +1089,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABBYAAAwUAAAA</bytes>
 				</object>
 				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBEditorWindowLastContentRect">{{485, 254}, {668, 368}}</string>
+				<string key="12.IBEditorWindowLastContentRect">{{397, 449}, {668, 368}}</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBWindowTemplateEditedContentRect">{{485, 254}, {668, 368}}</string>
+				<string key="12.IBWindowTemplateEditedContentRect">{{397, 449}, {668, 368}}</string>
 				<integer value="1" key="12.ImportedFromIB2"/>
 				<integer value="1" key="12.windowTemplate.hasMinSize"/>
 				<string key="12.windowTemplate.minSize">{224.664, 10}</string>
@@ -1147,7 +1147,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">197</int>
+			<int key="maxID">199</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1237,7 +1237,7 @@
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">MunkiReportPrefPanePref.h</string>
+						<string key="minorKey">MunkiReportPref.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1815,7 +1815,7 @@
 		<string key="IBDocument.LastKnownRelativeProjectPath">../MunkiReportPrefPane.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="MunkiReportPrefPanePref">{32, 32}</string>
+			<string key="MunkiReportPref">{32, 32}</string>
 			<string key="NSAddTemplate">{8, 8}</string>
 			<string key="NSRemoveTemplate">{8, 8}</string>
 			<string key="NSSwitch">{15, 15}</string>

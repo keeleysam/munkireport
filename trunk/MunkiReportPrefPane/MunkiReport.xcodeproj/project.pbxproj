@@ -18,11 +18,11 @@
 		66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B2130C0363000B0DB3 /* status-stopped.tiff */; };
 		66F012B7130C0363000B0DB3 /* status-unknown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B3130C0363000B0DB3 /* status-unknown.tiff */; };
 		8D202CEA0486D31800D8A456 /* MunkiReport_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* MunkiReport_Prefix.pch */; };
-		8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */ = {isa = PBXBuildFile; fileRef = F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */; };
+		8D202CEB0486D31800D8A456 /* MunkiReportPref.h in Headers */ = {isa = PBXBuildFile; fileRef = F506C03C013D9D7901CA16C8 /* MunkiReportPref.h */; };
 		8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
-		8D202CEE0486D31800D8A456 /* MunkiReportPrefPanePref.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F506C040013D9D8001CA16C8 /* MunkiReportPrefPanePref.tiff */; };
-		8D202CEF0486D31800D8A456 /* MunkiReportPrefPanePref.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506C042013D9D8C01CA16C8 /* MunkiReportPrefPanePref.xib */; };
-		8D202CF10486D31800D8A456 /* MunkiReportPrefPanePref.m in Sources */ = {isa = PBXBuildFile; fileRef = F506C03D013D9D7901CA16C8 /* MunkiReportPrefPanePref.m */; };
+		8D202CEE0486D31800D8A456 /* MunkiReportPref.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F506C040013D9D8001CA16C8 /* MunkiReportPref.tiff */; };
+		8D202CEF0486D31800D8A456 /* MunkiReportPref.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506C042013D9D8C01CA16C8 /* MunkiReportPref.xib */; };
+		8D202CF10486D31800D8A456 /* MunkiReportPref.m in Sources */ = {isa = PBXBuildFile; fileRef = F506C03D013D9D7901CA16C8 /* MunkiReportPref.m */; };
 		8D202CF30486D31800D8A456 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		8D202CF40486D31800D8A456 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F506C035013D953901CA16C8 /* PreferencePanes.framework */; };
 /* End PBXBuildFile section */
@@ -46,10 +46,10 @@
 		8D202CF70486D31800D8A456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D202CF80486D31800D8A456 /* MunkiReport.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunkiReport.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		F506C035013D953901CA16C8 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
-		F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPrefPanePref.h; sourceTree = "<group>"; };
-		F506C03D013D9D7901CA16C8 /* MunkiReportPrefPanePref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiReportPrefPanePref.m; sourceTree = "<group>"; };
-		F506C040013D9D8001CA16C8 /* MunkiReportPrefPanePref.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = MunkiReportPrefPanePref.tiff; sourceTree = "<group>"; };
-		F506C043013D9D8C01CA16C8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MunkiReportPrefPanePref.xib; sourceTree = "<group>"; };
+		F506C03C013D9D7901CA16C8 /* MunkiReportPref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPref.h; sourceTree = "<group>"; };
+		F506C03D013D9D7901CA16C8 /* MunkiReportPref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiReportPref.m; sourceTree = "<group>"; };
+		F506C040013D9D8001CA16C8 /* MunkiReportPref.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = MunkiReportPref.tiff; sourceTree = "<group>"; };
+		F506C043013D9D8C01CA16C8 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MunkiReportPref.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +97,8 @@
 				66F012B3130C0363000B0DB3 /* status-unknown.tiff */,
 				8D202CF70486D31800D8A456 /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
-				F506C040013D9D8001CA16C8 /* MunkiReportPrefPanePref.tiff */,
-				F506C042013D9D8C01CA16C8 /* MunkiReportPrefPanePref.xib */,
+				F506C040013D9D8001CA16C8 /* MunkiReportPref.tiff */,
+				F506C042013D9D8C01CA16C8 /* MunkiReportPref.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -108,8 +108,8 @@
 			children = (
 				662C07B01310870800D78E3A /* RegexKitLite.h */,
 				662C07B11310870800D78E3A /* RegexKitLite.m */,
-				F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */,
-				F506C03D013D9D7901CA16C8 /* MunkiReportPrefPanePref.m */,
+				F506C03C013D9D7901CA16C8 /* MunkiReportPref.h */,
+				F506C03D013D9D7901CA16C8 /* MunkiReportPref.m */,
 				66B77365130DA32A0082C670 /* UsersDataSource.h */,
 				66B77366130DA32A0082C670 /* UsersDataSource.m */,
 			);
@@ -160,7 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D202CEA0486D31800D8A456 /* MunkiReport_Prefix.pch in Headers */,
-				8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */,
+				8D202CEB0486D31800D8A456 /* MunkiReportPref.h in Headers */,
 				66B77367130DA32A0082C670 /* UsersDataSource.h in Headers */,
 				662C07B21310870800D78E3A /* RegexKitLite.h in Headers */,
 			);
@@ -222,8 +222,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */,
-				8D202CEE0486D31800D8A456 /* MunkiReportPrefPanePref.tiff in Resources */,
-				8D202CEF0486D31800D8A456 /* MunkiReportPrefPanePref.xib in Resources */,
+				8D202CEE0486D31800D8A456 /* MunkiReportPref.tiff in Resources */,
+				8D202CEF0486D31800D8A456 /* MunkiReportPref.xib in Resources */,
 				66F012B4130C0363000B0DB3 /* status-error.tiff in Resources */,
 				66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */,
 				66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */,
@@ -248,7 +248,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D202CF10486D31800D8A456 /* MunkiReportPrefPanePref.m in Sources */,
+				8D202CF10486D31800D8A456 /* MunkiReportPref.m in Sources */,
 				66B77368130DA32A0082C670 /* UsersDataSource.m in Sources */,
 				662C07B31310870800D78E3A /* RegexKitLite.m in Sources */,
 			);
@@ -265,12 +265,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		F506C042013D9D8C01CA16C8 /* MunkiReportPrefPanePref.xib */ = {
+		F506C042013D9D8C01CA16C8 /* MunkiReportPref.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F506C043013D9D8C01CA16C8 /* English */,
 			);
-			name = MunkiReportPrefPanePref.xib;
+			name = MunkiReportPref.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
