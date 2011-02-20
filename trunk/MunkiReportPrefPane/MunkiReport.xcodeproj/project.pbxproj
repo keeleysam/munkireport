@@ -17,7 +17,7 @@
 		66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B1130C0363000B0DB3 /* status-running.tiff */; };
 		66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B2130C0363000B0DB3 /* status-stopped.tiff */; };
 		66F012B7130C0363000B0DB3 /* status-unknown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 66F012B3130C0363000B0DB3 /* status-unknown.tiff */; };
-		8D202CEA0486D31800D8A456 /* MunkiReportPrefPane_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */; };
+		8D202CEA0486D31800D8A456 /* MunkiReport_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* MunkiReport_Prefix.pch */; };
 		8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */ = {isa = PBXBuildFile; fileRef = F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */; };
 		8D202CED0486D31800D8A456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D202CEE0486D31800D8A456 /* MunkiReportPrefPanePref.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F506C040013D9D8001CA16C8 /* MunkiReportPrefPanePref.tiff */; };
@@ -32,7 +32,7 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPrefPane_Prefix.pch; sourceTree = "<group>"; };
+		32DBCFA20370C41700C91783 /* MunkiReport_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReport_Prefix.pch; sourceTree = "<group>"; };
 		662C07B01310870800D78E3A /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		662C07B11310870800D78E3A /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		66867737130B1C2400D345DA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -44,7 +44,7 @@
 		66F012B2130C0363000B0DB3 /* status-stopped.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-stopped.tiff"; sourceTree = "<group>"; };
 		66F012B3130C0363000B0DB3 /* status-unknown.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "status-unknown.tiff"; sourceTree = "<group>"; };
 		8D202CF70486D31800D8A456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D202CF80486D31800D8A456 /* MunkiReportPrefPane.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunkiReportPrefPane.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D202CF80486D31800D8A456 /* MunkiReport.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunkiReport.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		F506C035013D953901CA16C8 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
 		F506C03C013D9D7901CA16C8 /* MunkiReportPrefPanePref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReportPrefPanePref.h; sourceTree = "<group>"; };
 		F506C03D013D9D7901CA16C8 /* MunkiReportPrefPanePref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MunkiReportPrefPanePref.m; sourceTree = "<group>"; };
@@ -139,7 +139,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D202CF80486D31800D8A456 /* MunkiReportPrefPane.prefPane */,
+				8D202CF80486D31800D8A456 /* MunkiReport.prefPane */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,7 +147,7 @@
 		32DBCFA10370C40200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				32DBCFA20370C41700C91783 /* MunkiReportPrefPane_Prefix.pch */,
+				32DBCFA20370C41700C91783 /* MunkiReport_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -159,7 +159,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D202CEA0486D31800D8A456 /* MunkiReportPrefPane_Prefix.pch in Headers */,
+				8D202CEA0486D31800D8A456 /* MunkiReport_Prefix.pch in Headers */,
 				8D202CEB0486D31800D8A456 /* MunkiReportPrefPanePref.h in Headers */,
 				66B77367130DA32A0082C670 /* UsersDataSource.h in Headers */,
 				662C07B21310870800D78E3A /* RegexKitLite.h in Headers */,
@@ -169,9 +169,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8D202CE80486D31800D8A456 /* MunkiReportPrefPane */ = {
+		8D202CE80486D31800D8A456 /* MunkiReport */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "MunkiReportPrefPane" */;
+			buildConfigurationList = 1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "MunkiReport" */;
 			buildPhases = (
 				8D202CE90486D31800D8A456 /* Headers */,
 				8D202CEC0486D31800D8A456 /* Resources */,
@@ -183,10 +183,10 @@
 			);
 			dependencies = (
 			);
-			name = MunkiReportPrefPane;
+			name = MunkiReport;
 			productInstallPath = "$(HOME)/Library/PreferencePanes";
 			productName = MunkiReportPrefPane;
-			productReference = 8D202CF80486D31800D8A456 /* MunkiReportPrefPane.prefPane */;
+			productReference = 8D202CF80486D31800D8A456 /* MunkiReport.prefPane */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -197,7 +197,7 @@
 			attributes = {
 				ORGANIZATIONNAME = "University of Gothenburg";
 			};
-			buildConfigurationList = 1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "MunkiReportPrefPane" */;
+			buildConfigurationList = 1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "MunkiReport" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -211,7 +211,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D202CE80486D31800D8A456 /* MunkiReportPrefPane */,
+				8D202CE80486D31800D8A456 /* MunkiReport */,
 			);
 		};
 /* End PBXProject section */
@@ -285,11 +285,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MunkiReportPrefPane_Prefix.pch;
+				GCC_PREFIX_HEADER = MunkiReport_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				OTHER_LDFLAGS = "-licucore";
-				PRODUCT_NAME = MunkiReportPrefPane;
+				PRODUCT_NAME = MunkiReport;
 				WRAPPER_EXTENSION = prefPane;
 				ZERO_LINK = YES;
 			};
@@ -301,11 +301,11 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MunkiReportPrefPane_Prefix.pch;
+				GCC_PREFIX_HEADER = MunkiReport_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				OTHER_LDFLAGS = "-licucore";
-				PRODUCT_NAME = MunkiReportPrefPane;
+				PRODUCT_NAME = MunkiReport;
 				WRAPPER_EXTENSION = prefPane;
 			};
 			name = Release;
@@ -342,7 +342,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "MunkiReportPrefPane" */ = {
+		1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "MunkiReport" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DBD214908BA80EA00186707 /* Debug */,
@@ -351,7 +351,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "MunkiReportPrefPane" */ = {
+		1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "MunkiReport" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DBD214D08BA80EA00186707 /* Debug */,
