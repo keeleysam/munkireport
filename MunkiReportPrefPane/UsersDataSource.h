@@ -1,6 +1,6 @@
 //
 //  UsersDataSource.h
-//  MunkiReportPrefPane
+//  MunkiReport
 //
 //  Created by Pelle on 2011-02-17.
 //  Copyright 2011 University of Gothenburg. All rights reserved.

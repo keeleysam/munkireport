@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'MunkiReportPrefPane' target in the 'MunkiReportPrefPane' project.
+// Prefix header for all source files of the 'MunkiReport' target in the 'MunkiReport' project.
 //
 
 #ifdef __OBJC__
