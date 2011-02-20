@@ -23,12 +23,12 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>NSMainNibFile</key>
-	<string>MunkiReportPrefPanePref</string>
+	<string>MunkiReportPref</string>
 	<key>NSPrefPaneIconFile</key>
-	<string>MunkiReportPrefPanePref.tiff</string>
+	<string>MunkiReportPref.tiff</string>
 	<key>NSPrefPaneIconLabel</key>
-	<string>MunkiReportPrefPane</string>
+	<string>MunkiReport</string>
 	<key>NSPrincipalClass</key>
-	<string>MunkiReportPrefPanePref</string>
+	<string>MunkiReportPref</string>
 </dict>
 </plist>

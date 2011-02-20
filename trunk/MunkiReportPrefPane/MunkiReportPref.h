@@ -1,6 +1,6 @@
 //
-//  MunkiReportPrefPanePref.h
-//  MunkiReportPrefPane
+//  MunkiReportPref.h
+//  MunkiReport
 //
 //  Created by Per Olofsson on 2011-02-15.
 //  Copyright (c) 2010-2011 University of Gothenburg. All rights reserved.
@@ -12,7 +12,7 @@
 #import "UsersDataSource.h"
 
 
-@interface MunkiReportPrefPanePref : NSPreferencePane 
+@interface MunkiReportPref : NSPreferencePane 
 {
     // Main server control.
     IBOutlet NSButton *theOnButton;

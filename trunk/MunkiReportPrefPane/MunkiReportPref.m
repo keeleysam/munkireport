@@ -1,6 +1,6 @@
 //
-//  MunkiReportPrefPanePref.m
-//  MunkiReportPrefPane
+//  MunkiReportPref.m
+//  MunkiReport
 //
 //  Created by Per Olofsson on 2011-02-15.
 //  Copyright (c) 2010-2011 University of Gothenburg. All rights reserved.
@@ -13,7 +13,7 @@ static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munk
 static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 
-@implementation MunkiReportPrefPanePref
+@implementation MunkiReportPref
 
 - (void) mainViewDidLoad
 {
