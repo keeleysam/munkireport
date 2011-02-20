@@ -6,7 +6,7 @@
 //  Copyright (c) 2010-2011 University of Gothenburg. All rights reserved.
 //
 
-#import "MunkiReportPrefPanePref.h"
+#import "MunkiReportPref.h"
 
 
 static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munkireport.plist";
