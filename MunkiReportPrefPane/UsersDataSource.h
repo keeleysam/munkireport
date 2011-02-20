@@ -9,9 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface UsernameFormatter : NSFormatter
-
-@end
+@interface UsernameFormatter : NSFormatter @end
 
 
 @interface UsersDataSource : NSObject <NSTableViewDelegate, NSTableViewDataSource> {

@@ -48,25 +48,12 @@
              forString:(NSString *)string
       errorDescription:(NSString **)error
 {
-    //*error = @"You suck";
     *anObject = [NSString stringWithString:string];
     return YES;
 }
 
-/*
-- (NSAttributedString *)attributedStringForObjectValue:(id)anObject
-                                 withDefaultAttributes:(NSDictionary *)attributes
-{
-    return nil;
-    //NSLog(@"attributedStringForObjectValue:%@", anObject);
-    //return [[NSAttributedString alloc] initWithString:@"ATTR"
-    //                                       attributes:attributes];
-}
-*/
-
 - (BOOL)isPartialStringValid:(NSString *)partialString newEditingString:(NSString **)newString errorDescription:(NSString **)error
 {
-    NSLog(@"isPartialStringValid:%@", partialString);
     if ([partialString length] <= 32) {
         if ([partialString isMatchedByRegex:@"^[a-zA-Z0-9]*$"]) {
             return YES;
