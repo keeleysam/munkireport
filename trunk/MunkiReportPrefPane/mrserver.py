@@ -12,6 +12,7 @@ import sys
 import optparse
 import subprocess
 import plistlib
+import cStringIO
 
 
 JOB = "com.googlecode.munkireport"
@@ -42,7 +43,7 @@ if 'check_output' not in dir(subprocess):
         """
         if 'stdout' in kwargs:
             raise ValueError('stdout argument not allowed, it will be overridden.')
-        process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
+        process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
         output, unused_err = process.communicate()
         retcode = process.poll()
         if retcode:
@@ -128,4 +129,25 @@ Available actions:
     
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    org_stdout = sys.stdout
+    org_stderr = sys.stderr
+    
+    my_stdout = cStringIO.StringIO()
+    sys.stdout = my_stdout
+    my_stderr = cStringIO.StringIO()
+    sys.stderr = my_stderr
+    my_exitcode = main(sys.argv)
+    
+    sys.stdout = org_stdout
+    sys.stderr = org_stderr
+    
+    plistlib.writePlist(
+        {
+            "exitcode": my_exitcode,
+            "stdout": my_stdout.getvalue(),
+            "stderr": my_stderr.getvalue(),
+        },
+        sys.stdout,
+    )
+    
+    sys.exit(0)

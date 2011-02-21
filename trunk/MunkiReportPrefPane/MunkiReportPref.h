@@ -44,7 +44,7 @@
 - (void) mainViewDidLoad;
 
 // Main server control.
-- (void) launchctl:(NSString *)subcommand;
+- (NSDictionary *) mrserver:(NSString *)action;
 - (IBAction) onButtonClicked:(id)sender;
 - (IBAction) offButtonClicked:(id)sender;
 

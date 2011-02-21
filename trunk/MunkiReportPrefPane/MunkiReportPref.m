@@ -89,35 +89,42 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 // LaunchDaemon control
 
-- (void) launchctl:(NSString *)subcommand
+- (NSDictionary *) mrserver:(NSString *)action
 {
-    // load or unload LaunchDaemon.
+    NSString *mrserver = [[self bundle] pathForResource:@"mrserver" ofType:@"py"];
     
-    NSArray *args = [NSArray arrayWithObjects:subcommand,
-                             @"-w",
-                             launchDaemonPath,
-                             nil];
+    const char *argv[] = {
+        [action UTF8String],
+        NULL
+    };
     
-    // Convert NSArray into char-* array.
-    const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
-    int argvIndex = 0;
-    for (NSString *string in args) {
-        argv[argvIndex] = [string UTF8String];
-        argvIndex++;
-    }
-    argv[argvIndex] = nil;
-    
+    FILE *mrserver_out;
     OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
-                                                            [@"/bin/launchctl" UTF8String],
+                                                            [mrserver UTF8String],
                                                             kAuthorizationFlagDefaults,
                                                             (char *const *)argv,
-                                                            nil);
-    free(argv);
-    
+                                                            &mrserver_out);
     if (processError != errAuthorizationSuccess) {
-        NSLog(@"MunkiReport server start failed: %d", processError);
+        NSLog(@"Authorization for mrserver.py failed with code %d", processError);
     }
     
+    NSData *mrserverOutputPlist = [[[NSFileHandle alloc]
+                                    initWithFileDescriptor:fileno(mrserver_out)]
+                                   readDataToEndOfFile];
+    fclose(mrserver_out);
+    
+    NSString *errorDesc = nil;
+    NSPropertyListFormat format;
+    NSDictionary *plist = (NSDictionary *)[NSPropertyListSerialization
+                                           propertyListFromData:mrserverOutputPlist
+                                               mutabilityOption:NSPropertyListImmutable
+                                                         format:&format
+                                               errorDescription:&errorDesc];
+    if (plist == nil) {
+        NSLog(@"Error reading output from mrserver.py: %@: %d", errorDesc);
+    }
+    
+    return plist;
 }
 
 - (IBAction) onButtonClicked:(id)sender
@@ -125,10 +132,13 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [theOnButton setState:NSOnState];
     [theOffButton setState:NSOffState];
     
-    [self launchctl:@"load"];
+    [theStatusText setStringValue:@"Starting server..."];
+    [theStatusIndicator setImage:statusImageUnknown];
     
-    [theStatusText setStringValue:@"Running at http://0.0.0.0:8444/"];
-    [theStatusIndicator setImage:statusImageRunning];
+    NSDictionary *response = [self mrserver:@"enable"];
+    NSLog(@"exitcode: %@", [response objectForKey:@"exitcode"]);
+    NSLog(@"stdout: %@", [response objectForKey:@"stdout"]);
+    NSLog(@"stderr: %@", [response objectForKey:@"stderr"]);
 }
 
 - (IBAction) offButtonClicked:(id)sender
@@ -136,10 +146,14 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [theOnButton setState:NSOffState];
     [theOffButton setState:NSOnState];
     
-    [self launchctl:@"unload"];
+    [theStatusText setStringValue:@"Stopping server..."];
+    [theStatusIndicator setImage:statusImageUnknown];
     
-    [theStatusText setStringValue:@"Stopped"];
-    [theStatusIndicator setImage:statusImageStopped];
+    NSDictionary *response = [self mrserver:@"disable"];
+    NSLog(@"exitcode: %@", [response objectForKey:@"exitcode"]);
+    NSLog(@"stdout: %@", [response objectForKey:@"stdout"]);
+    NSLog(@"stderr: %@", [response objectForKey:@"stderr"]);
+    
 }
 
 // Authorization
@@ -174,6 +188,27 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
         [theStatusIndicator setImage:statusImageError];
         [theStatusText setStringValue:@"LaunchDaemon is missing!"];
         return;
+    }
+    if ( ! [self isUnlocked]) {
+        [theStatusIndicator setImage:statusImageUnknown];
+        [theStatusText setStringValue:@"Preference Pane not authorized, unlock panel"];
+        return;
+    }
+    NSDictionary *response = [self mrserver:@"status"];
+    if ([response objectForKey:@"exitcode"] != 0) {
+        [theStatusIndicator setImage:statusImageError];
+        [theStatusText setStringValue:[response objectForKey:@"stderr"]];
+        return;
+    }
+    if ([[response objectForKey:@"stdout"] isEqual:@"running"]) {
+        [theStatusIndicator setImage:statusImageRunning];
+        [theStatusText setStringValue:@"Running"];
+    } else if ([[response objectForKey:@"stdout"] isEqual:@"stopped"]) {
+        [theStatusIndicator setImage:statusImageStopped];
+        [theStatusText setStringValue:@"Stopped"];
+    } else {
+        [theStatusIndicator setImage:statusImageUnknown];
+        [theStatusText setStringValue:[response objectForKey:@"stdout"]];
     }
 }
 
