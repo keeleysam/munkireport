@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		051F85CC131287F200745555 /* mrserver.py in Resources */ = {isa = PBXBuildFile; fileRef = 051F85CB131287F200745555 /* mrserver.py */; };
 		662C07B21310870800D78E3A /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 662C07B01310870800D78E3A /* RegexKitLite.h */; };
 		662C07B31310870800D78E3A /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 662C07B11310870800D78E3A /* RegexKitLite.m */; };
 		66867739130B1C2400D345DA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867737130B1C2400D345DA /* Security.framework */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		051F85CB131287F200745555 /* mrserver.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = mrserver.py; sourceTree = "<group>"; };
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -91,6 +93,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				051F85CB131287F200745555 /* mrserver.py */,
 				66F012B0130C0363000B0DB3 /* status-error.tiff */,
 				66F012B1130C0363000B0DB3 /* status-running.tiff */,
 				66F012B2130C0363000B0DB3 /* status-stopped.tiff */,
@@ -228,6 +231,7 @@
 				66F012B5130C0363000B0DB3 /* status-running.tiff in Resources */,
 				66F012B6130C0363000B0DB3 /* status-stopped.tiff in Resources */,
 				66F012B7130C0363000B0DB3 /* status-unknown.tiff in Resources */,
+				051F85CC131287F200745555 /* mrserver.py in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
