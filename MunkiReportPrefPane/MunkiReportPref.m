@@ -195,17 +195,23 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
         return;
     }
     NSDictionary *response = [self mrserver:@"status"];
-    if ([response objectForKey:@"exitcode"] != 0) {
+    if ([[response objectForKey:@"exitcode"] intValue] != 0) {
         [theStatusIndicator setImage:statusImageError];
         [theStatusText setStringValue:[response objectForKey:@"stderr"]];
         return;
     }
-    if ([[response objectForKey:@"stdout"] isEqual:@"running"]) {
+    NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSString *status = [[response objectForKey:@"stdout"]
+                        stringByTrimmingCharactersInSet:whitespace];
+    if ([status isEqual:@"running"]) {
         [theStatusIndicator setImage:statusImageRunning];
         [theStatusText setStringValue:@"Running"];
-    } else if ([[response objectForKey:@"stdout"] isEqual:@"stopped"]) {
+    } else if ([status isEqual:@"stopped"]) {
         [theStatusIndicator setImage:statusImageStopped];
         [theStatusText setStringValue:@"Stopped"];
+    } else if ([status isEqual:@"error"]) {
+        [theStatusIndicator setImage:statusImageError];
+        [theStatusText setStringValue:@"Terminated"];
     } else {
         [theStatusIndicator setImage:statusImageUnknown];
         [theStatusText setStringValue:[response objectForKey:@"stdout"]];

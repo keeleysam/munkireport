@@ -19,42 +19,6 @@ JOB = "com.googlecode.munkireport"
 LAUNCHDAEMON_PATH = "/Library/LaunchDaemons/%s.plist" % JOB
 
 
-# subprocess.check_output backported from 2.7.
-if 'check_output' not in dir(subprocess):
-    def check_output(*popenargs, **kwargs):
-        r"""Run command with arguments and return its output as a byte string.
-
-        If the exit code was non-zero it raises a CalledProcessError.  The
-        CalledProcessError object will have the return code in the returncode
-        attribute and output in the output attribute.
-
-        The arguments are the same as for the Popen constructor.  Example:
-
-        >>> check_output(["ls", "-l", "/dev/null"])
-        'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
-
-        The stdout argument is not allowed as it is used internally.
-        To capture standard error in the result, use stderr=STDOUT.
-
-        >>> check_output(["/bin/sh", "-c",
-        ...               "ls -l non_existent_file ; exit 0"],
-        ...              stderr=STDOUT)
-        'ls: non_existent_file: No such file or directory\n'
-        """
-        if 'stdout' in kwargs:
-            raise ValueError('stdout argument not allowed, it will be overridden.')
-        process = subprocess.Popen(stdout=subprocess.PIPE, stderr=subprocess.PIPE, *popenargs, **kwargs)
-        output, unused_err = process.communicate()
-        retcode = process.poll()
-        if retcode:
-            cmd = kwargs.get("args")
-            if cmd is None:
-                cmd = popenargs[0]
-            raise subprocess.CalledProcessError(retcode, cmd)
-        return output
-    subprocess.check_output = check_output
-    
-
 def enable(argv):
     try:
         subprocess.check_call(["/bin/launchctl", "load", "-w", LAUNCHDAEMON_PATH])
@@ -74,15 +38,19 @@ def disable(argv):
     
 
 def status(argv):
-    try:
-        status_output = subprocess.check_output(["/bin/launchctl", "list", "-x", JOB])
-    except subprocess.CalledProcessError as e:
-        print >>sys.stderr, "LaunchDaemon status failed: %s" % e
-        return 2
-    plist = plistlib.readPlistFromString(status_output)
+    process = subprocess.Popen(["/bin/launchctl", "list", "-x", JOB],
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    output, error = process.communicate()
+    retcode = process.poll()
+    if process.poll():
+        print "stopped"
+        return 0
+    # launchctl list -x outputs the plist to stderr.
+    plist = plistlib.readPlistFromString(error)
     if "PID" in plist:
         print "running"
-    if plist.LastExitStatus == 0:
+    elif plist.LastExitStatus == 0:
         print "stopped"
     else:
         print "error"
