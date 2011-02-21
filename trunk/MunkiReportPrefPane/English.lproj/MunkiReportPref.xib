@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="163"/>
+			<integer value="6"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -166,7 +166,7 @@
 								<object class="NSTabViewItem" id="28290567">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="793742466">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="381181256"/>
 										<int key="NSvFlags">256</int>
 										<array class="NSMutableArray" key="NSSubviews">
 											<object class="NSTextField" id="360302784">
@@ -251,6 +251,7 @@
 											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {466, 242}}</string>
+										<reference key="NSSuperview" ref="381181256"/>
 									</object>
 									<string key="NSLabel">Status</string>
 									<reference key="NSColor" ref="102212428"/>
@@ -259,7 +260,7 @@
 								<object class="NSTabViewItem" id="400117622">
 									<string key="NSIdentifier">2</string>
 									<object class="NSView" key="NSView" id="899101495">
-										<reference key="NSNextResponder" ref="381181256"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<array class="NSMutableArray" key="NSSubviews">
 											<object class="NSScrollView" id="309928089">
@@ -589,20 +590,19 @@
 											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {466, 242}}</string>
-										<reference key="NSSuperview" ref="381181256"/>
 									</object>
 									<string key="NSLabel">Users</string>
 									<reference key="NSColor" ref="102212428"/>
 									<reference key="NSTabView" ref="381181256"/>
 								</object>
 							</array>
-							<reference key="NSSelectedTabViewItem" ref="400117622"/>
+							<reference key="NSSelectedTabViewItem" ref="28290567"/>
 							<reference key="NSFont" ref="34553026"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<array class="NSMutableArray" key="NSSubviews">
-								<reference ref="899101495"/>
+								<reference ref="793742466"/>
 							</array>
 						</object>
 					</array>
@@ -1089,9 +1089,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABBYAAAwUAAAA</bytes>
 				</object>
 				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBEditorWindowLastContentRect">{{409, 454}, {668, 368}}</string>
+				<string key="12.IBEditorWindowLastContentRect">{{316, 388}, {668, 368}}</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBWindowTemplateEditedContentRect">{{409, 454}, {668, 368}}</string>
+				<string key="12.IBWindowTemplateEditedContentRect">{{316, 388}, {668, 368}}</string>
 				<integer value="1" key="12.ImportedFromIB2"/>
 				<integer value="1" key="12.windowTemplate.hasMinSize"/>
 				<string key="12.windowTemplate.minSize">{224.664, 10}</string>
