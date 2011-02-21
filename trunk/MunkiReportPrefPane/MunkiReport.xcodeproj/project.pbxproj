@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		662C07B21310870800D78E3A /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 662C07B01310870800D78E3A /* RegexKitLite.h */; };
 		662C07B31310870800D78E3A /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 662C07B11310870800D78E3A /* RegexKitLite.m */; };
+		664D68EA1311D8B100DA10C8 /* mrserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 664D68E91311D8B100DA10C8 /* mrserver.m */; };
 		66867739130B1C2400D345DA /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867737130B1C2400D345DA /* Security.framework */; };
 		6686773A130B1C2400D345DA /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66867738130B1C2400D345DA /* SecurityInterface.framework */; };
 		66B77367130DA32A0082C670 /* UsersDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 66B77365130DA32A0082C670 /* UsersDataSource.h */; };
@@ -35,6 +36,8 @@
 		32DBCFA20370C41700C91783 /* MunkiReport_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MunkiReport_Prefix.pch; sourceTree = "<group>"; };
 		662C07B01310870800D78E3A /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		662C07B11310870800D78E3A /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		664D68CA1311CFF700DA10C8 /* mrserver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mrserver; sourceTree = BUILT_PRODUCTS_DIR; };
+		664D68E91311D8B100DA10C8 /* mrserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = mrserver.m; sourceTree = "<group>"; };
 		66867737130B1C2400D345DA /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		66867738130B1C2400D345DA /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		66B77365130DA32A0082C670 /* UsersDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsersDataSource.h; sourceTree = "<group>"; };
@@ -53,6 +56,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		664D68C81311CFF700DA10C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D202CF20486D31800D8A456 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -106,6 +116,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				664D68E91311D8B100DA10C8 /* mrserver.m */,
 				662C07B01310870800D78E3A /* RegexKitLite.h */,
 				662C07B11310870800D78E3A /* RegexKitLite.m */,
 				F506C03C013D9D7901CA16C8 /* MunkiReportPref.h */,
@@ -140,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				8D202CF80486D31800D8A456 /* MunkiReport.prefPane */,
+				664D68CA1311CFF700DA10C8 /* mrserver */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,6 +181,22 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		664D68C91311CFF700DA10C8 /* mrserver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 664D68CE1311D01600DA10C8 /* Build configuration list for PBXNativeTarget "mrserver" */;
+			buildPhases = (
+				664D68C71311CFF700DA10C8 /* Sources */,
+				664D68C81311CFF700DA10C8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = mrserver;
+			productName = mrserver;
+			productReference = 664D68CA1311CFF700DA10C8 /* mrserver */;
+			productType = "com.apple.product-type.tool";
+		};
 		8D202CE80486D31800D8A456 /* MunkiReport */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "MunkiReport" */;
@@ -212,6 +240,7 @@
 			projectRoot = "";
 			targets = (
 				8D202CE80486D31800D8A456 /* MunkiReport */,
+				664D68C91311CFF700DA10C8 /* mrserver */,
 			);
 		};
 /* End PBXProject section */
@@ -244,6 +273,14 @@
 /* End PBXRezBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		664D68C71311CFF700DA10C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				664D68EA1311D8B100DA10C8 /* mrserver.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D202CF00486D31800D8A456 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,6 +376,52 @@
 			};
 			name = Release;
 		};
+		664D68CC1311CFF800DA10C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = mrserver;
+			};
+			name = Debug;
+		};
+		664D68CD1311CFF800DA10C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = mrserver;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -356,6 +439,15 @@
 			buildConfigurations = (
 				1DBD214D08BA80EA00186707 /* Debug */,
 				1DBD214E08BA80EA00186707 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		664D68CE1311D01600DA10C8 /* Build configuration list for PBXNativeTarget "mrserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				664D68CC1311CFF800DA10C8 /* Debug */,
+				664D68CD1311CFF800DA10C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
