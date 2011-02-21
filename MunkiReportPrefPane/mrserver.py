@@ -67,8 +67,6 @@ Available actions:
     status
 
 %prog must be run as root.""")
-    # p.add_option("-v", "--verbose", action="store_true",
-    #              help="Verbose output.")
     options, argv = p.parse_args(argv)
     if len(argv) < 2:
         print >>sys.stderr, p.get_usage()
@@ -97,6 +95,9 @@ Available actions:
     
 
 if __name__ == '__main__':
+    # Return stdout, stderr, and exit code as a plist on stdout as
+    # AuthorizationExecuteWithPrivileges doesn't return stderr or the
+    # exit code.
     org_stdout = sys.stdout
     org_stderr = sys.stderr
     
