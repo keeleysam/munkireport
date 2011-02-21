@@ -134,7 +134,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
                                                          format:&format
                                                errorDescription:&errorDesc];
     if (plist == nil) {
-        NSLog(@"Error reading output from mrserver.py: %@: %d", errorDesc);
+        NSLog(@"Error reading output from mrserver.py: %@", errorDesc);
     }
     
     return plist;
