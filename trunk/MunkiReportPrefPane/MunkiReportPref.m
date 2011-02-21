@@ -72,8 +72,6 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     
     // Initialize GUI.
     [self updateButtonAuthorization];
-    [theOnButton setState:NSOffState];
-    [theOffButton setState:NSOffState];
     [theMunkiReportVersionText setStringValue:@"MunkiReport vUNKNOWN"];
     [self updateServerStatus];
     
