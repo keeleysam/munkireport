@@ -11,7 +11,7 @@
 			<string key="NS.object.0">823</string>
 		</object>
 		<array class="NSMutableArray" key="IBDocument.EditedObjectIDs">
-			<integer value="6"/>
+			<integer value="162"/>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -210,7 +210,7 @@
 												<object class="NSTextFieldCell" key="NSCell" id="363944612">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">4326400</int>
-													<string key="NSContents">MunkiReport v1.2.3.456</string>
+													<string key="NSContents">MunkiReport vUNKNOWN</string>
 													<object class="NSFont" key="NSSupport" id="26">
 														<string key="NSName">LucidaGrande</string>
 														<double key="NSSize">11</double>
@@ -1089,9 +1089,9 @@
 					<bytes key="NSTransformStruct">P4AAAL+AAABBYAAAwUAAAA</bytes>
 				</object>
 				<string key="119.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBEditorWindowLastContentRect">{{316, 388}, {668, 368}}</string>
+				<string key="12.IBEditorWindowLastContentRect">{{568, 603}, {668, 368}}</string>
 				<string key="12.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="12.IBWindowTemplateEditedContentRect">{{316, 388}, {668, 368}}</string>
+				<string key="12.IBWindowTemplateEditedContentRect">{{568, 603}, {668, 368}}</string>
 				<integer value="1" key="12.ImportedFromIB2"/>
 				<integer value="1" key="12.windowTemplate.hasMinSize"/>
 				<string key="12.windowTemplate.minSize">{224.664, 10}</string>
