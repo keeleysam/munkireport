@@ -57,11 +57,14 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     usersDataSource = [[UsersDataSource alloc] init];
     if ([usersDataSource loadUsersPlist:[appSupportPath stringByAppendingPathComponent:@"users.plist"]] == NO) {
         NSLog(@"Failed to load users file");
+        [self alertBox:@"Failed to load users file" details:@""];
     }
-    if ([usersDataSource loadGroupsIni:[appSupportPath stringByAppendingPathComponent:@"groups.ini"]] == NO) {
+    if ([usersDataSource loadGroupsIni:[appSupportPath stringByAppendingPathComponent:@"groups.ini"]] == YES) {
+        [usersDataSource updateUsersWithGroups];
+    } else {
         NSLog(@"Failed to load groups file");
+        [self alertBox:@"Failed to load groups file" details:@""];
     }
-    [usersDataSource updateUsersWithGroups];
     [theUsersTableView setDelegate:usersDataSource];
     [theUsersTableView setDataSource:usersDataSource];
     NSTableColumn *usernameColumn = [theUsersTableView tableColumnWithIdentifier:@"username"];
@@ -70,9 +73,9 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     // Initialize GUI.
     [self updateButtonAuthorization];
     [theOnButton setState:NSOffState];
-    [theOffButton setState:NSOnState];
-    [theStatusText setStringValue:@"Checking status..."];
-    [theMunkiReportVersionText setStringValue:@"MunkiReport v0.7.0.unknown"];
+    [theOffButton setState:NSOffState];
+    [theMunkiReportVersionText setStringValue:@"MunkiReport vUNKNOWN"];
+    [self updateServerStatus];
     
     // Setup timer to periodically update server status.
     NSInvocation *updateServerStatusInvocation;
@@ -85,6 +88,16 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [NSTimer scheduledTimerWithTimeInterval:2
              invocation:updateServerStatusInvocation
              repeats:YES];
+}
+
+// Display alert
+
+- (void) alertBox:(NSString *)message details:(NSString *)details
+{
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:message];
+    [alert setInformativeText:details];
+    [alert beginSheetModalForWindow:[[self mainView] window] modalDelegate:nil didEndSelector:nil contextInfo:nil];
 }
 
 // LaunchDaemon control
@@ -136,9 +149,9 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [theStatusIndicator setImage:statusImageUnknown];
     
     NSDictionary *response = [self mrserver:@"enable"];
-    NSLog(@"exitcode: %@", [response objectForKey:@"exitcode"]);
-    NSLog(@"stdout: %@", [response objectForKey:@"stdout"]);
-    NSLog(@"stderr: %@", [response objectForKey:@"stderr"]);
+    if ([[response objectForKey:@"exitcode"] intValue] != 0) {
+        [self alertBox:@"Couldn't start server" details:[response objectForKey:@"stderr"]];
+    }
 }
 
 - (IBAction) offButtonClicked:(id)sender
@@ -150,10 +163,9 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     [theStatusIndicator setImage:statusImageUnknown];
     
     NSDictionary *response = [self mrserver:@"disable"];
-    NSLog(@"exitcode: %@", [response objectForKey:@"exitcode"]);
-    NSLog(@"stdout: %@", [response objectForKey:@"stdout"]);
-    NSLog(@"stderr: %@", [response objectForKey:@"stderr"]);
-    
+    if ([[response objectForKey:@"exitcode"] intValue] != 0) {
+        [self alertBox:@"Couldn't stop server" details:[response objectForKey:@"stderr"]];
+    }
 }
 
 // Authorization
@@ -166,6 +178,9 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 - (void) updateButtonAuthorization {
     [theOnButton setEnabled:[self isUnlocked]];
     [theOffButton setEnabled:[self isUnlocked]];
+    [theAddUserButton setEnabled:[self isUnlocked]];
+    [theRemoveUserButton setEnabled:[self isUnlocked]];
+    [theUsersTableView setEnabled:[self isUnlocked]];
 }
 
 // SFAuthorization delegates
@@ -184,35 +199,56 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 - (void) updateServerStatus
 {
+    // Default to both buttons unselected.
+    [theOnButton setState:NSOffState];
+    [theOffButton setState:NSOffState];
+    
+    // Start with sanity checks.
     if ( ! [[NSFileManager defaultManager] fileExistsAtPath:launchDaemonPath]) {
+        // LaunchDaemon is missing.
         [theStatusIndicator setImage:statusImageError];
         [theStatusText setStringValue:@"LaunchDaemon is missing!"];
         return;
     }
     if ( ! [self isUnlocked]) {
+        // Don't have authority to check server status.
         [theStatusIndicator setImage:statusImageUnknown];
         [theStatusText setStringValue:@"Preference Pane not authorized, unlock panel"];
         return;
     }
+    
+    // Read server status.
     NSDictionary *response = [self mrserver:@"status"];
+    
     if ([[response objectForKey:@"exitcode"] intValue] != 0) {
+        // Server status check failed.
         [theStatusIndicator setImage:statusImageError];
         [theStatusText setStringValue:[response objectForKey:@"stderr"]];
         return;
     }
+    
+    // Parse server status.
     NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     NSString *status = [[response objectForKey:@"stdout"]
                         stringByTrimmingCharactersInSet:whitespace];
+    
     if ([status isEqual:@"running"]) {
+        // Server is running, on button selected.
         [theStatusIndicator setImage:statusImageRunning];
         [theStatusText setStringValue:@"Running"];
+        [theOnButton setState:NSOnState];
     } else if ([status isEqual:@"stopped"]) {
+        // Server is stopped, off button selected.
         [theStatusIndicator setImage:statusImageStopped];
         [theStatusText setStringValue:@"Stopped"];
+        [theOffButton setState:NSOnState];
     } else if ([status isEqual:@"error"]) {
+        // Server is stopped with error, off button selected.
         [theStatusIndicator setImage:statusImageError];
         [theStatusText setStringValue:@"Terminated"];
+        [theOffButton setState:NSOnState];
     } else {
+        // Unknown state.
         [theStatusIndicator setImage:statusImageUnknown];
         [theStatusText setStringValue:[response objectForKey:@"stdout"]];
     }

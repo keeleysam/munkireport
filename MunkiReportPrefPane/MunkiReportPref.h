@@ -42,6 +42,7 @@
 }
 
 - (void) mainViewDidLoad;
+- (void) alertBox:(NSString *)message details:(NSString *)details;
 
 // Main server control.
 - (NSDictionary *) mrserver:(NSString *)action;
