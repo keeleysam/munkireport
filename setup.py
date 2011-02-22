@@ -7,11 +7,17 @@ except ImportError:
     from setuptools import setup, find_packages
 
 import munkireport
+import subprocess
+
+p = subprocess.Popen(["svnversion"], stdout=subprocess.PIPE)
+(out, err) = p.communicate()
+p.wait()
+svnrev = filter(lambda x: x.isdigit(), out.strip().split(":")[-1])
 
 
 setup(
     name='MunkiReport',
-    version=munkireport.__version__,
+    version="%s.%s" % (munkireport.__version__, svnrev),
     description='Report viewer for Munki',
     author='Per Olofsson',
     author_email='per.olofsson@gu.se',
