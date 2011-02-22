@@ -269,9 +269,13 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 - (IBAction) removeUserButtonClicked:(id)sender
 {
-    if ([theUsersTableView selectedRow] != -1) {
+    if ([theUsersTableView selectedRow] >= 0
+        && [theUsersTableView selectedRow] < [theUsersTableView numberOfRows]) {
         [usersDataSource removeUserAtIndex:[theUsersTableView selectedRow]];
         [theUsersTableView reloadData];
+        if ([theUsersTableView selectedRow] >= [theUsersTableView numberOfRows]) {
+            [theUsersTableView deselectAll:self];
+        }
     }
 }
 

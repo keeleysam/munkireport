@@ -59,7 +59,6 @@
             return YES;
         }
     }
-    NSLog(@"Invalid string: '%@'", partialString);
     return NO;
 }
 
@@ -221,11 +220,18 @@
     NSDictionary *theUser;
     id theValue;
     
-    NSParameterAssert(rowIndex >= 0 && rowIndex < [users count]);
+    if (rowIndex < 0 || rowIndex >= [users count]) {
+        return nil;
+    }
     theUser = [users objectAtIndex:rowIndex];
     theValue = [theUser objectForKey:[aTableColumn identifier]];
     if ([[aTableColumn identifier] isEqualToString:@"password"]) {
-        return @"••••••••";
+        if ([theValue length]) {
+            return @"••••••••";
+        } else {
+            return @"";
+        }
+
     } else {
         return theValue;
     }
@@ -241,18 +247,29 @@
  NSTableViewDelegate
  */
 
+// Update model in response to UI.
 - (void)tableView:(NSTableView *)aTableView
    setObjectValue:(id)anObject
    forTableColumn:(NSTableColumn *)aTableColumn
               row:(NSInteger)rowIndex
 {
+    if (rowIndex >= [users count]) {
+        return;
+    }
     NSDictionary *theUser = [users objectAtIndex:rowIndex];
+    
     if ([[aTableColumn identifier] isEqualToString:@"password"]) {
+        // Hash password before storing.
         NSData *hashedPassword = [self hashPassword:anObject];
         NSString *hexHashedPassword = [hashedPassword getBytesAsHexString];
         [theUser setValue:hexHashedPassword forKey:[aTableColumn identifier]];
+    
     } else {
+        // Store value.
         [theUser setValue:anObject forKey:[aTableColumn identifier]];
+        
+        // Changes to admin and view privileges should add or remove the user
+        // from the group array.
         if ([[aTableColumn identifier] isEqualToString:@"hasAdmin"]) {
             NSMutableArray *adminGroup = [groups objectForKey:@"admins"];
             if ([anObject boolValue] == YES) {
@@ -276,8 +293,22 @@
 shouldEditTableColumn:(NSTableColumn *)aTableColumn
               row:(NSInteger)rowIndex
 {
+    NSDictionary *theUser = [users objectAtIndex:rowIndex];
+    
     if ([[aTableColumn identifier] isEqualToString:@"username"]) {
-        return NO;
+        // Don't allow editing of the username if it's non-empty unless
+        // admin and view are unchecked.
+        if ([[theUser objectForKey:@"username"] length] != 0) {
+            if ([[theUser objectForKey:@"hasAdmin"] boolValue]
+                || [[theUser objectForKey:@"hasView"] boolValue]) {
+                return NO;
+            }
+        }
+    } else if ([[aTableColumn identifier] isEqualToString:@"hasAdmin"]
+               || [[aTableColumn identifier] isEqualToString:@"hasView"]) {
+        if ([[theUser objectForKey:@"username"] length] == 0) {
+            return NO;
+        }
     }
     return YES;
 }
@@ -303,5 +334,44 @@ shouldEditTableColumn:(NSTableColumn *)aTableColumn
     }
     return YES;
 }
+
+
+- (BOOL)selectionShouldChangeInTableView:(NSTableView *)aTableView
+{
+    if ([aTableView selectedRow] >= 0
+        && [aTableView selectedRow] < [aTableView numberOfRows]) {
+        NSDictionary *theUser = [users objectAtIndex:[aTableView selectedRow]];
+        NSArray *columns = [NSArray arrayWithObjects:
+                            @"username",
+                            @"realname",
+                            @"password",
+                            nil];
+        for (NSString *column in columns) {
+            if ([[theUser objectForKey:column] length] < 1) {
+                
+                NSString *columnTitle = [[[aTableView tableColumnWithIdentifier:column] headerCell] stringValue];
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert setMessageText:[NSString stringWithFormat:@"Please enter a %@", columnTitle]];
+                [alert beginSheetModalForWindow:[aTableView window] modalDelegate:nil didEndSelector:nil contextInfo:nil];
+                
+                [aTableView editColumn:[aTableView columnWithIdentifier:column]
+                                   row:[aTableView selectedRow]
+                             withEvent:nil
+                                select:YES];
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
+/*
+- (void)tableViewSelectionDidChange:(NSNotification *)aNotification
+{
+    if (usersNeedSaving) {
+        [self saveUsersAndGroups];
+    }
+}
+*/
 
 @end
