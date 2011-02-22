@@ -121,6 +121,22 @@ mv /Library/MunkiReport "$PKGROOT/Library"
 # Copy ini file template.
 cp "$SCRIPTDIR/MunkiReport.ini.template" "$PKGROOT/Library/MunkiReport"
 
+# Create version.plist
+cat > "$PKGROOT/Library/MunkiReport/version.plist" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleShortVersionString</key>
+	<string>$VERSION.$SVNREV</string>
+	<key>CFBundleVersion</key>
+	<string>$VERSION.$SVNREV</string>
+	<key>CFBundleName</key>
+	<string>MunkiReport</string>
+</dict>
+</plist>
+EOF
+
 # Create package info file.
 PKGSIZE=`du -sk $PKGROOT | cut -f1`
 NFILES=$(echo `find $PKGROOT/ | wc -l`)
