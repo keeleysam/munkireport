@@ -34,22 +34,22 @@ rm -rf Paste*.egg
 
 # Build PreferencePane
 pushd "MunkiReportPrefPane" > /dev/null
-/usr/bin/xcodebuild -project "MunkiReportPrefPane.xcodeproj" -alltargets clean > /dev/null
-/usr/bin/xcodebuild -project "MunkiReportPrefPane.xcodeproj" -alltargets build > /dev/null
+/usr/bin/xcodebuild -project "MunkiReport.xcodeproj" -alltargets -configuration Release clean > /dev/null
+/usr/bin/xcodebuild -project "MunkiReport.xcodeproj" -alltargets -configuration Release build > /dev/null
 XCODEBUILD_RESULT="$?"
 popd > /dev/null
 if [ "$XCODEBUILD_RESULT" -ne 0 ]; then
-    echo "Error building MunkiReportPrefPane.xcodeproj: $XCODEBUILD_RESULT"
+    echo "Error building MunkiReport.xcodeproj: $XCODEBUILD_RESULT"
     exit 2
 fi
-if [ ! -e "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane" ]; then
-    echo "Need a release build of MunkiReportPrefPane.prefPane!"
+if [ ! -e "MunkiReportPrefPane/build/Release/MunkiReport.prefPane" ]; then
+    echo "Need a release build of MunkiReport.prefPane!"
     exit 2
 fi
 
 
 # Create pkg
-sudo Setup/make_pkg.sh dist/*.egg "MunkiReportPrefPane/build/Release/MunkiReportPrefPane.prefPane"
+sudo Setup/make_pkg.sh dist/*.egg "MunkiReportPrefPane/build/Release/MunkiReport.prefPane"
 if [ $? -ne 0 ]; then
     echo "Package creation failed"
     exit 1
