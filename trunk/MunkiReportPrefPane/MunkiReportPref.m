@@ -11,6 +11,7 @@
 
 static NSString *launchDaemonPath = @"/Library/LaunchDaemons/com.googlecode.munkireport.plist";
 static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
+static NSString	*versionPath = @"/Library/MunkiReport/version.plist";
 
 
 @implementation MyTableView
@@ -38,7 +39,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 @implementation MunkiReportPref
 
-- (void) mainViewDidLoad
+- (void)mainViewDidLoad
 {
     // Load status images.
     statusImageError =   [[NSImage alloc] initWithContentsOfFile:[[self bundle] pathForImageResource:@"status-error"]];
@@ -72,7 +73,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     
     // Initialize GUI.
     [self updateButtonAuthorization];
-    [theMunkiReportVersionText setStringValue:@"MunkiReport vUNKNOWN"];
+    [theMunkiReportVersionText setStringValue:[self readVersion]];
     [self updateServerStatus];
     
     // Setup timer to periodically update server status.
@@ -88,9 +89,29 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
              repeats:YES];
 }
 
+// Read server version.
+
+- (NSString *)readVersion
+{
+    NSString *errorDesc = nil;
+    NSPropertyListFormat format;
+    
+    NSData *plistData = [[NSFileManager defaultManager] contentsAtPath:versionPath];
+    NSDictionary *version = [NSPropertyListSerialization propertyListFromData:plistData
+                                                             mutabilityOption:NSPropertyListMutableContainersAndLeaves
+                                                                       format:&format
+                                                             errorDescription:&errorDesc];
+    if (version != nil) {
+        return [NSString stringWithFormat:@"MunkiReport %@", [version objectForKey:@"CFBundleShortVersionString"]];
+    } else {
+        NSLog(@"Error reading %@: %@", versionPath, errorDesc);
+        return [NSString stringWithFormat:@"%@ is missing", versionPath];
+    }
+}
+
 // Display alert
 
-- (void) alertBox:(NSString *)message details:(NSString *)details
+- (void)alertBox:(NSString *)message details:(NSString *)details
 {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:message];
@@ -100,7 +121,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 // LaunchDaemon control
 
-- (NSDictionary *) mrserver:(NSString *)action
+- (NSDictionary *)mrserver:(NSString *)action
 {
     NSString *mrserver = [[self bundle] pathForResource:@"mrserver" ofType:@"py"];
     
@@ -138,7 +159,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     return plist;
 }
 
-- (IBAction) onButtonClicked:(id)sender
+- (IBAction)onButtonClicked:(id)sender
 {
     [theOnButton setState:NSOnState];
     [theOffButton setState:NSOffState];
@@ -152,7 +173,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
     }
 }
 
-- (IBAction) offButtonClicked:(id)sender
+- (IBAction)offButtonClicked:(id)sender
 {
     [theOnButton setState:NSOffState];
     [theOffButton setState:NSOnState];
@@ -168,12 +189,12 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 // Authorization
 
-- (BOOL) isUnlocked
+- (BOOL)isUnlocked
 {
     return [authView authorizationState] == SFAuthorizationViewUnlockedState;
 }
 
-- (void) updateButtonAuthorization {
+- (void)updateButtonAuthorization {
     [theOnButton setEnabled:[self isUnlocked]];
     [theOffButton setEnabled:[self isUnlocked]];
     [theAddUserButton setEnabled:[self isUnlocked]];
@@ -183,19 +204,19 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 // SFAuthorization delegates
 
-- (void) authorizationViewDidAuthorize:(SFAuthorizationView *)view
+- (void)authorizationViewDidAuthorize:(SFAuthorizationView *)view
 {
     [self updateButtonAuthorization];
 }
 
-- (void) authorizationViewDidDeauthorize:(SFAuthorizationView *)view
+- (void)authorizationViewDidDeauthorize:(SFAuthorizationView *)view
 {
     [self updateButtonAuthorization];
 }
 
 // Status pane.
 
-- (void) updateServerStatus
+- (void)updateServerStatus
 {
     // Default to both buttons unselected.
     [theOnButton setState:NSOffState];
@@ -254,7 +275,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
 
 // Users pane.
 
-- (IBAction) addUserButtonClicked:(id)sender
+- (IBAction)addUserButtonClicked:(id)sender
 {
     [usersDataSource addUser];
     [theUsersTableView reloadData];
@@ -267,7 +288,7 @@ static NSString	*appSupportPath = @"/Library/Application Support/MunkiReport";
                            select:YES];
 }
 
-- (IBAction) removeUserButtonClicked:(id)sender
+- (IBAction)removeUserButtonClicked:(id)sender
 {
     if ([theUsersTableView selectedRow] >= 0
         && [theUsersTableView selectedRow] < [theUsersTableView numberOfRows]) {
