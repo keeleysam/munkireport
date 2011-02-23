@@ -17,9 +17,14 @@ import cStringIO
 
 JOB = "com.googlecode.munkireport"
 LAUNCHDAEMON_PATH = "/Library/LaunchDaemons/%s.plist" % JOB
+APPSUPPORT_PATH = "/Library/Application Support/MunkiReport"
+users_path = os.path.join(APPSUPPORT_PATH, "users.plist")
+groups_path = os.path.join(APPSUPPORT_PATH, "groups.ini")
 
 
 def enable(argv):
+    """Enable and start server."""
+    
     try:
         subprocess.check_call(["/bin/launchctl", "load", "-w", LAUNCHDAEMON_PATH])
     except subprocess.CalledProcessError as e:
@@ -29,6 +34,8 @@ def enable(argv):
     
 
 def disable(argv):
+    """Stop and disable server."""
+    
     try:
         subprocess.check_call(["/bin/launchctl", "unload", "-w", LAUNCHDAEMON_PATH])
     except subprocess.CalledProcessError as e:
@@ -38,6 +45,8 @@ def disable(argv):
     
 
 def status(argv):
+    """Display server status."""
+    
     process = subprocess.Popen(["/bin/launchctl", "list", "-x", JOB],
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
@@ -57,14 +66,48 @@ def status(argv):
     return 0
     
 
+def saveusers(argv):
+    """Save stdin to users.plist."""
+    
+    try:
+        plist = plistlib.readPlist(sys.stdin)
+    except:
+        print >>sys.stderr, "Malformed users.plist"
+        return 2
+    
+    os.unlink(users_path)
+    plistlib.writePlist(plist, users_path)
+    
+    return 0
+    
+
+def savegroups(argv):
+    """Save stdin to groups.ini."""
+    
+    groups = sys.stdin.read()
+    
+    os.unlink(groups_path)
+    with open(groups_path, "wb") as f:
+        f.write(groups)
+    
+    return 0
+    
+
 def main(argv):
+    actions = {
+        u"enable": enable,
+        u"disable": disable,
+        u"status": status,
+        u"saveusers": saveusers,
+        u"savegroups": savegroups,
+    }
+    
+    action_str = "\n".join(["    %-10s  %s" % (a, b.__doc__) for a, b in actions.items()])
     p = optparse.OptionParser()
     p.set_usage(u"""Usage: %prog action
 
 Available actions:
-    enable
-    disable
-    status
+""" + action_str + """
 
 %prog must be run as root.""")
     options, argv = p.parse_args(argv)
@@ -79,12 +122,6 @@ Available actions:
         return 1
     
     action = argv[1]
-    
-    actions = {
-        u"enable": enable,
-        u"disable": disable,
-        u"status": status,
-    }
     
     if action in actions:
         return actions[action](argv[1:])
