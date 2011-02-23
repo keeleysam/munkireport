@@ -41,23 +41,24 @@
     UsersDataSource *usersDataSource;
 }
 
-- (void) mainViewDidLoad;
-- (void) alertBox:(NSString *)message details:(NSString *)details;
+- (void)mainViewDidLoad;
+- (NSString *)readVersion;
+- (void)alertBox:(NSString *)message details:(NSString *)details;
 
 // Main server control.
-- (NSDictionary *) mrserver:(NSString *)action;
-- (IBAction) onButtonClicked:(id)sender;
-- (IBAction) offButtonClicked:(id)sender;
+- (NSDictionary *)mrserver:(NSString *)action;
+- (IBAction)onButtonClicked:(id)sender;
+- (IBAction)offButtonClicked:(id)sender;
 
 // Authorization.
-- (BOOL) isUnlocked;
-- (void) updateButtonAuthorization;
+- (BOOL)isUnlocked;
+- (void)updateButtonAuthorization;
 
 // Status pane.
-- (void) updateServerStatus;
+- (void)updateServerStatus;
 
 // Users pane.
-- (IBAction) addUserButtonClicked:(id)sender;
-- (IBAction) removeUserButtonClicked:(id)sender;
+- (IBAction)addUserButtonClicked:(id)sender;
+- (IBAction)removeUserButtonClicked:(id)sender;
 
 @end
