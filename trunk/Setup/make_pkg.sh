@@ -39,10 +39,11 @@ fi
 
 
 # Version
-VERSION=`python -c 'import munkireport; print munkireport.__version__'`
+MRVERSION=`python -c 'import munkireport; print munkireport.__version__'`
 SVNREV=`svnversion . | cut -d: -f2 | tr -cd '[:digit:]'`
+VERSION="$MRVERSION.$SVNREV"
 
-PKG="$SRCDIR/dist/MunkiReport-$VERSION.$SVNREV.pkg"
+PKG="$SRCDIR/dist/MunkiReport-$VERSION.pkg"
 
 
 # Create a PackageInfo.
@@ -128,9 +129,9 @@ cat > "$PKGROOT/Library/MunkiReport/version.plist" <<EOF
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>$VERSION.$SVNREV</string>
+	<string>$VERSION</string>
 	<key>CFBundleVersion</key>
-	<string>$VERSION.$SVNREV</string>
+	<string>$VERSION</string>
 	<key>CFBundleName</key>
 	<string>MunkiReport</string>
 </dict>
