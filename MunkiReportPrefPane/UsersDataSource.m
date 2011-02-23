@@ -99,6 +99,18 @@
     return YES;
 }
 
+// Serialize users to plist data.
+- (NSData *)serializeUsersPlist
+{
+    NSLog(@"Serializing users: %@", users);
+    NSError *error;
+    NSData *data = [NSPropertyListSerialization dataWithPropertyList:users format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
+    if (data == nil) {
+        NSLog(@"serialization error: %@");
+    }
+    return data;
+}
+
 // Load an ini file with [groups] containing one user per line.
 - (BOOL)loadGroupsIni:(NSString *)groupsPath
 {
@@ -139,6 +151,22 @@
         return NO;
     }
     return YES;
+}
+
+// Serialize groups to ini file data.
+- (NSData *)serializeGroupsIni
+{
+    NSMutableArray *lines = [[NSMutableArray alloc] init];
+    
+    for (NSString *group in groups) {
+        [lines addObject:[NSString stringWithFormat:@"[%@]", group]];
+        for (NSString *user in [groups objectForKey:group]) {
+            [lines addObject:user];
+        }
+        [lines addObject:[NSString stringWithFormat:@""]];
+    }
+    
+    return [[lines componentsJoinedByString:@"\n"] dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 // Set hasAdmin and hasView for users based on group membership.

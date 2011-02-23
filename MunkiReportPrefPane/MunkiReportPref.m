@@ -56,16 +56,7 @@ static NSString	*versionPath = @"/Library/MunkiReport/version.plist";
     
     // Load users plist.
     usersDataSource = [[UsersDataSource alloc] init];
-    if ([usersDataSource loadUsersPlist:[appSupportPath stringByAppendingPathComponent:@"users.plist"]] == NO) {
-        NSLog(@"Failed to load users file");
-        [self alertBox:@"Failed to load users file" details:@""];
-    }
-    if ([usersDataSource loadGroupsIni:[appSupportPath stringByAppendingPathComponent:@"groups.ini"]] == YES) {
-        [usersDataSource updateUsersWithGroups];
-    } else {
-        NSLog(@"Failed to load groups file");
-        [self alertBox:@"Failed to load groups file" details:@""];
-    }
+    [self loadUsersAndGroups];
     [theUsersTableView setDelegate:usersDataSource];
     [theUsersTableView setDataSource:usersDataSource];
     NSTableColumn *usernameColumn = [theUsersTableView tableColumnWithIdentifier:@"username"];
@@ -87,6 +78,82 @@ static NSString	*versionPath = @"/Library/MunkiReport/version.plist";
     [NSTimer scheduledTimerWithTimeInterval:2
              invocation:updateServerStatusInvocation
              repeats:YES];
+}
+
+
+// Server control.
+
+- (NSDictionary *)mrserver:(NSString *)action withInput:(NSData *)input
+{
+    NSString *mrserver = [[self bundle] pathForResource:@"mrserver" ofType:@"py"];
+    
+    const char *argv[] = {
+        [action UTF8String],
+        NULL
+    };
+    
+    FILE *commPipe;
+    OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
+                                                            [mrserver UTF8String],
+                                                            kAuthorizationFlagDefaults,
+                                                            (char *const *)argv,
+                                                            &commPipe);
+    if (processError != errAuthorizationSuccess) {
+        NSLog(@"Authorization for mrserver.py failed with code %d", processError);
+    }
+    
+    NSFileHandle *fh = [[NSFileHandle alloc] initWithFileDescriptor:fileno(commPipe)];
+    if (input != nil) {
+        NSLog(@"writing data to mrserver");
+        fwrite([input bytes], 1, [input length], commPipe);
+        fflush(commPipe);
+    }
+    NSLog(@"reading data from mrserver");
+    NSData *mrserverOutputPlist = [fh readDataToEndOfFile];
+    NSLog(@"closing mrserver pipe");
+    fclose(commPipe);
+    
+    NSString *errorDesc = nil;
+    NSPropertyListFormat format;
+    NSDictionary *plist = (NSDictionary *)[NSPropertyListSerialization
+                                           propertyListFromData:mrserverOutputPlist
+                                           mutabilityOption:NSPropertyListImmutable
+                                           format:&format
+                                           errorDescription:&errorDesc];
+    if (plist == nil) {
+        NSLog(@"Error reading output from mrserver.py: %@", errorDesc);
+    }
+    
+    return plist;
+}
+
+- (NSDictionary *)mrserver:(NSString *)action
+{
+    return [self mrserver:action withInput:nil];
+}
+
+// Load users and groups.
+
+- (void)loadUsersAndGroups
+{
+    if ([usersDataSource loadUsersPlist:[appSupportPath stringByAppendingPathComponent:@"users.plist"]] == NO) {
+        NSLog(@"Failed to load users file");
+        [self alertBox:@"Failed to load users file" details:@""];
+    }
+    if ([usersDataSource loadGroupsIni:[appSupportPath stringByAppendingPathComponent:@"groups.ini"]] == YES) {
+        [usersDataSource updateUsersWithGroups];
+    } else {
+        NSLog(@"Failed to load groups file");
+        [self alertBox:@"Failed to load groups file" details:@""];
+    }
+}
+
+// Save users and groups.
+
+- (void)saveUsersAndGroups
+{
+    NSLog(@"saveusers: %@", [self mrserver:@"saveusers" withInput:[usersDataSource serializeUsersPlist]]);
+    NSLog(@"savegroups: %@", [self mrserver:@"savegroups" withInput:[usersDataSource serializeGroupsIni]]);
 }
 
 // Read server version.
@@ -117,46 +184,6 @@ static NSString	*versionPath = @"/Library/MunkiReport/version.plist";
     [alert setMessageText:message];
     [alert setInformativeText:details];
     [alert beginSheetModalForWindow:[[self mainView] window] modalDelegate:nil didEndSelector:nil contextInfo:nil];
-}
-
-// LaunchDaemon control
-
-- (NSDictionary *)mrserver:(NSString *)action
-{
-    NSString *mrserver = [[self bundle] pathForResource:@"mrserver" ofType:@"py"];
-    
-    const char *argv[] = {
-        [action UTF8String],
-        NULL
-    };
-    
-    FILE *mrserver_out;
-    OSErr processError = AuthorizationExecuteWithPrivileges([[authView authorization] authorizationRef],
-                                                            [mrserver UTF8String],
-                                                            kAuthorizationFlagDefaults,
-                                                            (char *const *)argv,
-                                                            &mrserver_out);
-    if (processError != errAuthorizationSuccess) {
-        NSLog(@"Authorization for mrserver.py failed with code %d", processError);
-    }
-    
-    NSData *mrserverOutputPlist = [[[NSFileHandle alloc]
-                                    initWithFileDescriptor:fileno(mrserver_out)]
-                                   readDataToEndOfFile];
-    fclose(mrserver_out);
-    
-    NSString *errorDesc = nil;
-    NSPropertyListFormat format;
-    NSDictionary *plist = (NSDictionary *)[NSPropertyListSerialization
-                                           propertyListFromData:mrserverOutputPlist
-                                               mutabilityOption:NSPropertyListImmutable
-                                                         format:&format
-                                               errorDescription:&errorDesc];
-    if (plist == nil) {
-        NSLog(@"Error reading output from mrserver.py: %@", errorDesc);
-    }
-    
-    return plist;
 }
 
 - (IBAction)onButtonClicked:(id)sender
@@ -297,6 +324,7 @@ static NSString	*versionPath = @"/Library/MunkiReport/version.plist";
         if ([theUsersTableView selectedRow] >= [theUsersTableView numberOfRows]) {
             [theUsersTableView deselectAll:self];
         }
+        [self saveUsersAndGroups];
     }
 }
 

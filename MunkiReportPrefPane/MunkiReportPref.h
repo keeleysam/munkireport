@@ -42,11 +42,14 @@
 }
 
 - (void)mainViewDidLoad;
+- (NSDictionary *)mrserver:(NSString *)action withInput:(NSData *)input;
+- (NSDictionary *)mrserver:(NSString *)action;
+- (void)loadUsersAndGroups;
+- (void)saveUsersAndGroups;
 - (NSString *)readVersion;
 - (void)alertBox:(NSString *)message details:(NSString *)details;
 
 // Main server control.
-- (NSDictionary *)mrserver:(NSString *)action;
 - (IBAction)onButtonClicked:(id)sender;
 - (IBAction)offButtonClicked:(id)sender;
 
