@@ -35,7 +35,6 @@ bin/server.sh
 bin/shell.sh
 etc/groups.ini
 etc/permissions.ini
-etc/users
 ez_setup/README.txt
 ez_setup/__init__.py
 munkireport/__init__.py
