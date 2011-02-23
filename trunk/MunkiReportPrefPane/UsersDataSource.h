@@ -32,7 +32,9 @@
 - (id)init;
 
 - (BOOL)loadUsersPlist:(NSString *)usersPath;
+- (NSData *)serializeUsersPlist;
 - (BOOL)loadGroupsIni:(NSString *)groupsPath;
+- (NSData *)serializeGroupsIni;
 - (void)updateUsersWithGroups;
 - (NSData *)hashPassword:(NSString *)password;
 - (NSMutableDictionary *)addUser;
