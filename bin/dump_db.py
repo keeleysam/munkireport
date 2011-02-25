@@ -41,7 +41,7 @@ def main(argv):
             return 2
     
     for client in DBSession.query(Client).all():
-        print "%s %s" % (client.name, client.mac)
+        print "%d %s %s %s" % (client.id, client.name, client.mac, client.remote_ip)
         c = dict()
         for prop in dir(Client):
             attr = getattr(Client, prop)
