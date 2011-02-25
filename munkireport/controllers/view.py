@@ -28,21 +28,43 @@ class ViewController(BaseController):
     allow_only = has_permission("view",
         msg=l_("Reports are only available for users with 'view' permission."))
     
-    @expose('munkireport.templates.view.index')
-    def index(self):
-        """Report overview."""
-        return dict(
-            page="reports",
-            error_clients=DBSession.query(Client).filter(Client.errors > 0).all(),
-            warning_clients=DBSession.query(Client).filter(Client.errors == 0).filter(Client.warnings > 0).all(),
-            activity_clients=DBSession.query(Client).filter(Client.activity != None).all()
-        )
-    
     
     @expose()
     def error(self):
         abort(403)
     
+    
+    @expose('munkireport.templates.view.index')
+    @validate(
+        validators={
+            "order_by": validators.OneOf((u"name", u"user", u"ip", u"activity")),
+            "reverse": validators.StringBool(if_missing=False)
+        },
+        error_handler=error
+    )
+    def index(self, order_by=None, reverse=False):
+        """Report overview."""
+        sort_keys = {
+            None: Client.timestamp,
+            u"name": Client.name,
+            u"user": Client.console_user,
+            u"ip": Client.remote_ip,
+            u"activity": Client.timestamp,
+        }
+        sort_key = sort_keys[order_by]
+        error_clients=DBSession.query(Client).filter(Client.errors > 0).order_by(sort_key).all()
+        warning_clients=DBSession.query(Client).filter(Client.errors == 0).filter(Client.warnings > 0).order_by(sort_key).all()
+        activity_clients=DBSession.query(Client).filter(Client.activity != None).order_by(sort_key).all()
+        if reverse:
+            error_clients.reverse()
+            warning_clients.reverse()
+            activity_clients.reverse()
+        return dict(
+            page="reports",
+            error_clients=error_clients,
+            warning_clients=warning_clients,
+            activity_clients=activity_clients
+        )
     
     @expose('munkireport.templates.view.client_list')
     def client_list(self):
