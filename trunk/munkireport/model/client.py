@@ -53,7 +53,8 @@ class Client(DeclarativeBase):
         for section in ("ItemsToInstall",
                         "InstallResults",
                         "ItemsToRemove",
-                        "RemovalResults"):
+                        "RemovalResults",
+                        "AppleUpdateList"):
             if (section in plist) and len(plist[section]):
                 activity[section] = plist[section]
         if activity:
