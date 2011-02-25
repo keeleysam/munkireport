@@ -159,11 +159,12 @@
           <td py:content="client.console_user">user</td>
           <td py:content="client.remote_ip" class="ip">ip</td>
           <?python
-              install_items   = len(client.activity['ItemsToInstall']) if 'ItemsToInstall' in client.activity else 0
-              removal_items   = len(client.activity['ItemsToRemove'])  if 'ItemsToRemove'  in client.activity else 0
-              install_results = len(client.activity['InstallResults']) if 'InstallResults' in client.activity else 0
-              removal_results = len(client.activity['RemovalResults']) if 'RemovalResults' in client.activity else 0
-              pending_installs = install_items - install_results
+              install_items   = len(client.activity['ItemsToInstall'])  if 'ItemsToInstall'  in client.activity else 0
+              install_results = len(client.activity['InstallResults'])  if 'InstallResults'  in client.activity else 0
+              removal_items   = len(client.activity['ItemsToRemove'])   if 'ItemsToRemove'   in client.activity else 0
+              removal_results = len(client.activity['RemovalResults'])  if 'RemovalResults'  in client.activity else 0
+              apple_updates   = len(client.activity['AppleUpdateList']) if 'AppleUpdateList' in client.activity else 0
+              pending_installs = (install_items + apple_updates) - install_results
               pending_removals = removal_items - removal_results
           ?>
           <td>
