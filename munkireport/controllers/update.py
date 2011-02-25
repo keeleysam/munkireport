@@ -81,7 +81,10 @@ class UpdateController(BaseController):
             DBSession.add(client)
         
         client.runtype = runtype
-        client.name = name
+        if name:
+            client.name = name
+        else:
+            client.name = "<NO NAME>"
         client.runstate = u"in progress"
         client.timestamp = datetime.now()
         client.remote_ip = unicode(request.environ['REMOTE_ADDR'])
@@ -139,7 +142,10 @@ class UpdateController(BaseController):
         
         # Update client attributes.
         client.runtype = runtype
-        client.name = name
+        if name:
+            client.name = name
+        else:
+            client.name = "<NO NAME>"
         client.runstate = u"done"
         client.timestamp = datetime.now()
         client.remote_ip = unicode(request.environ['REMOTE_ADDR'])
