@@ -382,3 +382,13 @@ table.client_info {
 .error a:hover, .warning a:hover {
     text-decoration: underline;
 }
+
+a.sortheader {
+    color: black;
+    text-decoration: none;
+}
+
+a.sortheader:hover {
+    color: black;
+    text-decoration: underline;
+}
