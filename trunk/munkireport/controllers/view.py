@@ -37,19 +37,20 @@ class ViewController(BaseController):
     @expose('munkireport.templates.view.index')
     @validate(
         validators={
-            "order_by": validators.OneOf((u"name", u"user", u"ip", u"activity")),
+            "order_by": validators.OneOf((u"name", u"user", u"ip", u"time")),
             "reverse": validators.StringBool(if_missing=False)
         },
         error_handler=error
     )
     def index(self, order_by=None, reverse=False):
         """Report overview."""
+        if not order_by:
+            order_by = u"time"
         sort_keys = {
-            None: Client.timestamp,
             u"name": Client.name,
             u"user": Client.console_user,
             u"ip": Client.remote_ip,
-            u"activity": Client.timestamp,
+            u"time": Client.timestamp,
         }
         sort_key = sort_keys[order_by]
         error_clients=DBSession.query(Client).filter(Client.errors > 0).order_by(sort_key).all()
@@ -61,6 +62,8 @@ class ViewController(BaseController):
             activity_clients.reverse()
         return dict(
             page="reports",
+            order_by=order_by,
+            reverse=reverse,
             error_clients=error_clients,
             warning_clients=warning_clients,
             activity_clients=activity_clients

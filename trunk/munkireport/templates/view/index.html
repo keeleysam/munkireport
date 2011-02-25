@@ -13,6 +13,21 @@
 
 <body>
 
+<?python
+    sort_flip = u'false' if reverse else u'true'
+    sort_keep = u'true' if reverse else u'false'
+    sort_name = u'order_by=name&reverse=' + (sort_flip if order_by == u'name' else sort_keep)
+    sort_user = u'order_by=user&reverse=' + (sort_flip if order_by == u'user' else sort_keep)
+    sort_ip   = u'order_by=ip&reverse='   + (sort_flip if order_by == u'ip'   else sort_keep)
+    sort_time = u'order_by=time&reverse=' + (sort_flip if order_by == u'time' else sort_keep)
+    arrow = u'\u25bc' if reverse else u'\u25b2'
+    arrow_name = (u' ' + arrow) if order_by == u'name' else u''
+    arrow_user = (u' ' + arrow) if order_by == u'user' else u''
+    arrow_ip   = (u' ' + arrow) if order_by == u'ip'   else u''
+    arrow_time = (u' ' + arrow) if order_by == u'time' else u''
+?>
+
+
 <h2>Errors</h2>
 
 <py:choose test="len(error_clients)">
@@ -23,10 +38,10 @@
     <table class="clientlist">
       <thead>
         <tr>
-          <th>Client</th>
-          <th>User</th>
-          <th>IP</th>
-          <th>Latest Run</th>
+          <th><a class="sortheader" href="?${sort_name}">Client${arrow_name}</a></th>
+          <th><a class="sortheader" href="?${sort_user}">User${arrow_user}</a></th>
+          <th><a class="sortheader" href="?${sort_ip}">IP${arrow_ip}</a></th>
+          <th><a class="sortheader" href="?${sort_time}">Latest Run${arrow_time}</a></th>
         </tr>
       </thead>
       <tbody>
@@ -80,10 +95,10 @@
     <table class="clientlist">
       <thead>
         <tr>
-          <th>Client</th>
-          <th>User</th>
-          <th>IP</th>
-          <th>Latest Run</th>
+          <th><a class="sortheader" href="?${sort_name}">Client${arrow_name}</a></th>
+          <th><a class="sortheader" href="?${sort_user}">User${arrow_user}</a></th>
+          <th><a class="sortheader" href="?${sort_ip}">IP${arrow_ip}</a></th>
+          <th><a class="sortheader" href="?${sort_time}">Latest Run${arrow_time}</a></th>
         </tr>
       </thead>
       <tbody>
@@ -137,10 +152,10 @@
     <table class="clientlist">
       <thead>
         <tr>
-          <th>Client</th>
-          <th>User</th>
-          <th>IP</th>
-          <th>Activity</th>
+          <th><a class="sortheader" href="?${sort_name}">Client${arrow_name}</a></th>
+          <th><a class="sortheader" href="?${sort_user}">User${arrow_user}</a></th>
+          <th><a class="sortheader" href="?${sort_ip}">IP${arrow_ip}</a></th>
+          <th><a class="sortheader" href="?${sort_time}">Latest Run${arrow_time}</a></th>
         </tr>
       </thead>
       <tbody>
