@@ -104,6 +104,13 @@ class ViewController(BaseController):
                 if dversion in install_results:
                     res = install_results[dversion]
                     item["install_result"] = res["result"]
+        if "AppleUpdateList" in report:
+            for item in report["AppleUpdateList"]:
+                item["install_result"] = "Pending"
+                dversion = "%s-%s" % (item["display_name"], item["version_to_install"])
+                if dversion in install_results:
+                    res = install_results[dversion]
+                    item["install_result"] = res["result"]
         
         # Move install results over to their install items.
         removal_results = dict()
