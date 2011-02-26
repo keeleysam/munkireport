@@ -37,19 +37,21 @@ class ViewController(BaseController):
     @expose('munkireport.templates.view.index')
     @validate(
         validators={
-            "order_by": validators.OneOf((u"name", u"user", u"ip", u"time")),
-            "reverse": validators.StringBool(if_missing=False)
+            "order_by": validators.OneOf((u"name", u"user", u"addr", u"time")),
+            "reverse": validators.StringBool(if_missing=True)
         },
         error_handler=error
     )
-    def index(self, order_by=None, reverse=False):
+    def index(self, order_by=None, reverse=None):
         """Report overview."""
+        if reverse is None:
+            reverse = True
         if not order_by:
             order_by = u"time"
         sort_keys = {
             u"name": Client.name,
             u"user": Client.console_user,
-            u"ip": Client.remote_ip,
+            u"addr": Client.remote_ip,
             u"time": Client.timestamp,
         }
         sort_key = sort_keys[order_by]
@@ -70,11 +72,30 @@ class ViewController(BaseController):
         )
     
     @expose('munkireport.templates.view.client_list')
-    def client_list(self):
+    @validate(
+        validators={
+            "order_by": validators.OneOf((u"name", u"user", u"addr", u"time")),
+            "reverse": validators.StringBool(if_missing=True)
+        },
+        error_handler=error
+    )
+    def client_list(self, order_by=None, reverse=True):
         """List all clients."""
+        if not order_by:
+            order_by = u"time"
+        sort_keys = {
+            u"name": Client.name,
+            u"user": Client.console_user,
+            u"addr": Client.remote_ip,
+            u"time": Client.timestamp,
+        }
+        sort_key = sort_keys[order_by]
+        clients=DBSession.query(Client).order_by(sort_key).all()
+        if reverse:
+            clients.reverse()
         return dict(
             page="reports",
-            clients=reversed(DBSession.query(Client).order_by(Client.timestamp).all())
+            clients=clients
         )
     
     
@@ -87,7 +108,7 @@ class ViewController(BaseController):
     )
     def report_plist(self, mac=None):
         """View a munki report."""
-        client=Client.by_mac(mac)
+        client=Client.by_mac(unicode(mac))
         if not client:
             abort(404)
         
@@ -105,7 +126,7 @@ class ViewController(BaseController):
     )
     def report(self, mac=None):
         """View a munki report."""
-        client=Client.by_mac(mac)
+        client=Client.by_mac(unicode(mac))
         if not client:
             abort(404)
         
