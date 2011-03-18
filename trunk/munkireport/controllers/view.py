@@ -79,8 +79,10 @@ class ViewController(BaseController):
         },
         error_handler=error
     )
-    def client_list(self, order_by=None, reverse=True):
+    def client_list(self, order_by=None, reverse=None):
         """List all clients."""
+        if reverse is None:
+            reverse = True
         if not order_by:
             order_by = u"time"
         sort_keys = {
@@ -95,7 +97,9 @@ class ViewController(BaseController):
             clients.reverse()
         return dict(
             page="reports",
-            clients=clients
+            order_by=order_by,
+            reverse=reverse,
+            clients=clients,
         )
     
     
