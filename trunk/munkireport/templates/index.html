@@ -43,7 +43,7 @@ function verify_password() {
       <h1>Welcome to MunkiReport</h1>
       To get started, please enter a password for the munkiadmin user:
       
-      <form action="reset_munkiadminadmin_password"
+      <form action="${tg.url('/reset_munkiadminadmin_password')}"
             method="post"
             accept-charset="utf-8"
             onsubmit="return verify_password();">
