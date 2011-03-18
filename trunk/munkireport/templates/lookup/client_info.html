@@ -96,7 +96,11 @@ td {
         <py:if test="hwinfo">
           <tr>
             <th>Model</th>
-            <td py:content="hwinfo.machine_name">Model</td>
+            <td>
+              <span py:replace="hwinfo.machine_model">Model</span>
+              <span py:replace="hwinfo.cpu_type">CPU</span>
+              <span py:replace="hwinfo.current_processor_speed">MHz</span>
+            </td>
           </tr>
           <tr>
             <th>Serial</th>
