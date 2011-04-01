@@ -137,28 +137,7 @@
 ${pkgtable('Apple Updates', 'AppleUpdateList')}
 ${pkgtable('Active Installs', 'ItemsToInstall')}
 ${pkgtable('Active Removals', 'ItemsToRemove')}
-
-
-<py:if test="'ProblemInstalls' in report">
-  <py:if test="report.ProblemInstalls">
-    <h2>Problem Installs</h2>
-
-    <table class="client_info">
-      <thead>
-        <tr>
-          <th>Problem Install</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr py:for="item in report.ProblemInstalls">
-          <td>
-            ${item}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </py:if>
-</py:if>
+${pkgtable('Problem Installs', 'ProblemInstalls')}
 
 
 <table class="twocol">
