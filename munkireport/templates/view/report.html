@@ -89,7 +89,7 @@
 <a name="errors">&nbsp;</a>
 <h2>Errors &amp; Warnings</h2>
 
-<py:choose test="report.Errors or report.Warnings">
+<py:choose test="'Errors' in report or 'Warnings' in report">
   <py:when test="True">
     <py:if test="report.Errors"><pre class="error">${"\n".join(report.Errors)}</pre></py:if>
     <py:if test="report.Warnings"><pre class="warning">${"\n".join(report.Warnings)}</pre></py:if>
