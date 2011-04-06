@@ -173,7 +173,7 @@
               removal_items   = len(client.activity['ItemsToRemove'])   if 'ItemsToRemove'   in client.activity else 0
               removal_results = len(client.activity['RemovalResults'])  if 'RemovalResults'  in client.activity else 0
               apple_updates   = len(client.activity['AppleUpdateList']) if 'AppleUpdateList' in client.activity else 0
-              pending_installs = (install_items + apple_updates) - install_results
+              pending_installs = max((install_items + apple_updates) - install_results, 0)
               pending_removals = removal_items - removal_results
           ?>
           <td>
