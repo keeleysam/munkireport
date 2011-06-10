@@ -142,10 +142,17 @@ class ViewController(BaseController):
         install_results = dict()
         if "InstallResults" in report:
             for result in report["InstallResults"]:
-                m = re_result.search(result)
-                if m:
-                    install_results["%s-%s" % (m.group("dname"), m.group("version"))] = {
-                        "result": "Installed" if m.group("result") == "SUCCESSFUL" else m.group("result")
+                if isinstance(result, basestring):
+                    # Older Munki clients return an array of strings
+                    m = re_result.search(result)
+                    if m:
+                        install_results["%s-%s" % (m.group("dname"), m.group("version"))] = {
+                            "result": "Installed" if m.group("result") == "SUCCESSFUL" else m.group("result")
+                        }
+                else:
+                    # Newer Munki clients return an array of dicts
+                    install_results["%s-%s" % (result["name"], result["version"])] = {
+                        "result": "Installed" if result["status"] == 0 else "error %d" % result["status"]
                     }
         if "ItemsToInstall" in report:
             for item in report["ItemsToInstall"]:
@@ -162,7 +169,7 @@ class ViewController(BaseController):
                     res = install_results[dversion]
                     item["install_result"] = res["result"]
         
-        # Move install results over to their install items.
+        # Move removal results over to their removal items.
         removal_results = dict()
         if "RemovalResults" in report:
             for result in report["RemovalResults"]:
