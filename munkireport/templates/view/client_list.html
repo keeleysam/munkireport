@@ -42,10 +42,13 @@
     </thead>
     <tbody>
       <tr py:for="client in clients">
+        <?python
+            url = tg.url('/view/report/%s' % client.mac)
+        ?>
         <td>
           <py:choose test="client.report_plist == None">
             <py:when test="False">
-              <a href="${tg.url('/view/report/%s' % client.mac)}">${client.name}</a>
+              <a href="${url}">${client.name}</a>
             </py:when>
             <py:otherwise>${client.name}</py:otherwise>
           </py:choose>
